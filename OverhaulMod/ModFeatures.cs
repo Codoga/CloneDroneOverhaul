@@ -98,6 +98,9 @@ namespace OverhaulMod
                 case FeatureType.PersonalizationEditorTutorialVideo:
                     result = true;
                     break;
+                case FeatureType.JetpackAndDashToggle:
+                    result = ModBuildInfo.enableV5;
+                    break;
                 default:
                     return false;
             }
@@ -159,7 +162,9 @@ namespace OverhaulMod
 
             ShieldSkins,
 
-            PersonalizationEditorTutorialVideo
+            PersonalizationEditorTutorialVideo,
+
+            JetpackAndDashToggle
         }
     }
 }

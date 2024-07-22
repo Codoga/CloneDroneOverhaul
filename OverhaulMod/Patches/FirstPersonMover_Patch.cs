@@ -39,8 +39,11 @@ namespace OverhaulMod.Patches
 
         [HarmonyPrefix]
         [HarmonyPatch("tryEnableJetpackOrDash")]
-        private static void tryEnableJetpackOrDash_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
+        private static bool tryEnableJetpackOrDash_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
         {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.JetpackAndDashToggle) || !__instance.IsEntityOwner())
+                return true;
+
             if (moveCommand.Input.JetpackHeld && !__instance._isJetpackEngaged && !__instance._isFalling && !__instance._isOnFloorFromKick && !__instance._isGrabbedByGarbageBot && !__instance.IsUsingSpecialAttackAbility() && !__instance.IsRidingOtherCharacter())
             {
                 RobotSprintMethod robotSprintMethod;
@@ -78,6 +81,7 @@ namespace OverhaulMod.Patches
             {
                 __instance._hasDashedForThisKeyHeld = false;
             }
+            return false;
         }
 
         [HarmonyPrefix]
