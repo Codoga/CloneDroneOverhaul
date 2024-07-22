@@ -38,6 +38,49 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
+        [HarmonyPatch("tryEnableJetpackOrDash")]
+        private static void tryEnableJetpackOrDash_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
+        {
+            if (moveCommand.Input.JetpackHeld && !__instance._isJetpackEngaged && !__instance._isFalling && !__instance._isOnFloorFromKick && !__instance._isGrabbedByGarbageBot && !__instance.IsUsingSpecialAttackAbility() && !__instance.IsRidingOtherCharacter())
+            {
+                RobotSprintMethod robotSprintMethod;
+                RobotInventory robotInventory = __instance.GetComponent<RobotInventory>();
+                if (robotInventory)
+                {
+                    robotSprintMethod = robotInventory.sprintMethod;
+                }
+                else
+                {
+                    robotSprintMethod = RobotSprintMethod.None;
+                }
+
+                JetpackUpgrade upgrade = __instance.GetUpgrade<JetpackUpgrade>(UpgradeType.Jetpack);
+                if (upgrade && (robotSprintMethod == RobotSprintMethod.None || robotSprintMethod == RobotSprintMethod.Jetpack))
+                {
+                    if (!__instance.isDashOnCooldown(moveCommand) && Time.time > __instance._timeRecoveredFromRotationLock + 0.2f)
+                    {
+                        if (!__instance._energySource || __instance._energySource.CanConsume(upgrade.MinEnergyToActivate))
+                            __instance.SetJetpackEngaged(true, upgrade);
+                        else if (__instance.IsMainPlayer())
+                            GlobalEventManager.Instance.Dispatch("InsufficientEnergyAttempt", upgrade.MinEnergyToActivate);
+                    }
+                }
+                else if (!__instance._hasDashedForThisKeyHeld && !__instance._isKicking && (robotSprintMethod == RobotSprintMethod.None || robotSprintMethod == RobotSprintMethod.Dash))
+                {
+                    DashUpgrade upgrade2 = __instance.GetUpgrade<DashUpgrade>(UpgradeType.Dash);
+                    if (upgrade2)
+                    {
+                        __instance.tryDash(moveCommand, upgrade2, isFirstExecution, isOwner);
+                    }
+                }
+            }
+            else
+            {
+                __instance._hasDashedForThisKeyHeld = false;
+            }
+        }
+
+        [HarmonyPrefix]
         [HarmonyPatch("tryEnableJump")]
         private static void tryEnableJump_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, Vector3 platformVelocity, float boltFrameDeltaTime, bool isImmobile, bool isFirstExecution)
         {

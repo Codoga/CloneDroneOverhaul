@@ -25,6 +25,12 @@ namespace OverhaulMod.Combat
             private set;
         }
 
+        public RobotSprintMethod sprintMethod
+        {
+            get;
+            private set;
+        }
+
         private void Start()
         {
             OnUpgradesRefreshed(owner._upgradeCollection);

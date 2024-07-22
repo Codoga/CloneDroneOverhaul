@@ -108,7 +108,7 @@ namespace OverhaulMod
         {
             get
             {
-                return false;
+                return true;
             }
         }
 

@@ -348,6 +348,7 @@
     <Compile Include="Combat\Enemies\SprintAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\DashAIBehaviour.cs" />
     <Compile Include="Combat\RobotInventory.cs" />
+    <Compile Include="Combat\RobotSprintMethod.cs" />
     <Compile Include="Combat\Weapons\ClawsWeaponModel.cs" />
     <Compile Include="Combat\Weapons\DualKnivesWeaponModel.cs" />
     <Compile Include="Combat\Weapons\BoomerangWeaponModel.cs" />
