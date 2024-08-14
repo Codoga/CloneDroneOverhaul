@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using OverhaulMod.Engine;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,6 +42,7 @@ namespace OverhaulMod.UI
 
         public void OnRestartButtonClicked()
         {
+            ModSettingsDataManager.Instance.Save();
             _ = Process.Start("steam://rungameid/" + 597170U.ToString());
             Application.Quit();
         }

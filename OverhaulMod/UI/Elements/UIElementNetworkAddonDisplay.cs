@@ -118,7 +118,7 @@ namespace OverhaulMod.UI
                 {
                     _ = m_contentManager.DownloadContent(contentName, contentFile, delegate (string error)
                     {
-                        if(error != null)
+                        if (error != null)
                             ModUIUtils.MessagePopupOK("Addon download error", error, true);
                     });
                 });

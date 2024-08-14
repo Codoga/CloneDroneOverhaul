@@ -1,0 +1,6 @@
+- Skins system update: If the skin is set up, it will attach to specified part of the robot. Check out these new skins using new mechanic: BBR_HG, Path Blaster.
+- Old skins got ported to new system.
+- Added Patch notes UI (You're using it right now).
+- Added "Auto-Upgrades".
+- Fixed a rare bug that prevented skins from spawning in multiplayer.
+- Fixed crash after skins update.

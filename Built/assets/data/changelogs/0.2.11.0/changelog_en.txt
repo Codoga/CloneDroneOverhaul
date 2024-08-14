@@ -1,0 +1,5 @@
+- Added many new skins
+- Added searchbox to skins selection menu.
+- Updated settings UI. Now it supports 4:3 screen resolutions.
+- Updated pause menu.
+- Fixed many crashes.

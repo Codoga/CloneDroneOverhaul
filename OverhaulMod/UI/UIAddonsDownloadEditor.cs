@@ -164,7 +164,7 @@ namespace OverhaulMod.UI
 
         public void OnCreateNewButtonClicked()
         {
-            ModUIUtils.InputFieldWindow("Create new content folder", "Name it", 125f, delegate (string value)
+            ModUIUtils.InputFieldWindow("Create new content folder", "Name it", null, 30, 125f, delegate (string value)
             {
                 ContentListInfo contentListInfo = editingContentList;
                 if (contentListInfo != null)

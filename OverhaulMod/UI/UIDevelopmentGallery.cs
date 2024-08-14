@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +36,11 @@ namespace OverhaulMod.UI
 
         public void Populate()
         {
+            _ = base.StartCoroutine(populateCoroutine());
+        }
+
+        private IEnumerator populateCoroutine()
+        {
             if (m_imageDisplaysContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_imageDisplaysContainer);
 
@@ -42,13 +48,14 @@ namespace OverhaulMod.UI
             if (!Directory.Exists(directory))
             {
                 ModUIUtils.MessagePopupOK("\"Behind The Scenes\" add-on not installed", "Install this add-on to make this menu work.", true);
-                return;
+                yield break;
             }
 
             string[] images = Directory.GetFiles(directory, "*.jpg");
             if (images.IsNullOrEmpty())
-                return;
+                yield break;
 
+            int counter = 0;
             foreach (string imageFilePath in images)
             {
                 ModdedObject moddedObject = Instantiate(m_imageDisplay, m_imageDisplaysContainer);
@@ -56,7 +63,13 @@ namespace OverhaulMod.UI
                 UIElementGalleryImage galleryImage = moddedObject.gameObject.AddComponent<UIElementGalleryImage>();
                 galleryImage.filePath = imageFilePath;
                 galleryImage.InitializeElement();
+
+                counter++;
+
+                if (counter % 4 == 0)
+                    yield return null;
             }
+            yield break;
         }
     }
 }

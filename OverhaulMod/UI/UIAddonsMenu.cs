@@ -11,6 +11,8 @@ namespace OverhaulMod.UI
 {
     public class UIAddonsMenu : OverhaulUIBehaviour
     {
+        private static ContentListInfo s_contentLiftInfo;
+
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
@@ -73,14 +75,14 @@ namespace OverhaulMod.UI
             base.Hide();
             if (m_shouldSuggestGameRestart)
             {
-                ModUIConstants.ShowRestartRequiredScreen(true);
+                _ = ModUIConstants.ShowRestartRequiredScreen(true);
                 m_shouldSuggestGameRestart = false;
             }
         }
 
         private void onContentDownloaded(string error)
         {
-            if (!string.IsNullOrEmpty(error))
+            if (!error.IsNullOrEmpty())
             {
                 ModUIUtils.MessagePopupOK("Content download error", "Details:\n" + error, 350f, true);
             }
@@ -154,42 +156,15 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
+            if (s_contentLiftInfo != null)
+            {
+                populate(s_contentLiftInfo);
+                return;
+            }
+
             m_loadingIndicator.SetActive(true);
             m_tabs.interactable = false;
-            ContentManager.Instance.DownloadContentList(out _, delegate (ContentListInfo contentListInfo)
-            {
-                foreach (ContentDownloadInfo content in contentListInfo.ContentToDownload)
-                {
-                    if (content == null || content.File.IsNullOrEmpty() || content.DisplayName.IsNullOrEmpty())
-                        continue;
-
-                    string translationKey = $"addons_addon_{content.DisplayName.ToLower().Replace(' ', '_')}";
-
-                    ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
-                    moddedObject.gameObject.SetActive(true);
-                    moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
-                    moddedObject.GetObject<Text>(7).text = content.Description.IsNullOrEmpty() ? LocalizationManager.Instance.GetTranslatedString("no_description_provided") : LocalizationManager.Instance.GetTranslatedString($"{translationKey}_description");
-                    moddedObject.GetObject<Text>(1).text = (Mathf.RoundToInt(Mathf.Round(content.Size / 1048576f * 10f)) / 10f).ToString() + " Megabytes";
-
-                    List<string> list = content.GetImages().ToList();
-                    if (!list.IsNullOrEmpty())
-                        for (int i = 0; i < list.Count; i++)
-                            list[i] = RepositoryManager.REPOSITORY_URL + "images/" + list[i];
-
-                    UIElementNetworkAddonDisplay networkAddonDisplay = moddedObject.gameObject.AddComponent<UIElementNetworkAddonDisplay>();
-                    networkAddonDisplay.contentFile = content.File;
-                    networkAddonDisplay.contentName = content.DisplayName;
-                    networkAddonDisplay.isSupported = content.IsSupported();
-                    networkAddonDisplay.minModVersion = content.MinModVersion;
-                    networkAddonDisplay.isLarge = content.Size > 52428800L;
-                    networkAddonDisplay.imageExplorerParentTransform = base.transform;
-                    networkAddonDisplay.images = list;
-                    networkAddonDisplay.InitializeElement();
-                }
-
-                m_loadingIndicator.SetActive(false);
-                m_tabs.interactable = true;
-            }, delegate (string error)
+            ContentManager.Instance.DownloadContentList(out _, populate, delegate (string error)
             {
                 ModUIUtils.MessagePopupOK("Error", error, true);
 
@@ -199,14 +174,50 @@ namespace OverhaulMod.UI
             });
         }
 
+        private void populate(ContentListInfo contentListInfo)
+        {
+            s_contentLiftInfo = contentListInfo;
+            foreach (ContentDownloadInfo content in contentListInfo.ContentToDownload)
+            {
+                if (content == null || content.File.IsNullOrEmpty() || content.DisplayName.IsNullOrEmpty())
+                    continue;
+
+                string translationKey = $"addons_addon_{content.DisplayName.ToLower().Replace(' ', '_')}";
+
+                ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
+                moddedObject.gameObject.SetActive(true);
+                moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
+                moddedObject.GetObject<Text>(7).text = content.Description.IsNullOrEmpty() ? LocalizationManager.Instance.GetTranslatedString("no_description_provided") : LocalizationManager.Instance.GetTranslatedString($"{translationKey}_description");
+                moddedObject.GetObject<Text>(1).text = (Mathf.RoundToInt(Mathf.Round(content.Size / 1048576f * 10f)) / 10f).ToString() + " Megabytes";
+
+                List<string> list = content.GetImages().ToList();
+                if (!list.IsNullOrEmpty())
+                    for (int i = 0; i < list.Count; i++)
+                        list[i] = RepositoryManager.REPOSITORY_URL + "images/" + list[i];
+
+                UIElementNetworkAddonDisplay networkAddonDisplay = moddedObject.gameObject.AddComponent<UIElementNetworkAddonDisplay>();
+                networkAddonDisplay.contentFile = content.File;
+                networkAddonDisplay.contentName = content.DisplayName;
+                networkAddonDisplay.isSupported = content.IsSupported();
+                networkAddonDisplay.minModVersion = content.MinModVersion;
+                networkAddonDisplay.isLarge = content.Size > 52428800L;
+                networkAddonDisplay.imageExplorerParentTransform = base.transform;
+                networkAddonDisplay.images = list;
+                networkAddonDisplay.InitializeElement();
+            }
+
+            m_loadingIndicator.SetActive(false);
+            m_tabs.interactable = true;
+        }
+
         public void OnLocalAddonsEditorButtonClicked()
         {
-            ModUIConstants.ShowAddonsEditor(base.transform);
+            _ = ModUIConstants.ShowAddonsEditor(base.transform);
         }
 
         public void OnNetworkAddonsEditorButtonClicked()
         {
-            ModUIConstants.ShowAddonsDownloadEditor(base.transform);
+            _ = ModUIConstants.ShowAddonsDownloadEditor(base.transform);
         }
     }
 }

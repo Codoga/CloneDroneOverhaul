@@ -1,0 +1,10 @@
+- Added First person mode. To enable it, go to setting -> Gameplay -> Set View mode to "First person"
+- Added better scene transitions
+- Added loading screen
+- Added tooltips
+- Added mod setup window
+- Added ability to revert upgrades
+- Reworked Steam workshop browser
+- Reworked player datas system in multiplayer
+- Updated UI sprites
+- Updated gamemode selection menus

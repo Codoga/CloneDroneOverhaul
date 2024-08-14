@@ -1,33 +1,25 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using System;
 using System.Collections;
-using UnityEngine;
 
 namespace OverhaulMod.Content
 {
     public class NewsManager : Singleton<NewsManager>
     {
-        public const string DATA_REFRESH_TIME_PLAYER_PREF_KEY = "NewsInfoRefreshDate";
-
-        public const string PREV_NEWS_COUNT_PREF_KEY = "NewsInfoCount";
-
         public const string REPOSITORY_FILE = "NewsInfo.json";
 
         public const string DATA_FILE = "NewsUserData.json";
 
-        public static bool DebugGetNewList = false;
+        [ModSetting(ModSettingsConstants.PREV_NEWS_COUNT, 0)]
+        public static int PrevNewsCount;
 
-        private NewsInfoList m_downloadedNewsInfoList;
+        [ModSetting(ModSettingsConstants.DOWNLOADED_NEWS_COUNT, 0)]
+        public static int DownloadedNewsCount;
 
         private NewsUserData m_userData;
 
         public static float timeToToClearCache
-        {
-            get;
-            set;
-        }
-
-        public static int downloadedNewsCount
         {
             get;
             set;
@@ -41,18 +33,14 @@ namespace OverhaulMod.Content
 
         private IEnumerator retrieveDataOnStartCoroutine()
         {
-            downloadedNewsCount = PlayerPrefs.GetInt(PREV_NEWS_COUNT_PREF_KEY, 0);
-            if (DateTime.TryParse(PlayerPrefs.GetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, "default"), out DateTime timeToRefreshData))
-                if (DateTime.Now < timeToRefreshData)
-                    yield break;
-
-            yield return new WaitUntil(() => MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab());
-            yield return new WaitForSecondsRealtime(2f);
+            ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
+            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshNews))
+                yield break;
 
             DownloadNewsInfoFile(delegate
             {
-                PlayerPrefs.SetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, DateTime.Now.AddDays(3).ToString());
-            }, null, false);
+                scheduledActionsManager.SetActionExecuted(ScheduledActionType.RefreshNews);
+            }, null);
             yield break;
         }
 
@@ -95,14 +83,11 @@ namespace OverhaulMod.Content
 
         public bool ShouldHighlightNewsButton()
         {
-            return m_userData != null && m_userData.ShouldHighlightNewsButton(m_downloadedNewsInfoList);
+            return DownloadedNewsCount != PrevNewsCount;
         }
 
         public void SetHasSeenNews()
         {
-            if (m_downloadedNewsInfoList == null || m_downloadedNewsInfoList.News.IsNullOrEmpty())
-                return;
-
             NewsUserData newsUserData = m_userData;
             if (newsUserData == null)
             {
@@ -110,8 +95,6 @@ namespace OverhaulMod.Content
                 m_userData = newsUserData;
             }
             newsUserData.FixValues();
-
-            newsUserData.NumOfNewsSeen = m_downloadedNewsInfoList.News.Count;
 
             SaveUserData();
         }
@@ -138,33 +121,8 @@ namespace OverhaulMod.Content
             SaveUserData();
         }
 
-        public void DownloadNewsInfoFile(Action<NewsInfoList> callback, Action<string> errorCallback, bool clearCache = false)
+        public void DownloadNewsInfoFile(Action<NewsInfoList> callback, Action<string> errorCallback)
         {
-            if (DebugGetNewList)
-            {
-                callback?.Invoke(new NewsInfoList() { News = new System.Collections.Generic.List<NewsInfo>() });
-                return;
-            }
-
-            if (clearCache)
-                m_downloadedNewsInfoList = null;
-
-            if (m_downloadedNewsInfoList != null)
-            {
-                DelegateScheduler.Instance.Schedule(delegate
-                {
-                    if (m_downloadedNewsInfoList.News != null)
-                    {
-                        int c = m_downloadedNewsInfoList.News.Count;
-                        PlayerPrefs.SetInt(PREV_NEWS_COUNT_PREF_KEY, c);
-                        downloadedNewsCount = c;
-                    }
-
-                    callback?.Invoke(m_downloadedNewsInfoList);
-                }, 1f);
-                return;
-            }
-
             RepositoryManager.Instance.GetTextFile(REPOSITORY_FILE, delegate (string content)
             {
                 NewsInfoList newsInfoList = null;
@@ -174,16 +132,14 @@ namespace OverhaulMod.Content
                     if (newsInfoList.News == null)
                         newsInfoList.News = new System.Collections.Generic.List<NewsInfo>();
 
-                    int c = newsInfoList.News.Count;
-                    PlayerPrefs.SetInt(PREV_NEWS_COUNT_PREF_KEY, c);
-                    downloadedNewsCount = c;
+                    ModSettingsManager.SetIntValue(ModSettingsConstants.DOWNLOADED_NEWS_COUNT, newsInfoList.News.Count);
+                    ModSettingsDataManager.Instance.Save();
                 }
                 catch (Exception exc)
                 {
                     errorCallback?.Invoke(exc.ToString());
                     return;
                 }
-                m_downloadedNewsInfoList = newsInfoList;
                 callback?.Invoke(newsInfoList);
             }, errorCallback, out _);
         }

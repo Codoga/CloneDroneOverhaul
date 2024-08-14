@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,14 +41,12 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-
-            m_inputField.text = string.Empty;
             m_inputField.ActivateInputField();
         }
 
         public override void Update()
         {
-            m_doneButton.interactable = !string.IsNullOrEmpty(m_inputField.text);
+            m_doneButton.interactable = !m_inputField.text.IsNullOrEmpty();
         }
 
         public void OnDoneButtonClicked()
@@ -68,6 +67,12 @@ namespace OverhaulMod.UI
             Vector2 sizeDelta = m_panelTransform.sizeDelta;
             sizeDelta.y = Mathf.Max(100f, height);
             m_panelTransform.sizeDelta = sizeDelta;
+        }
+
+        public void SetInputFieldText(string text, int limit)
+        {
+            m_inputField.text = text;
+            m_inputField.characterLimit = Mathf.Max(0, limit);
         }
     }
 }

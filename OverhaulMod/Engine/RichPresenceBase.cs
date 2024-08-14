@@ -180,7 +180,7 @@ namespace OverhaulMod.Engine
                         if (request.ForceRegion != null)
                             regionString = "Region: " + request.ForceRegion.Value.ToString();
 
-                        string separator = string.IsNullOrEmpty(regionString) ? string.Empty : " · ";
+                        string separator = regionString.IsNullOrEmpty() ? string.Empty : " · ";
                         string lobbyPrivacyString = brManager.IsPrivateMatch() ? "Private lobby" : "Public lobby";
                         result = lobbyPrivacyString + separator + regionString;
                     }

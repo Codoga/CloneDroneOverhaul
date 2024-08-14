@@ -180,7 +180,7 @@ namespace OverhaulMod.UI
 
         public void OnCreditsButtonClicked()
         {
-            ModUIConstants.ShowCreditsMenu(base.transform);
+            _ = ModUIConstants.ShowCreditsMenu(base.transform);
         }
 
         public void OnModBotPageButtonClicked()

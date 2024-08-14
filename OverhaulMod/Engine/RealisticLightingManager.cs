@@ -12,11 +12,13 @@ namespace OverhaulMod.Engine
 
         public const string LIGHTING_INFO_LIST_FILE = "lightingInfo.json";
 
+        public const string OVERHAUL_ASSETS_SKYBOXES = "overhaulassets_skyboxes";
+
         public static readonly string LightSettingsObjectResourcePath = "Prefabs/LevelObjects/Settings/LevelLightSettings";
 
         public static readonly string LightSettingsOverrideObjectResourcePath = "Prefabs/LevelObjects/Lights/LightSettingsOverride";
 
-        private static Material[] s_skyboxes;
+        private Material[] m_skyboxes;
 
         private RealisticLightingInfoList m_lightingInfoList;
 
@@ -31,10 +33,13 @@ namespace OverhaulMod.Engine
                 return;
 
             ContentManager.Instance.SetContentIsLoading(this, true);
-            ModResources.Instance.LoadBundleAsync("overhaulassets_skyboxes", delegate (AssetBundle bundle)
+            ModResources.LoadBundleAsync(OVERHAUL_ASSETS_SKYBOXES, delegate (bool result)
             {
-                _ = ModActionUtils.RunCoroutine(loadAllSkyboxesCoroutine(bundle));
-            }, null, Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME));
+                if (!result)
+                    return;
+
+                _ = ModActionUtils.RunCoroutine(loadAllSkyboxesCoroutine());
+            }, Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME));
 
             RealisticLightingInfoList realisticLightingInfoList = null;
             try
@@ -64,25 +69,26 @@ namespace OverhaulMod.Engine
             m_lightingInfoList = realisticLightingInfoList;
         }
 
-        private IEnumerator loadAllSkyboxesCoroutine(AssetBundle bundle)
+        private IEnumerator loadAllSkyboxesCoroutine()
         {
+            AssetBundle bundle = ModResources.AssetBundle("overhaulassets_skyboxes", Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME));
             if (ModAdvancedCache.TryGet("RealisticSkyboxes", out Material[] array))
-                s_skyboxes = array;
+                m_skyboxes = array;
             else
             {
                 AssetBundleRequest r = bundle.LoadAllAssetsAsync<Material>();
                 yield return r;
                 if (!r.allAssets.IsNullOrEmpty())
                 {
-                    s_skyboxes = new Material[r.allAssets.Length];
+                    m_skyboxes = new Material[r.allAssets.Length];
                     int i = 0;
                     foreach (Object obj in r.allAssets)
                     {
-                        s_skyboxes[i] = r.allAssets[i] as Material;
+                        m_skyboxes[i] = r.allAssets[i] as Material;
                         i++;
                     }
                 }
-                ModAdvancedCache.Add("RealisticSkyboxes", s_skyboxes);
+                ModAdvancedCache.Add("RealisticSkyboxes", m_skyboxes);
             }
 
             LevelEditorLightManager.Instance.RefreshLightInScene();
@@ -152,10 +158,10 @@ namespace OverhaulMod.Engine
 
         public void SetSkybox(int index)
         {
-            if (index < 0 || s_skyboxes.IsNullOrEmpty())
+            if (index < 0 || m_skyboxes.IsNullOrEmpty())
                 return;
 
-            Material material = s_skyboxes[index];
+            Material material = m_skyboxes[index];
             SkyBoxManager.Instance._currentSkybox = material;
             RenderSettings.skybox = material;
         }

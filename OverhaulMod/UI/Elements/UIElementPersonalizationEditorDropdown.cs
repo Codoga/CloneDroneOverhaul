@@ -74,7 +74,7 @@ namespace OverhaulMod.UI
                     Sprite sprite = null;
                     try
                     {
-                        sprite = ModResources.Load<Sprite>(AssetBundleConstants.UI, od.imageName);
+                        sprite = ModResources.Sprite(AssetBundleConstants.UI, od.imageName);
                     }
                     catch { }
 

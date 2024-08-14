@@ -9,6 +9,8 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectManager : Singleton<PersonalizationEditorObjectManager>
     {
+        public const string OBJECT_SELECTION_CHANGED_EVENT = "PersonalizationEditorObjectSelectionChanged";
+
         private List<PersonalizationEditorObjectSpawnInfo> m_objectInfos;
 
         private Material m_volumeMaterial;
@@ -28,6 +30,7 @@ namespace OverhaulMod.Content.Personalization
             m_objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
             addObjectInfo("Model Renderer (.vox)", "Volume", instantiateVolume);
+            addObjectInfo("Model Renderer (.cvm) [BETA]", "CvmModel", instantiateCvmModel);
             addObjectInfo("Fire particles (Sword)", "FireParticles_Sword", instantiateSwordFireParticles);
             addObjectInfo("Fire particles (Hammer)", "FireParticles_Hammer", instantiateHammerFireParticles);
             addObjectInfo("Fire particles (Spear)", "FireParticles_Spear", instantiateSpearFireParticles);
@@ -146,6 +149,10 @@ namespace OverhaulMod.Content.Personalization
             MechBodyPart bodyPart = Instantiate(prefab, parent);
             prefab.enabled = true;
             GameObject gameObject = bodyPart.gameObject;
+            Transform t = gameObject.transform;
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one;
             _ = gameObject.AddComponent<PersonalizationEditorObjectVolume>();
             _ = gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
             Volume volume = gameObject.GetComponent<Volume>();
@@ -154,31 +161,63 @@ namespace OverhaulMod.Content.Personalization
             return gameObject;
         }
 
+        private GameObject instantiateCvmModel(Transform parent)
+        {
+            GameObject obj = new GameObject();
+            Transform t = obj.transform;
+            t.SetParent(parent);
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one;
+            obj.AddComponent<PersonalizationEditorObjectCVMModel>();
+            _ = obj.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            return obj;
+        }
+
         private GameObject instantiateSwordFireParticles(Transform parent)
         {
             Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireSwordModelPrefab, "SwordFireVFX"), parent);
+            Transform t = fireParticles.transform;
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one * 0.01f;
             _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectFireParticles>();
             return fireParticles.gameObject;
         }
 
         private GameObject instantiateSpearFireParticles(Transform parent)
         {
             Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireSpearModelPrefab, "SwordFireVFX (1)"), parent);
+            Transform t = fireParticles.transform;
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one * 0.01f;
             _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectFireParticles>();
             return fireParticles.gameObject;
         }
 
         private GameObject instantiateHammerFireParticles(Transform parent)
         {
             Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireHammerModelPrefab, "FireVFX (1)"), parent);
+            Transform t = fireParticles.transform;
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one * 0.01f;
             _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectFireParticles>();
             return fireParticles.gameObject;
         }
 
         private GameObject instantiateEmpty(Transform parent)
         {
             GameObject obj = new GameObject();
-            obj.transform.SetParent(parent);
+            Transform t = obj.transform;
+            t.SetParent(parent);
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one;
             return obj;
         }
 

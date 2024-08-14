@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -61,12 +62,15 @@ namespace OverhaulMod.UI
             ModdedObject moddedObject = Instantiate(m_uiDisplayPrefab, m_uiDisplayContainer);
             moddedObject.gameObject.SetActive(true);
             moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(setting.name);
-            moddedObject.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString($"{setting.name}_desc");
             moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
             {
                 GUIUtility.systemCopyBuffer = setting.name;
                 ModUIUtils.MessagePopupOK("Copied localization ID", "", false);
             });
+
+            UIElementOverhaulUIInfo info = moddedObject.gameObject.AddComponent<UIElementOverhaulUIInfo>();
+            info.PreviewFile = Path.Combine(ModCore.texturesFolder, "uiPreviews", $"{setting.name.Replace("ModUI_UI", string.Empty).Replace("Rework", string.Empty)}.png");
+            info.InitializeElement();
 
             bool isOn = (bool)setting.GetFieldValue();
 

@@ -1,0 +1,32 @@
+- Added customization editor. Make and upload stuff almost without limits
+- Added new weapon: Scythe
+- Added new upgrade: Double jump
+- Added title screen customization
+- Added mod news system
+- Added in-game mod update system
+- Added exlusive perks system
+- Added addons system. Currently, only 3 addons are available to download via menu
+- (Re)Added advanced photo mode
+- (Re)Added improved fire spreading
+- (Re)Added dithering effect
+- (Re)Added floating dust effect
+- Added weather effect
+- Added visualization of equipped weapons on robot's back
+- Added smooth lightning transition when a level loads
+- Added leaderboard for endless mode
+- Added support for restarting a chapter from specific section or level
+- Added redesigns of all game mode menus with extra features implemented
+- Added ability to sync Steam achievements with game to achievements menu
+- Added a keybind for toggling first person mode
+- Added an option to change window's title
+- Added a menu to toggle overhaul UIs
+- Redesigned all mod's UIs to fit the game style better
+- Reworked mod code
+- Reworked title screen. You can customize it
+- Reworked mod settings menu. Now it implements game's and mod's settings
+- Reworked workshop browser
+- Improved Discord RPC
+- Various optimizations
+- Fixed ambient occlusion render issues
+- Fixed audience of reworked arena model
+- Fixed a bunch of V3 bugs

@@ -8,7 +8,11 @@ namespace OverhaulMod.UI
 
         public DropdownWeaponTypeOptionData(WeaponType weaponType)
         {
-            text = weaponType.ToString();
+            if (weaponType == Combat.ModWeaponsManager.SCYTHE_TYPE)
+                text = "Scythe";
+            else
+                text = weaponType.ToString();
+
             Weapon = weaponType;
         }
     }

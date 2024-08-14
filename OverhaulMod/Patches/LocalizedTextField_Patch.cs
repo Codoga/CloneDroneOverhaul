@@ -6,7 +6,7 @@ namespace OverhaulMod.Patches
     internal static class LocalizedTextField_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("tryLocalizeUnityTextField")]
+        [HarmonyPatch(nameof(LocalizedTextField.tryLocalizeUnityTextField))]
         private static void tryLocalizeUnityTextField_Postfix(LocalizedTextField __instance)
         {
             if (!__instance.DisableWrappingForLogographicLanguages || !__instance._textLabel)

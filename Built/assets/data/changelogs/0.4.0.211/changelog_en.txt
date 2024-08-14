@@ -1,0 +1,26 @@
+- Added proper icons for scythe and double jump upgrades
+- Added a fullscreen notification when there's a new build available
+- Added `Activate on match start` option to Auto-upgrades menu
+- [Customization editor] Added `Copy` and `Paste` buttons to color settings of weapon variant model
+- [Customization editor] Added `Guide: Introduction` option to help dropdown
+- [Customization editor] Greatsword original model is now shown if `Show original model` toggle is on
+- Updated fire scythe appearence
+- Redesigned "Behind the scenes" and "Discord server" menus
+- Changed the font of workshop level description
+- Changed the location where mod assets are stored
+- Changed the appearence of keybind fields
+- Made "Realistic skyboxes" addon not load if the game has crashed
+- Overhaul mod version label no longer shows up in level editor
+- Visual effects no longer work in level editor
+- Fixed weapon skins appearing as gray solid blocks in some cases
+- Fixed weapon skins applying on zombie bow 1
+- Fixed .vox model renderer incorrect scaling
+- Fixed player not equpping required weapon in customization editor
+- Fixed mouse cursor enabling when playing co-op
+- Fixed auto-build upgrade menu displaying incorrect upgrades
+- Fixed auto-build upgrade menu "Select upgrades..." label having random colors
+- Fixed fullscreen notifications displaying scrollbar when it's not required
+- Fixed lightning transitions breaking the skybox when playtesting a level
+- Fixed lightning transitions rotating directional light weirdly
+- Fixed energy bar looking weird when playtesting a level
+- Fixed mod translation bugs

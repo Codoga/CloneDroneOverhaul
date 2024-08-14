@@ -32,11 +32,17 @@ namespace OverhaulMod.UI
         [UIElement("FavoriteIndicator")]
         private readonly GameObject m_favoriteIndicator;
 
+        [UIElement("VerifiedIndicator")]
+        private readonly GameObject m_wasVerifiedIndicator;
+
+        [UIElement("UpdatedIndicator")]
+        private readonly GameObject m_wasUpdatedIndicator;
+
         private Button m_button;
 
         private Image m_bg;
 
-        private UIPersonalizationItemsBrowser m_browser;
+        private UIPersonalizationItemBrowser m_browser;
 
         private RectTransform m_rectTransform;
 
@@ -53,7 +59,7 @@ namespace OverhaulMod.UI
             m_button = base.GetComponent<Button>();
             m_button.onClick.AddListener(onClicked);
 
-            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED, RefreshDisplays);
+            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
             RefreshDisplays();
 
             m_timeForDoubleClick = -1f;
@@ -76,12 +82,12 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
-            GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED, RefreshDisplays);
+            GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
         }
 
         public bool IsDoubleClicked() => m_timeForDoubleClick != -1f && Time.unscaledTime < m_timeForDoubleClick;
 
-        public void SetBrowserUI(UIPersonalizationItemsBrowser itemsBrowser)
+        public void SetBrowserUI(UIPersonalizationItemBrowser itemsBrowser)
         {
             m_browser = itemsBrowser;
         }
@@ -94,6 +100,8 @@ namespace OverhaulMod.UI
 
             PersonalizationUserInfo personalizationUserInfo = PersonalizationManager.Instance.userInfo;
 
+            bool wasUpdated = personalizationUserInfo.GetItemVersion(itemInfo) != itemInfo.Version;
+            bool wasVerified = personalizationUserInfo.IsItemUnverified(itemInfo) && itemInfo.IsVerified;
             bool isDiscovered = personalizationUserInfo.IsItemDiscovered(itemInfo);
             bool isFavorite = personalizationUserInfo.IsItemFavorite(itemInfo);
             bool equipped = itemInfo.IsEquipped();
@@ -105,7 +113,9 @@ namespace OverhaulMod.UI
             m_nameBg.color = nameBgColor;
             m_frame.color = nameBgColor;
             m_favoriteIndicator.SetActive(isFavorite);
-            m_newIndicator.SetActive(!isDiscovered);
+            m_newIndicator.SetActive(!isDiscovered && !wasVerified && !wasUpdated);
+            m_wasVerifiedIndicator.SetActive(wasVerified);
+            m_wasUpdatedIndicator.SetActive(wasUpdated && !wasVerified && isDiscovered);
         }
 
         private void onClicked()
@@ -114,15 +124,39 @@ namespace OverhaulMod.UI
             if (itemInfo == null || !itemInfo.IsUnlocked())
                 return;
 
-            PersonalizationUserInfo userInfo = PersonalizationManager.Instance.userInfo;
+            updateItemUserInfo();
+
+            PersonalizationManager.Instance.EquipItem(itemInfo);
+            m_browser.MakeDefaultSkinButtonInteractable();
+        }
+
+        private void updateItemUserInfo()
+        {
+            PersonalizationItemInfo itemInfo = ItemInfo;
+            if (itemInfo == null)
+                return;
+
+            PersonalizationUserInfo userInfo = PersonalizationManager.Instance?.userInfo;
+            if (userInfo == null)
+                return;
+
             if (!userInfo.IsItemDiscovered(itemInfo))
             {
                 userInfo.SetIsItemDiscovered(itemInfo);
                 m_newIndicator.SetActive(false);
             }
 
-            PersonalizationManager.Instance.EquipItem(itemInfo);
-            m_browser.MakeDefaultSkinButtonInteractable();
+            if (userInfo.IsItemUnverified(itemInfo) && itemInfo.IsVerified)
+            {
+                userInfo.SetIsItemUnverified(itemInfo, false);
+                m_wasVerifiedIndicator.SetActive(false);
+            }
+
+            if (userInfo.GetItemVersion(itemInfo) != itemInfo.Version)
+            {
+                userInfo.SetItemVersion(itemInfo, itemInfo.Version);
+                m_wasUpdatedIndicator.SetActive(false);
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -133,12 +167,7 @@ namespace OverhaulMod.UI
 
             if (!itemInfo.IsUnlocked())
             {
-                PersonalizationUserInfo userInfo = PersonalizationManager.Instance.userInfo;
-                if (!userInfo.IsItemDiscovered(itemInfo))
-                {
-                    userInfo.SetIsItemDiscovered(itemInfo);
-                    m_newIndicator.SetActive(false);
-                }
+                updateItemUserInfo();
             }
 
             m_browser.ShowDescriptionBox(itemInfo, m_rectTransform);

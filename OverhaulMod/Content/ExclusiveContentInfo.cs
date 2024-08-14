@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using OverhaulMod.Utils;
+using Steamworks;
 
 namespace OverhaulMod.Content
 {
@@ -29,7 +30,7 @@ namespace OverhaulMod.Content
 
         public bool HasPlayFabID()
         {
-            return !string.IsNullOrEmpty(PlayFabID);
+            return !PlayFabID.IsNullOrEmpty();
         }
 
         public bool IsAvailable()

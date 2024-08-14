@@ -6,8 +6,8 @@ namespace OverhaulMod.Patches
     internal static class EndlessResultScreen_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("Show")]
-        private static bool showShowLoss_Prefix(EndlessResultScreen __instance)
+        [HarmonyPatch(nameof(EndlessResultScreen.Show))]
+        private static bool Show_Prefix(EndlessResultScreen __instance)
         {
             //ModUIConstants.ShowEndlessGameLossWindow();
             return true;

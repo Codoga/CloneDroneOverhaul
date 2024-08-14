@@ -1,0 +1,16 @@
+New skins:
+ - Forgotten Technology
+ - Overhaul Prototype (From ver. 0.1)
+ - Jet Sam
+ - Yamato
+And some more! (There're also some exclusive skins got added into the mod)
+Note: Players with older Overhaul versions are not able to see new skins added to the mod
+
+Player status labels:
+This feature is not finished yet, it only alerts other players about your skin selection
+
+- Notification system has been re-added to the mod. Now you'll get notified about you using unsupported Clone drone version
+- Overhaul is now compatible with Glock-18 Mod. You'll get this message shown below in singleplayer when you try to equip bow skin 
+- Added "Enable Zoom" setting for pause menu
+- Fixed some bugs
+- Fixed boomerang causing crashes

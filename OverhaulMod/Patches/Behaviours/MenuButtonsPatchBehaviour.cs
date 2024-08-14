@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches.Behaviours
                 SettingsMenu settingsMenu = gameUIRoot.SettingsMenu;
                 if (settingsMenu)
                 {
-                    GameObject buttonObject = Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.UI, "NewUIButtonPrefab"), settingsMenu.RootContainer.transform);
+                    GameObject buttonObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "NewUIButtonPrefab"), settingsMenu.RootContainer.transform);
                     buttonObject.SetActive(true);
                     RectTransform buttonTransform = buttonObject.transform as RectTransform;
                     buttonTransform.localEulerAngles = Vector3.zero;
@@ -30,7 +30,7 @@ namespace OverhaulMod.Patches.Behaviours
                         settingsMenu.Hide();
                         ModActionUtils.DoInFrame(delegate
                         {
-                            ModUIConstants.ShowSettingsMenuRework(false);
+                            _ = ModUIConstants.ShowSettingsMenuRework(false);
                         });
                     });
                 }

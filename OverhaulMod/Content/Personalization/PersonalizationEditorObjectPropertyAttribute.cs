@@ -2,7 +2,7 @@
 
 namespace OverhaulMod.Content.Personalization
 {
-    [AttributeUsage(AttributeTargets.Property, false, false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class PersonalizationEditorObjectPropertyAttribute : Attribute
     {
         public bool IsFileLocation;

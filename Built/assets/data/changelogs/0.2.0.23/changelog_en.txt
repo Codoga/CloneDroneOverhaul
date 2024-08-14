@@ -1,0 +1,4 @@
+Main changes:
+- Reworked dithering effect
+- Updated image effects refresh behaviour
+- Tweaked lifetime for some particles

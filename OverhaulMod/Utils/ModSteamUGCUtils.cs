@@ -307,7 +307,7 @@ namespace OverhaulMod.Utils
                         Name = ugcDetails.m_rgchTitle,
                         Description = ugcDetails.m_rgchDescription,
                         Author = authorName,
-                        Tags = string.IsNullOrEmpty(ugcDetails.m_rgchTags) ? null : ugcDetails.m_rgchTags.Split(','),
+                        Tags = ugcDetails.m_rgchTags.IsNullOrEmpty() ? null : ugcDetails.m_rgchTags.Split(','),
                         ItemID = itemId,
                         AuthorID = itemAuthor,
                         Votes = (int)(ugcDetails.m_unVotesUp + ugcDetails.m_unVotesDown),
@@ -472,7 +472,7 @@ namespace OverhaulMod.Utils
                     foreach (string tag in m_requiredTags)
                         _ = SteamUGC.AddRequiredTag(queryHandle, tag);
 
-                if (!string.IsNullOrEmpty(m_searchText))
+                if (!m_searchText.IsNullOrEmpty())
                     _ = SteamUGC.SetSearchText(queryHandle, m_searchText);
 
                 if (m_enableCaching)

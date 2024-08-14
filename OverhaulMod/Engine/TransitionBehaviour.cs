@@ -15,6 +15,8 @@ namespace OverhaulMod.Engine
 
         private float m_timeToFade;
 
+        private bool m_destroyed;
+
         public bool fadeOut
         {
             get;
@@ -53,6 +55,17 @@ namespace OverhaulMod.Engine
 
         public override void Update()
         {
+            if (m_destroyed)
+                return;
+
+            ErrorManager errorManager = ErrorManager.Instance;
+            if (errorManager && errorManager.HasCrashed())
+            {
+                m_destroyed = true;
+                Destroy(base.gameObject);
+                return;
+            }
+
             bool fo = fadeOut;
             if (fo && m_timeToFade > Time.unscaledTime)
                 return;

@@ -168,6 +168,8 @@ namespace OverhaulMod.UI
         [UIElement("UpdatesButton", typeof(UIElementTitleScreenButtonWithWarn))]
         public UIElementTitleScreenButtonWithWarn UpdatesButtonWarnController;
 
+        public override bool closeOnEscapeButtonPress => false;
+
         private TitleScreenUI m_titleScreenUI;
         private CanvasGroup m_canvasGroup;
         private GameObject m_legacyContainer;
@@ -323,7 +325,7 @@ namespace OverhaulMod.UI
 
         public void OnPlayExpMultiPlayerButtonClicked()
         {
-            ModUIConstants.ShowMultiplayerGameModeSelectScreen();
+            _ = ModUIConstants.ShowMultiplayerGameModeSelectScreen();
         }
 
         public void OnModBotLogInButtonClicked()
@@ -348,22 +350,22 @@ namespace OverhaulMod.UI
 
         public void OnNewsButtonClicked()
         {
-            ModUIConstants.ShowNewsPanel();
+            _ = ModUIConstants.ShowNewsPanel();
         }
 
         public void OnFeedbackButtonClicked()
         {
-            ModUIConstants.ShowFeedbackUIRework(false);
+            _ = ModUIConstants.ShowFeedbackUIRework(false);
         }
 
         public void OnHubButtonClicked()
         {
-            ModUIConstants.ShowCommunityHub();
+            _ = ModUIConstants.ShowCommunityHub();
         }
 
         public void OnLevelDescriptionsEditorButtonClicked()
         {
-            ModUIConstants.ShowLevelDescriptionListEditor();
+            _ = ModUIConstants.ShowLevelDescriptionListEditor();
         }
 
         public void OnPersonalizationEditorButtonClicked()
@@ -373,17 +375,17 @@ namespace OverhaulMod.UI
 
         public void OnLocalizationEditorButtonClicked()
         {
-            ModUIConstants.ShowLocalizationEditor();
+            _ = ModUIConstants.ShowLocalizationEditor();
         }
 
         public void OnExcContentMenuButtonClicked()
         {
-            ModUIConstants.ShowExclusiveContentMenu();
+            _ = ModUIConstants.ShowExclusiveContentMenu();
         }
 
         public void OnContentButtonClicked()
         {
-            ModUIConstants.ShowAddonsMenu();
+            _ = ModUIConstants.ShowAddonsMenu();
         }
 
         public void OnUpdatesButtonClicked()
@@ -398,7 +400,7 @@ namespace OverhaulMod.UI
                 ModCache.titleScreenUI.OnAchievementsButtonClicked();
                 return;
             }
-            ModUIConstants.ShowAdvancementsMenuRework();
+            _ = ModUIConstants.ShowAdvancementsMenuRework();
         }
 
         public void OnWorkshopBrowserButtonClicked()
@@ -408,7 +410,7 @@ namespace OverhaulMod.UI
                 ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
                 return;
             }
-            ModUIConstants.ShowWorkshopBrowserRework();
+            _ = ModUIConstants.ShowWorkshopBrowserRework();
         }
 
         public void OnLevelEditorButtonClicked()
@@ -431,12 +433,12 @@ namespace OverhaulMod.UI
                 ModCache.titleScreenUI.OnOptionsButtonClicked();
                 return;
             }
-            ModUIConstants.ShowSettingsMenuRework(false);
+            _ = ModUIConstants.ShowSettingsMenuRework(false);
         }
 
         public void OnCreditsButtonClicked()
         {
-            ModUIConstants.ShowInformationSelectMenu();
+            _ = ModUIConstants.ShowInformationSelectMenu();
         }
 
         public void OnExitButtonClicked()
@@ -446,17 +448,17 @@ namespace OverhaulMod.UI
                 Application.Quit();
                 return;
             }
-            ModUIConstants.ShowFeedbackUIRework(true);
+            _ = ModUIConstants.ShowFeedbackUIRework(true);
         }
 
         public void OnCustomizeButtonClicked()
         {
-            ModUIConstants.ShowTitleScreenCustomizationPanel(base.transform);
+            _ = ModUIConstants.ShowTitleScreenCustomizationPanel(base.transform);
         }
 
         public void OnSetupButtonClicked()
         {
-            ModUIConstants.ShowSettingsMenuRework(true);
+            _ = ModUIConstants.ShowSettingsMenuRework(true);
         }
 
         public void OnOldUIButtonClicked()
@@ -488,12 +490,12 @@ namespace OverhaulMod.UI
 
         public void OnBehindTheScenesButtonClicked()
         {
-            ModUIConstants.ShowDevelopmentGallery(base.transform);
+            _ = ModUIConstants.ShowDevelopmentGallery(base.transform);
         }
 
         public void OnDiscordServerButtonClicked()
         {
-            ModUIConstants.ShowDiscordServerMenu(base.transform);
+            _ = ModUIConstants.ShowDiscordServerMenu(base.transform);
             /*
             ModUIUtils.MessagePopup(true, "Join \"Modded Multiplayer\" Discord server?", null, 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {

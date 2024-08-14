@@ -11,6 +11,8 @@ namespace OverhaulMod.UI
 
         public override bool enableCursor => true;
 
+        public override bool closeOnEscapeButtonPress => false;
+
         [UIElement("StackTrace")]
         private readonly Text m_stackTraceText;
 

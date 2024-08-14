@@ -1,4 +1,6 @@
 ﻿using OverhaulMod.Utils;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,6 +67,16 @@ namespace OverhaulMod.UI
         [UIElement("Panel")]
         private readonly GameObject m_panelObject;
 
+        [UIElement("GarbageBotSkinDropdown")]
+        private readonly GameObject m_garbageBotSkinDropdownObject;
+
+        [UIElementAction(nameof(OnGarbageBotSkinDropdownValueChanged))]
+        [UIElement("GarbageBotSkinDropdown")]
+        private readonly Dropdown m_garbageBotSkinDropdown;
+
+        [UIElement("GarbageBotSkinDropdownOverlay")]
+        private readonly GameObject m_garbageBotSkinDropdownOverlayObject;
+
         public override bool refreshOnlyCursor => true;
 
         public GameMode displayingGameMode
@@ -85,6 +97,37 @@ namespace OverhaulMod.UI
             ModCache.titleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(true);
         }
 
+        private IEnumerator waitThenRefreshGarbageBotSkinDropdownCoroutine()
+        {
+            m_garbageBotSkinDropdown.interactable = false;
+            m_garbageBotSkinDropdownOverlayObject.SetActive(true);
+            while (!ModIntegrationUtils.SelectGarbageBotSkin.HasLocalPlayerStats())
+            {
+                yield return null;
+            }
+            m_garbageBotSkinDropdown.interactable = true;
+            m_garbageBotSkinDropdownOverlayObject.SetActive(false);
+            refreshGarbageBotSkinDropdown();
+            yield break;
+        }
+
+        private void refreshGarbageBotSkinDropdown()
+        {
+            List<Dropdown.OptionData> garbageBotSkinOptions = ModIntegrationUtils.SelectGarbageBotSkin.GetGarbageBotSkinOptions();
+            m_garbageBotSkinDropdown.options = garbageBotSkinOptions;
+            int selectedGarbageBotSkinIndex = ModIntegrationUtils.SelectGarbageBotSkin.selectedGarbageBotSkinIndex;
+            int value = 0;
+            for (int i = 0; i < garbageBotSkinOptions.Count; i++)
+            {
+                if ((garbageBotSkinOptions[i] as DropdownIntOptionData).IntValue == selectedGarbageBotSkinIndex)
+                {
+                    value = i;
+                    break;
+                }
+            }
+            m_garbageBotSkinDropdown.value = value;
+        }
+
         public void Populate(GameMode gameMode)
         {
             displayingGameMode = gameMode;
@@ -97,6 +140,11 @@ namespace OverhaulMod.UI
             m_joinBoxObject.SetActive(false);
             m_codeField.text = string.Empty;
             m_playPublicMatchButton.gameObject.SetActive(gameMode != GameMode.MultiplayerDuel || ModSpecialUtils.IsModEnabled("3cfnb387n78eg"));
+            m_garbageBotSkinDropdown.gameObject.SetActive(gameMode == GameMode.BattleRoyale && ModIntegrationUtils.SelectGarbageBotSkin.IsModAvailable());
+            if (m_garbageBotSkinDropdownObject.activeSelf)
+            {
+                _ = base.StartCoroutine(waitThenRefreshGarbageBotSkinDropdownCoroutine());
+            }
 
             switch (gameMode)
             {
@@ -187,12 +235,17 @@ namespace OverhaulMod.UI
             });
         }
 
+        public void OnGarbageBotSkinDropdownValueChanged(int value)
+        {
+            ModIntegrationUtils.SelectGarbageBotSkin.selectedGarbageBotSkinIndex = (m_garbageBotSkinDropdown.options[value] as DropdownIntOptionData).IntValue;
+        }
+
         public void OnPlayButtonClicked()
         {
             if (displayingGameMode == GameMode.CoopChallenge)
             {
                 Hide();
-                ModUIConstants.ShowChallengesMenuRework(true, false);
+                _ = ModUIConstants.ShowChallengesMenuRework(true, false);
                 return;
             }
 
@@ -225,7 +278,7 @@ namespace OverhaulMod.UI
             if (displayingGameMode == GameMode.CoopChallenge)
             {
                 Hide();
-                ModUIConstants.ShowChallengesMenuRework(true, true);
+                _ = ModUIConstants.ShowChallengesMenuRework(true, true);
                 return;
             }
 
@@ -278,7 +331,7 @@ namespace OverhaulMod.UI
 
         public void OnRulesButtonClicked()
         {
-            Application.OpenURL("https://clonedroneinthedangerzone.com/lbsrules");
+            Application.OpenURL("https://support.doborog.com/l/en/clone-drone/last-bot-standing");
         }
     }
 }

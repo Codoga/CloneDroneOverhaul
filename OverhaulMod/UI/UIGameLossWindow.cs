@@ -20,6 +20,7 @@ namespace OverhaulMod.UI
         private readonly Button m_mainMenuButton;
 
         public override bool enableCursor => true;
+        public override bool closeOnEscapeButtonPress => false;
 
         protected override void OnInitialized()
         {

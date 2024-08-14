@@ -17,6 +17,8 @@ namespace OverhaulMod.UI
         [UIElement("ProgressFill")]
         private readonly Image m_achievementProgressBarFill;
 
+        public override bool closeOnEscapeButtonPress => false;
+
         public float ShowUntil;
 
         public bool shouldBeVisible

@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Utils;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace OverhaulMod.Engine
             new Tuple<UpgradeType, int>(UpgradeType.SpearUnlock, 1),
             new Tuple<UpgradeType, int>(UpgradeType.BowUnlock, 1),
             new Tuple<UpgradeType, int>(UpgradeType.Armor, 0),
+            new Tuple<UpgradeType, int>(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, 1),
         };
 
         public static bool IsUnrevertableUpgrade(UpgradeType type, int level)
@@ -47,7 +49,7 @@ namespace OverhaulMod.Engine
                 RectTransform centerHolderTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "CenterHolder") as RectTransform;
                 RectTransform iconContainerTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "IconContainer") as RectTransform;
 
-                RectTransform spawnedButton = Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.UI, "RevertUpgradesButtonPrefab"), centerHolderTransform).GetComponent<RectTransform>();
+                RectTransform spawnedButton = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "RevertUpgradesButtonPrefab"), centerHolderTransform).GetComponent<RectTransform>();
                 spawnedButton.anchoredPosition = new Vector2(250f, 133.5f);
                 spawnedButton.sizeDelta = Vector2.one * 50f;
                 spawnedButton.localEulerAngles = Vector3.zero;
@@ -81,11 +83,11 @@ namespace OverhaulMod.Engine
             if (upgradeMode == UpgradeModes.Upgrade)
             {
                 controller.SetText(false);
-                controller.SetSprite(ModResources.Load<Sprite>(AssetBundleConstants.UI, "RevertUpgradesButton"));
+                controller.SetSprite(ModResources.Sprite(AssetBundleConstants.UI, "RevertUpgradesButton"));
                 return;
             }
             controller.SetText(true);
-            controller.SetSprite(ModResources.Load<Sprite>(AssetBundleConstants.UI, "GetUpgradesButton"));
+            controller.SetSprite(ModResources.Sprite(AssetBundleConstants.UI, "GetUpgradesButton"));
         }
     }
 }

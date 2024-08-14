@@ -1,0 +1,39 @@
+- Added "Import .cvm" button to customization editor's import panel. You can now import weapon models made with Custom robot model editor mod
+- Added item exclusivity settings to customization editor
+- Added playtest mode to customization editor
+- Added ability to re-send the item to verification
+- Added color preview dropdown to customization editor
+- Added fire particles settings to customization editor
+- Added Garbage bot skins mod support. Added the dropdown with skins to redesigned "Last Bot Standing" menu
+- Added PlayerUseKeyTrigger improved description display
+- Added improved subtitles
+- Added suboptions to ambient occlusion option
+- Added tooltips to every tab in settings menu. They display all sections of the highlighted tab
+- Added save slots to auto-build. You can make up to 10 builds
+- Added "Search levels" button to workshop browser when browsing subscriptions or user's levels
+- Added "Reconnect" button to pause menu when playing Last bot standing
+- Added "Updated" label to recently updated customization item button in the player customization menu
+- Added "Verified" label to recently verified customization item button in the player customization menu. Only the author of the item can see this label
+- Added "Reset Overhaul settings" button to "Advanced" tab in settings menu
+- Moved user interface options to the new "Interface" tab in settings menu
+- Made changes to player customization menu & editor UI
+- Made the player customization menu select the subcategory of equipped weapon
+- Transitions now disappear if the game crashes
+- The text typed in the feedback menu is now saved
+- Reworked the system responsible for scheduled tasks in the mod
+- Reimplemented vignette and dithering effects in a better way to fix memory leaks and performance issues
+- Removed update 5 content
+
+FIXES:
+- Fixed a crash occuring when entering level editor with disabled reworked arena model
+- Fixed UI elements flickering when the mouse is on their edge
+- Fixed missing translation in some places
+- Fixed title screen menu appearing during gameplay in rare cases
+- Fixed title screen menu music not resuming after watching credits
+- Fixed Overhaul settings not saving when restarting the game via "Restart required" screen
+- Fixed some customization editor objects not spawning at 0 0 0 position when placed
+- Fixed post effects applying to the level editor camera if free camera mode is enabled with Level editor improvements mod
+- Fixed camera offset when selecting upgrades in Last bot standing and duels
+- Fixed camera FoV being limited in first person mode
+- Fixed camera Fov breaking player spawn camera animation
+- Fixed "More info" button in "Last bot standing" menu openning incorrect website if using other languages than english

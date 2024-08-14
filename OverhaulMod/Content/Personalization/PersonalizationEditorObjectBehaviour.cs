@@ -101,6 +101,9 @@ namespace OverhaulMod.Content.Personalization
             if (typeof(T) == typeof(int) && obj is long)
                 return (T)(object)Convert.ToInt32(obj);
 
+            if (typeof(T) == typeof(Color) && obj is string str)
+                return (T)(object)ModParseUtils.TryParseToColor(str, Color.white);
+
             return (T)obj;
         }
 
@@ -108,6 +111,11 @@ namespace OverhaulMod.Content.Personalization
         {
             if (PropertyValues == null)
                 PropertyValues = new Dictionary<string, object>();
+
+            if(value is Color color)
+            {
+                value = ColorUtility.ToHtmlStringRGBA(color);
+            }
 
             if (!PropertyValues.ContainsKey(name))
             {

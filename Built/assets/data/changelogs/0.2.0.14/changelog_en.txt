@@ -1,0 +1,1 @@
+- Fixed a bug with LBS UI. (Missing setting)

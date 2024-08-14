@@ -1,0 +1,2 @@
+- Fixed a crash preventing user from playing Twitch mode
+- Fixed "What's new" panel not appearing in some cases

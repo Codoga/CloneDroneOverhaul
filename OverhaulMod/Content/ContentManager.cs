@@ -1,5 +1,4 @@
-﻿using BestHTTP.SocketIO;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
@@ -87,7 +86,7 @@ namespace OverhaulMod.Content
                 {
                     string dest = Path.Combine(ModCore.addonsFolder, name);
                     if (!Directory.Exists(dest))
-                        Directory.CreateDirectory(dest);
+                        _ = Directory.CreateDirectory(dest);
 
                     FastZip fastZip = new FastZip();
                     fastZip.ExtractZip(tempPath, dest, null);

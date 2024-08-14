@@ -1,0 +1,19 @@
+Updates 4.2, 4.3 and beyond will be eventually released!
+
+- Added skins support for scythe
+- Added ability to rotate camera in customization menu
+- Added ability to use templates to create customization items
+- Added "Languages" page to redesigned settings menu (Moved languages options from "Home" tab)
+- Moved Mod-Bot options to "Advanced" tab
+- In-game file explorer no longer shows path until you click a button to reveal one
+- Slightly changed mod version label on title screen
+- A few changes to customization editor UI
+- Improved customization editor item selection menu
+- Improved customization editor item creation dialog
+- Improved customization editor item verification menu
+- Improved mod UI configuration menu
+- Improved the "What's new" menu
+- Improved file system path handling
+- Recoded the system responsible for mod asset management
+- Recoded several minor scripts
+- Fixed exclusive perks not working

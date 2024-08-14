@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class SkyBoxManager_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("RefreshSkyboxAmbientLightAndFog")]
+        [HarmonyPatch(nameof(SkyBoxManager.RefreshSkyboxAmbientLightAndFog))]
         private static void RefreshSkyboxAmbientLightAndFog_Prefix(SkyBoxManager __instance, LevelLightSettings lightSettings)
         {
             ModLevelManager modLevelManager = ModLevelManager.Instance;
@@ -17,7 +17,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("RefreshSkyboxAmbientLightAndFog")]
+        [HarmonyPatch(nameof(SkyBoxManager.RefreshSkyboxAmbientLightAndFog))]
         private static void RefreshSkyboxAmbientLightAndFog_Postfix(SkyBoxManager __instance, LevelLightSettings lightSettings)
         {
             if (GameModeManager.IsStoryChapter4())

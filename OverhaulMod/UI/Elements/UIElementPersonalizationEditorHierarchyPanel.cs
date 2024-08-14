@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,10 +55,22 @@ namespace OverhaulMod.UI
                         }
                     });
                 });
-                moddedObject.GetObject<Button>(3).onClick.AddListener(delegate
+
+                Button button = moddedObject.GetComponent<Button>();
+                button.onClick.AddListener(delegate
                 {
                     UIPersonalizationEditor.instance.PropertiesPanel.EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex));
                 });
+
+                Action action = delegate
+                {
+                    if(button)
+                        button.interactable = UIPersonalizationEditor.instance.PropertiesPanel.GetEditingObjectUniqueIndex() != obj.UniqueIndex;
+                };
+                action();
+
+                EventController eventController = moddedObject.gameObject.AddComponent<EventController>();
+                eventController.AddEventListener(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT, action);
             }
         }
 

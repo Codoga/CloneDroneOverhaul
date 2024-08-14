@@ -6,7 +6,7 @@ namespace OverhaulMod.Patches
     internal static class MetagameLevelTrigger_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("OnTriggerEnter")]
+        [HarmonyPatch(nameof(MetagameLevelTrigger.OnTriggerEnter))]
         private static bool OnTriggerEnter_Prefix()
         {
             return !GameModeManager.IsStoryChapter3();

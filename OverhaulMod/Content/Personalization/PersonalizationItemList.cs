@@ -30,12 +30,14 @@ namespace OverhaulMod.Content.Personalization
 
             if (DuplicateItems == null)
                 DuplicateItems = new List<PersonalizationItemInfo>();
-
             List<string> directories;
+
+            int userItemsStartIndex;
             try
             {
                 directories = new List<string>();
                 directories.AddRange(Directory.GetDirectories(ModCore.customizationFolder));
+                userItemsStartIndex = directories.Count;
                 directories.AddRange(Directory.GetDirectories(ModCore.customizationPersistentFolder));
             }
             catch (Exception exc)
@@ -52,102 +54,104 @@ namespace OverhaulMod.Content.Personalization
             if (directories.IsNullOrEmpty())
                 return;
 
+            int index = -1;
             foreach (string directory in directories)
             {
-                string rootDirectory = Directory.GetParent(directory).FullPath;
-                string rootDirectoryName = ModIOUtils.GetDirectoryName(rootDirectory);
+                index++;
 
-                string infoFilePath = Path.Combine(directory, PersonalizationEditorManager.ITEM_INFO_FILE);
-                string metaDataFilePath = Path.Combine(directory, PersonalizationEditorManager.ITEM_META_DATA_FILE);
-
-                bool infoFileNeedToGetUpdated = false;
-                bool metaDataFileNeedsToGetUpdated = false;
-
-                PersonalizationItemMetaData personalizationItemMetaData;
-                if (File.Exists(metaDataFilePath))
+                try
                 {
-                    try
-                    {
-                        personalizationItemMetaData = ModJsonUtils.DeserializeStream<PersonalizationItemMetaData>(metaDataFilePath);
-                    }
-                    catch (Exception exc)
-                    {
-                        if (errors.ContainsKey(directory))
-                            continue;
-
-                        errors.Add(directory, exc);
+                    PersonalizationItemInfo personalizationItemInfo = LoadItemInfo(directory);
+                    personalizationItemInfo.HideInBrowser = userItemsStartIndex != -1 && index < userItemsStartIndex && !personalizationItemInfo.IsVerified;
+                    if (getItem(personalizationItemInfo.ItemID, list) == null)
+                        list.Add(personalizationItemInfo);
+                    else
+                        DuplicateItems.Add(personalizationItemInfo);
+                }
+                catch (Exception exc)
+                {
+                    if (errors.ContainsKey(directory))
                         continue;
-                    }
-                }
-                else
-                {
-                    metaDataFileNeedsToGetUpdated = true;
-                    personalizationItemMetaData = new PersonalizationItemMetaData() // the first version of customization system (0) didn't have meta data files
-                    {
-                        CustomizationSystemVersion = 0,
-                    };
-                }
 
-                if (File.Exists(infoFilePath))
-                {
-                    try
-                    {
-                        string filesDirectory = Path.Combine(directory, "files");
-                        if (!Directory.Exists(filesDirectory))
-                            _ = Directory.CreateDirectory(filesDirectory);
-
-                        string rawData = ModIOUtils.ReadText(infoFilePath);
-                        if (personalizationItemMetaData.CustomizationSystemVersion < 1) // meta data files update, renamed OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions to OverhaulMod.Engine.WeaponVariant
-                        {
-                            metaDataFileNeedsToGetUpdated = true;
-                            infoFileNeedToGetUpdated = true;
-                            rawData = rawData.Replace("OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions", "OverhaulMod.Engine.WeaponVariant");
-                        }
-                        if (personalizationItemMetaData.CustomizationSystemVersion < 2) // removed "Is" from every value name in WeaponVariant enum
-                        {
-                            metaDataFileNeedsToGetUpdated = true;
-                            infoFileNeedToGetUpdated = true;
-                            rawData = rawData.Replace("\"IsNormal\"", "\"Normal\"");
-                            rawData = rawData.Replace("\"IsOnFire\"", "\"OnFire\"");
-                            rawData = rawData.Replace("\"IsNormalMultiplayer\"", "\"NormalMultiplayer\"");
-                            rawData = rawData.Replace("\"IsOnFireMultiplayer\"", "\"OnFireMultiplayer\"");
-                        }
-                        personalizationItemMetaData.CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion;
-
-                        PersonalizationItemInfo personalizationItemInfo = ModJsonUtils.Deserialize<PersonalizationItemInfo>(rawData);
-                        personalizationItemInfo.FolderPath = directory;
-                        personalizationItemInfo.RootFolderPath = rootDirectory;
-                        personalizationItemInfo.RootFolderName = rootDirectoryName;
-                        personalizationItemInfo.IsPersistentAsset = rootDirectoryName == ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME;
-                        personalizationItemInfo.MetaData = personalizationItemMetaData;
-                        personalizationItemInfo.FixValues();
-
-                        if (getItem(personalizationItemInfo.ItemID, list) == null)
-                            list.Add(personalizationItemInfo);
-                        else
-                            DuplicateItems.Add(personalizationItemInfo);
-
-                        if (infoFileNeedToGetUpdated)
-                        {
-                            ModIOUtils.WriteText(rawData, infoFilePath);
-                        }
-                    }
-                    catch (Exception exc)
-                    {
-                        if (errors.ContainsKey(directory))
-                            continue;
-
-                        errors.Add(directory, exc);
-                    }
-                }
-
-                if (metaDataFileNeedsToGetUpdated)
-                {
-                    ModJsonUtils.WriteStream(metaDataFilePath, personalizationItemMetaData);
+                    errors.Add(directory, exc);
                 }
             }
 
             PersonalizationCacheManager.Instance.CacheFiles(list);
+        }
+
+        public PersonalizationItemInfo LoadItemInfo(string directory)
+        {
+            string rootDirectory = Directory.GetParent(directory).FullName;
+            string rootDirectoryName = ModIOUtils.GetDirectoryName(rootDirectory);
+
+            string infoFilePath = Path.Combine(directory, PersonalizationEditorManager.ITEM_INFO_FILE);
+            string metaDataFilePath = Path.Combine(directory, PersonalizationEditorManager.ITEM_META_DATA_FILE);
+
+            bool updateInfoFile = false;
+            bool updateMetaDataFile = false;
+
+            PersonalizationItemMetaData personalizationItemMetaData;
+            if (File.Exists(metaDataFilePath))
+            {
+                personalizationItemMetaData = ModJsonUtils.DeserializeStream<PersonalizationItemMetaData>(metaDataFilePath);
+            }
+            else
+            {
+                updateMetaDataFile = true;
+                personalizationItemMetaData = new PersonalizationItemMetaData() // the first version of customization system (0) didn't have meta data files
+                {
+                    CustomizationSystemVersion = 0,
+                };
+            }
+
+            PersonalizationItemInfo personalizationItemInfo;
+            if (File.Exists(infoFilePath))
+            {
+                string filesDirectory = Path.Combine(directory, "files");
+                if (!Directory.Exists(filesDirectory))
+                    _ = Directory.CreateDirectory(filesDirectory);
+
+                string rawData = ModIOUtils.ReadText(infoFilePath);
+                if (personalizationItemMetaData.CustomizationSystemVersion < 1) // meta data files update, renamed OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions to OverhaulMod.Engine.WeaponVariant
+                {
+                    updateMetaDataFile = true;
+                    updateInfoFile = true;
+
+                    rawData = rawData.Replace("OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions", "OverhaulMod.Engine.WeaponVariant");
+                }
+                if (personalizationItemMetaData.CustomizationSystemVersion < 2) // removed "Is" from every value name in WeaponVariant enum
+                {
+                    updateMetaDataFile = true;
+                    updateInfoFile = true;
+
+                    rawData = rawData.Replace("\"IsNormal\"", "\"Normal\"");
+                    rawData = rawData.Replace("\"IsOnFire\"", "\"OnFire\"");
+                    rawData = rawData.Replace("\"IsNormalMultiplayer\"", "\"NormalMultiplayer\"");
+                    rawData = rawData.Replace("\"IsOnFireMultiplayer\"", "\"OnFireMultiplayer\"");
+                }
+                personalizationItemMetaData.CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion;
+
+                personalizationItemInfo = ModJsonUtils.Deserialize<PersonalizationItemInfo>(rawData);
+                personalizationItemInfo.FolderPath = directory;
+                personalizationItemInfo.RootFolderPath = rootDirectory;
+                personalizationItemInfo.RootFolderName = rootDirectoryName;
+                personalizationItemInfo.IsPersistentAsset = rootDirectoryName == ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME;
+                personalizationItemInfo.MetaData = personalizationItemMetaData;
+                personalizationItemInfo.FixValues();
+
+                if (updateInfoFile)
+                    ModIOUtils.WriteText(rawData, infoFilePath);
+            }
+            else
+            {
+                personalizationItemInfo = null;
+            }
+
+            if (updateMetaDataFile)
+                ModJsonUtils.WriteStream(metaDataFilePath, personalizationItemMetaData);
+
+            return personalizationItemInfo;
         }
 
         private PersonalizationItemInfo getItem(string id, List<PersonalizationItemInfo> list)

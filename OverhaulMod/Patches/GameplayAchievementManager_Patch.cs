@@ -7,7 +7,7 @@ namespace OverhaulMod.Patches
     internal static class GameplayAchievementManager_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("SetAchievementProgress")]
+        [HarmonyPatch(nameof(GameplayAchievementManager.SetAchievementProgress))]
         private static void SetAchievementProgress_Postfix(GameplayAchievement achievement, int progress, bool silentCompletion = false)
         {
             if (!GameModeManager.SupportsAchievementTracking())
@@ -15,7 +15,7 @@ namespace OverhaulMod.Patches
 
             if (achievement && !silentCompletion)
             {
-                ModUIConstants.ShowAdvancementProgress(achievement);
+                _ = ModUIConstants.ShowAdvancementProgress(achievement);
             }
         }
     }

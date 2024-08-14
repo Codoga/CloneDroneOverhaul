@@ -1,0 +1,6 @@
+Changed:
+- Mod data saving. It is still in WIP
+- Particle updates (again)
+- Better hide UI
+- Replaced "UISprite" with new, pixeled sprite
+- New mod image (Not final)

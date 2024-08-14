@@ -1,0 +1,14 @@
+Weapon skins are here!
+Now you can customize your weapons to differ from other humans. There are over 6 skins available for each weapon! Skins are fully supported in multiplayer.
+To get to the skins selection menu, pause the game, click on `Personalization`, then click on `Skins`.
+
+- Now you can interact with new pause menu seen in previous technical demo.
+- **Amplify occlusion is back!** The beautiful graphics has returned to the mod. You're now able to make cool screenshots!
+- Overlays were added to make some scenes in the story mode more cinematic. More overlays are coming in future builds
+- Changed loading screen
+- The game won't crash anymore when any exception occurs in the code, instead, an error message will appear
+- Some robots now make different sounds when walking
+- Fixed bugs related with new mechanics
+- Fixed some boomerang issues
+- Chromatic Aberration is no longer turned on by default
+- New arena decorations were temporary removed

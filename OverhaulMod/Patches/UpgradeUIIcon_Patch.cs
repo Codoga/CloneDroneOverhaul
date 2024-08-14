@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
@@ -11,7 +10,7 @@ namespace OverhaulMod.Patches
     internal static class UpgradeUIIcon_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("OnClickToUpgradeAbility")]
+        [HarmonyPatch(nameof(UpgradeUIIcon.OnClickToUpgradeAbility))]
         private static bool OnClickToUpgradeAbility_Prefix(UpgradeUIIcon __instance, ref bool __result, bool isRandomSelectionInput)
         {
             if (isRandomSelectionInput)
@@ -25,7 +24,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("refreshDisplay")]
+        [HarmonyPatch(nameof(UpgradeUIIcon.refreshDisplay))]
         private static void refreshDisplay_Postfix(UpgradeUIIcon __instance)
         {
             CanvasGroup canvasGroup = __instance.GetComponent<CanvasGroup>();
@@ -44,16 +43,14 @@ namespace OverhaulMod.Patches
                     Image image = content.GetComponent<Image>();
                     if (image)
                     {
-                        image.sprite = ModResources.Load<Sprite>(AssetBundleConstants.UI, "NA-HQ-128x128");
+                        image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "NA-HQ-128x128");
                     }
                 }
-
-                content.sizeDelta = ModUpgradesManager.Instance.GetOverrideSizeDeltaForUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level);
             }
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("Awake")]
+        [HarmonyPatch(nameof(UpgradeUIIcon.Awake))]
         private static void Awake_Postfix(UpgradeUIIcon __instance)
         {
             Transform selectableFrame = __instance.transform.FindChildRecursive("SelectableFrame");

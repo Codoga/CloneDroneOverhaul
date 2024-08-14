@@ -122,7 +122,7 @@ namespace OverhaulMod.UI
 
             originalFavoriteColors.Clear();
             foreach (KeyValuePair<string, FavoriteColorSettings> kv in favoriteColors)
-                originalFavoriteColors.Add(kv.Key, (FavoriteColorSettings)kv.Value.MemberwiseClone());
+                originalFavoriteColors.Add(kv.Key, kv.Value.Clone());
 
             onColorChangedCallback(null);
             populate(originalColors, originalFavoriteColors);

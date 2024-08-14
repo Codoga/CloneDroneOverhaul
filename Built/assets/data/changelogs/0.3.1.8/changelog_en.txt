@@ -1,0 +1,6 @@
+- Updated arrow model
+- Updated player data synchronization system
+- Minor level editor inspector changes
+- Removed "Outfits" button from the shortcuts category in settings menu
+- Fixed title screen message panel appearing blank
+- Fixed "Browse workshop" button being interactable if Steam is not initialized

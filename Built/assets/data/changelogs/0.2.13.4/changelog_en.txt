@@ -1,0 +1,2 @@
+- Minor UI fixes
+- Fixed several crashes

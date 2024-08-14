@@ -1,4 +1,6 @@
-﻿using OverhaulMod.Content.Personalization;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,11 +15,38 @@ namespace OverhaulMod.UI
         [UIElement("DescriptionField")]
         private readonly InputField m_descriptionField;
 
-        [UIElement("EditorIdField")]
+        [UIElement("NewEditorIdField")]
         private readonly InputField m_editorIdField;
 
-        [UIElement("ItemIdField")]
+        [UIElement("NewItemIdField")]
         private readonly InputField m_itemIdField;
+
+        [UIElement("VersionField")]
+        private readonly InputField m_versionField;
+
+        [UIElement("VerifiedToggle")]
+        private readonly Toggle m_verifiedToggle;
+
+        [UIElement("SentToVerificationToggle")]
+        private readonly Toggle m_sentToVerificationToggle;
+
+        [UIElement("ReuploadedToggle")]
+        private readonly Toggle m_reuploadedToggle;
+
+        [UIElement("ExportedFileNameText")]
+        private readonly Text m_exportedFileNameText;
+
+        [UIElementAction(nameof(OnExportButtonClicked))]
+        [UIElement("ExportButton")]
+        private readonly Button m_exportButton;
+
+        [UIElementAction(nameof(OnSavesFolderButtonClicked))]
+        [UIElement("SavesFolderButton")]
+        private readonly Button m_savesFolderButton;
+
+        [UIElementAction(nameof(OnRevealEditorIDButtonClicked))]
+        [UIElement("RevealEditorIDButton")]
+        private readonly Button m_revealEditorIDButton;
 
         [UIElement("TypeDropdown")]
         private readonly Dropdown m_typeDropdown;
@@ -79,6 +108,8 @@ namespace OverhaulMod.UI
             weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Spear));
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ShieldSkins))
                 weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Shield));
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ScytheSkins))
+                weaponList.Add(new DropdownWeaponTypeOptionData(ModWeaponsManager.SCYTHE_TYPE));
             m_weaponDropdown.RefreshShownValue();
 
             List<Dropdown.OptionData> overrideParentList = m_overrideParentDropdown.options;
@@ -123,12 +154,10 @@ namespace OverhaulMod.UI
             personalizationItemInfo.FixValues();
             m_nameField.text = personalizationItemInfo.Name;
             m_descriptionField.text = personalizationItemInfo.Description;
-            m_editorIdField.text = personalizationItemInfo.EditorID;
             m_authorField.referenceList = personalizationItemInfo.Authors;
             m_exclusiveForField.referenceList = personalizationItemInfo.ExclusiveFor_V2;
             m_typeDropdown.value = (int)personalizationItemInfo.Category - 1;
             m_verifyButton.interactable = !personalizationItemInfo.IsVerified;
-            m_itemIdField.text = personalizationItemInfo.ItemID;
             m_hierarchyPanel.itemInfo = personalizationItemInfo;
             m_filesPanel.itemInfo = personalizationItemInfo;
             m_hideBowStrings.isOn = personalizationItemInfo.HideBowStrings;
@@ -136,6 +165,17 @@ namespace OverhaulMod.UI
             m_overrideParentDropdown.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
             m_bowStringsWidth.value = personalizationItemInfo.BowStringsWidth;
             m_bowStringsWidth.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
+
+            m_editorIdField.text = personalizationItemInfo.EditorID;
+            m_itemIdField.text = personalizationItemInfo.ItemID;
+            m_versionField.text = personalizationItemInfo.Version.ToString();
+            m_sentToVerificationToggle.isOn = personalizationItemInfo.IsSentForVerification;
+            m_verifiedToggle.isOn = personalizationItemInfo.IsVerified;
+            m_reuploadedToggle.isOn = personalizationItemInfo.ReuploadedTheItem;
+            m_exportedFileNameText.text = $"Will be exported as:\n{getExportedItemFileName()}";
+
+            m_editorIdField.interactable = false;
+            m_revealEditorIDButton.gameObject.SetActive(true);
 
             for (int i = 0; i < m_weaponDropdown.options.Count; i++)
             {
@@ -165,13 +205,13 @@ namespace OverhaulMod.UI
                 }
             }
 
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             firstPersonMover.SetEquippedWeaponType(personalizationItemInfo.Weapon, false);
 
             m_disallowCallbacks = false;
         }
 
-        public void ApplyValues()
+        public void ApplyValues(bool ignoreDevPanel = false)
         {
             PersonalizationItemInfo personalizationItemInfo = itemInfo;
             if (personalizationItemInfo == null)
@@ -182,12 +222,36 @@ namespace OverhaulMod.UI
             personalizationItemInfo.Description = m_descriptionField.text;
             personalizationItemInfo.EditorID = m_editorIdField.text;
             personalizationItemInfo.Category = (PersonalizationCategory)(m_typeDropdown.value + 1);
-            personalizationItemInfo.IsVerified = !m_verifyButton.interactable;
-            if (personalizationItemInfo.IsVerified && PersonalizationEditorManager.Instance.canVerifyItems)
-                personalizationItemInfo.IsSentForVerification = false;
-
             personalizationItemInfo.ItemID = m_itemIdField.text;
             personalizationItemInfo.BodyPartName = m_bodyPartDropdown.options[m_bodyPartDropdown.value].text;
+
+            if (PersonalizationEditorManager.Instance.canVerifyItems && !ignoreDevPanel)
+            {
+                personalizationItemInfo.IsVerified = m_verifiedToggle.isOn;
+                if (personalizationItemInfo.IsVerified)
+                {
+                    personalizationItemInfo.IsSentForVerification = false;
+                    personalizationItemInfo.ReuploadedTheItem = false;
+                    m_sentToVerificationToggle.isOn = false;
+                    m_reuploadedToggle.isOn = false;
+                }
+
+                int prevVersion = personalizationItemInfo.Version;
+                if (!int.TryParse(m_versionField.text, out int version))
+                    version = prevVersion;
+
+                personalizationItemInfo.Version = version;
+            }
+        }
+
+        public void RefreshHierarchyPanel()
+        {
+            m_hierarchyPanel.Populate();
+        }
+
+        private string getExportedItemFileName()
+        {
+            return $"{ModIOUtils.GetDirectoryName(itemInfo.FolderPath)}.zip";
         }
 
         public void OnEditedWeaponTypeDropdown(int value)
@@ -202,8 +266,9 @@ namespace OverhaulMod.UI
             WeaponType weaponType = (m_weaponDropdown.options[value] as DropdownWeaponTypeOptionData).Weapon;
             personalizationItemInfo.Weapon = weaponType;
 
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
-            firstPersonMover.SetEquippedWeaponType(weaponType, false);
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
+            if (firstPersonMover)
+                firstPersonMover.SetEquippedWeaponType(weaponType, false);
 
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();
@@ -283,6 +348,30 @@ namespace OverhaulMod.UI
         public void OnVerifyButtonClicked()
         {
             m_verifyButton.interactable = false;
+        }
+
+        public void OnExportButtonClicked()
+        {
+            if (PersonalizationEditorManager.Instance.SaveItem(out string error))
+            {
+                PersonalizationEditorManager.Instance.ExportItem(PersonalizationEditorManager.Instance.currentEditingItemInfo, out _, ModCore.savesFolder, getExportedItemFileName());
+                ModUIUtils.MessagePopupOK("Exported the item", "for real", false);
+            }
+            else
+            {
+                ModUIUtils.MessagePopupOK("Error", error, true);
+            }
+        }
+
+        public void OnSavesFolderButtonClicked()
+        {
+            ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+        }
+
+        public void OnRevealEditorIDButtonClicked()
+        {
+            m_editorIdField.interactable = true;
+            m_revealEditorIDButton.gameObject.SetActive(false);
         }
     }
 }

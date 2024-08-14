@@ -72,6 +72,14 @@ namespace OverhaulMod.UI
             }
         }
 
+        public virtual bool closeOnEscapeButtonPress
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public void InitializeUI()
         {
             List<(FieldInfo, TabManagerAttribute)> tabManagers = new List<(FieldInfo, TabManagerAttribute)>();
@@ -106,7 +114,7 @@ namespace OverhaulMod.UI
                         if (!gameObject)
                         {
                             if (!ignoreIfElementIsMissing)
-                                Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                                ModDebug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})", true);
 
                             continue;
                         }
@@ -124,7 +132,7 @@ namespace OverhaulMod.UI
                         if (!gameObject)
                         {
                             if (!ignoreIfElementIsMissing)
-                                Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                                ModDebug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})", true);
 
                             continue;
                         }
@@ -140,7 +148,7 @@ namespace OverhaulMod.UI
                         if (!gameObject)
                         {
                             if (!ignoreIfElementIsMissing)
-                                Debug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                                ModDebug.LogError($"{localType}: Could not find GameObject \"{elementAttribute.Name}\" ({elementAttribute.Index})", true);
 
                             continue;
                         }
@@ -158,7 +166,7 @@ namespace OverhaulMod.UI
                         if (!unityObject)
                         {
                             if (!ignoreIfElementIsMissing)
-                                Debug.LogError($"{localType}: Could not find object \"{elementAttribute.Name}\" ({elementAttribute.Index})");
+                                ModDebug.LogError($"{localType}: Could not find object \"{elementAttribute.Name}\" ({elementAttribute.Index})", true);
 
                             continue;
                         }
@@ -389,6 +397,8 @@ namespace OverhaulMod.UI
             base.gameObject.SetActive(false);
             if (!IsElement)
                 ModUIManager.Instance.RefreshUI(refreshOnlyCursor);
+
+            ModUIManager.Instance.RemoveUIFromLastShown(this);
         }
 
         public virtual void ToggleVisibility()

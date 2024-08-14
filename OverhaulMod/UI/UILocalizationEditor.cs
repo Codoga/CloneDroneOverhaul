@@ -95,7 +95,7 @@ namespace OverhaulMod.UI
             m_languagesDropdown.value = 0;
             m_translationValueInputField.onEndEdit.AddListener(delegate (string str)
             {
-                if (string.IsNullOrEmpty(editingLangId) || string.IsNullOrEmpty(editingTranslationKey))
+                if (editingLangId.IsNullOrEmpty() || editingTranslationKey.IsNullOrEmpty())
                     return;
 
                 ModLocalizationManager.Instance.SetTranslation(editingLangId, editingTranslationKey, str);
@@ -227,7 +227,7 @@ namespace OverhaulMod.UI
         public void OnLanguagesDropdownChanged(int index)
         {
             PopulateTranslations();
-            if (!string.IsNullOrEmpty(editingTranslationKey))
+            if (!editingTranslationKey.IsNullOrEmpty())
             {
                 EditTranslation(editingTranslationKey);
             }
@@ -235,7 +235,7 @@ namespace OverhaulMod.UI
 
         public void OnAddTranslationButtonClicked()
         {
-            ModUIUtils.InputFieldWindow("Add translation", "Enter non-existing translation name", 125f, delegate (string value)
+            ModUIUtils.InputFieldWindow("Add translation", "Enter non-existing translation name", null, 0, 125f, delegate (string value)
             {
                 ModLocalizationManager.Instance.AddTranslation(value);
                 ModdedObject moddedObject = InstantiateTranslationKeyDisplay(value);

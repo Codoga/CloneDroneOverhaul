@@ -22,6 +22,10 @@ namespace OverhaulMod.UI
         [UIElement("AddSelfButton")]
         private readonly Button m_sendSelfButton;
 
+        [UIElementAction(nameof(OnCopyButtonClicked))]
+        [UIElement("CopyButton")]
+        private readonly Button m_copyButton;
+
         [UIElement("ItemDisplayPrefab", false)]
         private readonly ModdedObject m_authorDisplayPrefab;
 
@@ -68,6 +72,8 @@ namespace OverhaulMod.UI
             {
                 int i = index;
 
+                bool hasPlayFabId = !lockInfo.PlayerPlayFabID.IsNullOrEmpty() && !lockInfo.PlayerPlayFabID.IsNullOrWhiteSpace();
+
                 ModdedObject moddedObject = Instantiate(m_authorDisplayPrefab, m_container);
                 moddedObject.gameObject.SetActive(true);
 
@@ -77,6 +83,7 @@ namespace OverhaulMod.UI
                 {
                     lockInfo.PlayerPlayFabID = value;
                 });
+                playFabIdField.interactable = !hasPlayFabId;
 
                 InputField nickNameField = moddedObject.GetObject<InputField>(1);
                 nickNameField.text = lockInfo.PlayerNickname;
@@ -91,6 +98,14 @@ namespace OverhaulMod.UI
                     list.RemoveAt(i);
                     populateContainer();
                 });
+
+                Button revealButton = moddedObject.GetObject<Button>(3);
+                revealButton.onClick.AddListener(delegate
+                {
+                    playFabIdField.interactable = true;
+                    revealButton.gameObject.SetActive(false);
+                });
+                revealButton.gameObject.SetActive(hasPlayFabId);
 
                 index++;
             }
@@ -121,6 +136,17 @@ namespace OverhaulMod.UI
                 PlayerSteamID = ModUserInfo.localPlayerSteamID.m_SteamID,
             });
             populateContainer();
+        }
+
+        public void OnCopyButtonClicked()
+        {
+            GUIUtility.systemCopyBuffer = "getplayfabids true";
+            m_copyButton.interactable = false;
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                if (m_copyButton)
+                    m_copyButton.interactable = true;
+            }, 2f);
         }
     }
 }

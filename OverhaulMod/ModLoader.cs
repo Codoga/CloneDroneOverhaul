@@ -11,6 +11,7 @@ using OverhaulMod.Visuals.Environment;
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod
 {
@@ -64,6 +65,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<ModDataManager>();
             _ = ModManagers.NewSingleton<RepositoryManager>();
             _ = ModManagers.NewSingleton<GoogleDriveManager>();
+            _ = ModManagers.NewSingleton<ScheduledActionsManager>();
             _ = ModManagers.NewSingleton<ExclusiveContentManager>();
             _ = ModManagers.NewSingleton<ModLocalizationManager>();
             _ = ModManagers.NewSingleton<ModAudioManager>();
@@ -72,7 +74,6 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<ModLevelManager>();
             _ = ModManagers.NewSingleton<ModWeaponsManager>();
             _ = ModManagers.NewSingleton<ModUpgradesManager>();
-            _ = ModManagers.NewSingleton<ModEnemiesManager>();
             _ = ModManagers.NewSingleton<DifficultyTierManager>();
             _ = ModManagers.NewSingleton<ModGameModifiersManager>();
             _ = ModManagers.NewSingleton<TitleScreenCustomizationManager>();
@@ -90,11 +91,13 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<PersonalizationItemVerificationManager>();
             _ = ModManagers.NewSingleton<PersonalizationEditorGuideManager>();
             _ = ModManagers.NewSingleton<PersonalizationMultiplayerManager>();
+            _ = ModManagers.NewSingleton<PersonalizationEditorTemplateManager>();
 
             _ = ModManagers.NewSingleton<WeatherManager>();
             _ = ModManagers.NewSingleton<FloatingDustManager>();
             _ = ModManagers.NewSingleton<FadingVoxelManager>();
 
+            _ = ModManagers.NewSingleton<PressActionKeyObjectManager>();
             _ = ModManagers.NewSingleton<ArenaRemodelManager>();
             _ = ModManagers.NewSingleton<ArenaAudienceManager>();
             _ = ModManagers.NewSingleton<LightingTransitionManager>();
@@ -116,7 +119,6 @@ namespace OverhaulMod
         private static void loadAssemblies()
         {
             LevelEditorPatch.Patch.Apply();
-            _ = ModBotAPI.ModBotAPI.Initialize();
             ModIntegrationUtils.Load();
         }
 
@@ -126,31 +128,10 @@ namespace OverhaulMod
             {
                 Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, Path.Combine(ModCore.editorTexturesFolder, "WeatherSettingsOverride.png"));
 
+                /*
                 if (ModBuildInfo.debug)
-                    Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);
+                    Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);*/
 
-                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.NewEnemies))
-                {
-                    Patch.AddObject("Scythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scythe1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
-                    Patch.AddObject("Scythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scythe2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
-                    Patch.AddObject("Scythe3", "OverhaulMod", "Enemies", ModPrefabUtils.scythe3Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
-                    Patch.AddObject("Scythe4", "OverhaulMod", "Enemies", ModPrefabUtils.scythe4Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
-                    Patch.AddObject("SprinterScythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "SprinterScytheBot.png"));
-                    Patch.AddObject("SprinterScythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "SprinterScytheBot.png"));
-
-                    Patch.AddObject("Axe1", "OverhaulMod", "Enemies", ModPrefabUtils.axe1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
-                    Patch.AddObject("Axe2", "OverhaulMod", "Enemies", ModPrefabUtils.axe2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
-                    Patch.AddObject("Axe3", "OverhaulMod", "Enemies", ModPrefabUtils.axe3Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
-                    Patch.AddObject("Axe4", "OverhaulMod", "Enemies", ModPrefabUtils.axe4Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
-
-                    Patch.AddObject("Halberd1", "OverhaulMod", "Enemies", ModPrefabUtils.halberd1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "HalberdBot.png"));
-                    Patch.AddObject("Halberd2", "OverhaulMod", "Enemies", ModPrefabUtils.halberd2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "HalberdBot.png"));
-                    Patch.AddObject("Halberd3", "OverhaulMod", "Enemies", ModPrefabUtils.halberd3Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "HalberdBot.png"));
-
-                    Patch.AddObject("GuardBot", "OverhaulMod", "Enemies", ModPrefabUtils.guardBotSpawner, null, null);
-
-                    Patch.AddObject("ChibiSword2", "OverhaulMod", "Enemies", ModPrefabUtils.chibiSword2Spawner, null, null);
-                }
                 s_hasAddedObjects = true;
             }
         }
@@ -163,45 +144,50 @@ namespace OverhaulMod
             _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
             _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
             _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationPersistentFolder);
-
-            if (!Directory.Exists(ModCore.modDataFolder))
-                _ = Directory.CreateDirectory(ModCore.modDataFolder);
-
-            if (!Directory.Exists(ModCore.contentFolder))
-                _ = Directory.CreateDirectory(ModCore.contentFolder);
-
-            if (!Directory.Exists(ModCore.savesFolder))
-                _ = Directory.CreateDirectory(ModCore.savesFolder);
-
-            if (!Directory.Exists(ModCore.addonsFolder))
-                _ = Directory.CreateDirectory(ModCore.addonsFolder);
-
-            if (!Directory.Exists(ModCore.customizationFolder))
-                _ = Directory.CreateDirectory(ModCore.customizationFolder);
         }
 
         private static void addListeners()
         {
             ModSettingsManager modSettingsManager = ModSettingsManager.Instance;
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SSAO);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.SSAO_INTENSITY);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.SSAO_SAMPLE_COUNT);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.COLOR_BLINDNESS_MODE);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_DOF);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_BLOOM);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.TWEAK_BLOOM);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_DITHERING);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_VIGNETTE);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SUN_SHAFTS);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
-                ModSpecialUtils.SetTitleBarStateDependingOnSettings();
-            }, ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL);
+                PressActionKeyObjectManager manager = PressActionKeyObjectManager.Instance;
+                if (manager && obj is bool boolVal)
+                {
+                    if (!boolVal)
+                        manager.HideDescription();
 
-            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
-            {
-                PostEffectsManager.Instance.RefreshCameraPostEffects();
-            }, ModSettingsConstants.ENABLE_SSAO);
+                    foreach (LevelEditorUseButtonTrigger trigger in Resources.FindObjectsOfTypeAll<LevelEditorUseButtonTrigger>())
+                    {
+                        if (boolVal)
+                        {
+                            if (trigger._keyboardHint)
+                                trigger._keyboardHint.Show(string.Empty);
 
-            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
-            {
-                PostEffectsManager.Instance.RefreshCameraPostEffects();
-            }, ModSettingsConstants.ENABLE_BLOOM);
-
-            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
-            {
-                PostEffectsManager.Instance.RefreshCameraPostEffects();
-            }, ModSettingsConstants.TWEAK_BLOOM);
+                            PressActionKeyObjectManager.Instance.SetNearestTriggerNull();
+                        }
+                        else
+                        {
+                            trigger.destroyKeyboardHint();
+                        }
+                    }
+                }
+            }, ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
@@ -214,6 +200,11 @@ namespace OverhaulMod
             }, ModSettingsConstants.ENERGY_UI_REWORK);
         }
 
+        private static void refreshCameraPostEffects(object obj)
+        {
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
         private static void loadGameUIThemeData()
         {
             if (ModCache.gameUIThemeData)
@@ -221,8 +212,11 @@ namespace OverhaulMod
 
             GameUIThemeData gameUIThemeData = null;
             foreach (SelectableUI selectableUi in Resources.FindObjectsOfTypeAll<SelectableUI>())
-                if (selectableUi.GameThemeData)
+                if (selectableUi.GameThemeData && selectableUi.GameThemeData.SelectionCornerPrefab)
                 {
+                    foreach (var graphic in selectableUi.GameThemeData.SelectionCornerPrefab.GetComponentsInChildren<Graphic>(true))
+                        graphic.raycastTarget = false;
+
                     gameUIThemeData = selectableUi.GameThemeData;
                     break;
                 }

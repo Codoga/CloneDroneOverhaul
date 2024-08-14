@@ -1,0 +1,6 @@
+- Implemented in-game skins update support
+- Implemented skins import support
+- Implemented files download from the web support
+- Added 3 new skins: `Delta Axe`, `Delta Axe -Dev` (For developers), `Freezing cold`
+- Updated some UI icons
+- Fixed vanilla game bug, that allowed falling enemies make footstep sounds

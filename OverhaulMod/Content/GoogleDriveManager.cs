@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
 using UnityEngine;
-using static FileDownloader;
 
 namespace OverhaulMod.Content
 {
@@ -23,6 +21,8 @@ namespace OverhaulMod.Content
                     resultCallback?.Invoke("Download failed: " + e.Error);
                 else
                     resultCallback?.Invoke(null);
+
+                fileDownloader.Dispose();
             };
             fileDownloader.DownloadProgressChanged += (sender, e) =>
             {

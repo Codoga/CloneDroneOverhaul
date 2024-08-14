@@ -145,7 +145,7 @@ namespace OverhaulMod.UI
                     {
                         highScores = new List<HighScoreData>();
                     }
-                    ModUIConstants.ShowLeaderboard(base.transform, highScores, fileName);
+                    _ = ModUIConstants.ShowLeaderboard(base.transform, highScores, fileName);
                 }
 
                 CharacterModelCustomizationEntry characterModelCustomizationEntry = getCharacterModelUnlockedByChallenge(challengeDefinition.ChallengeID);

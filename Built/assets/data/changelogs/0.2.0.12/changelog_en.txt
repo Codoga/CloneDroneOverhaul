@@ -1,0 +1,4 @@
+- "Show mod version" setting added.
+- Finished translations! And there's no longer "nontranslated" texts!
+- Some optimisations.
+- Temporary removed new level editor, LBS and photo mode UIs

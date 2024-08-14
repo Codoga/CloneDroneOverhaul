@@ -111,6 +111,22 @@ namespace OverhaulMod.Engine
             transform.localEulerAngles = eulerAngles;
         }
 
+        public Vector3 GetCameraHolderEulerAngles(FirstPersonMover firstPersonMover = null)
+        {
+            if (!firstPersonMover)
+            {
+                firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                if (!firstPersonMover)
+                    return Vector3.zero;
+            }
+
+            Transform transform = firstPersonMover._cameraHolderTransform;
+            if (!transform)
+                return Vector3.zero;
+
+            return transform.localEulerAngles;
+        }
+
         public void SetCameraReducedWidth(float value, bool alignToRight)
         {
             Camera camera = mainCamera;

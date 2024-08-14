@@ -32,15 +32,54 @@ namespace OverhaulMod.UI
         [UIElement("PresetPreviewDropdown")]
         private readonly Dropdown m_presetPreviewDropdown;
 
+        [UIElement("FavoriteColorPreviewDropdown")]
+        private readonly Dropdown m_favoriteColorPreviewDropdown;
+
+        protected override void OnInitialized()
+        {
+            m_favoriteColorPreviewDropdown.options = HumanFactsManager.Instance.GetColorDropdownOptions();
+            m_favoriteColorPreviewDropdown.value = SettingsManager.Instance.GetUseSkinInSingleplayer()? SettingsManager.Instance.GetMultiplayerFavColorIndex() : 1;
+            m_favoriteColorPreviewDropdown.onValueChanged.AddListener(OnFavoriteColorPreviewDropdownChanged);
+        }
+
+        public Color GetFavoriteColor()
+        {
+            return HumanFactsManager.Instance.FavouriteColors[Mathf.Max(0, m_favoriteColorPreviewDropdown.value - 1)].ColorValue;
+        }
+
         public void SetConditionOptions(List<Dropdown.OptionData> options)
         {
             m_presetPreviewDropdown.options = options;
             m_presetPreviewDropdown.value = 0;
         }
 
+        public void SetAnimationToggleOn()
+        {
+            m_enableAnimationToggle.isOn = true;
+        }
+
+        public void SetPresetPreview(WeaponVariant weaponVariant)
+        {
+            List<Dropdown.OptionData> options = m_presetPreviewDropdown.options;
+
+            int i = 0;
+            foreach (Dropdown.OptionData option in options)
+            {
+                if (option is DropdownWeaponVariantOptionData dropdownWeaponVariantOptionData && dropdownWeaponVariantOptionData.Value == weaponVariant)
+                {
+                    m_presetPreviewDropdown.value = i;
+                    return;
+                }
+                i++;
+            }
+
+            options.Add(new DropdownWeaponVariantOptionData(weaponVariant));
+            m_presetPreviewDropdown.value = options.Count - 1;
+        }
+
         public void OnShowPlayerToggled(bool value)
         {
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             if (!firstPersonMover)
                 return;
 
@@ -56,7 +95,7 @@ namespace OverhaulMod.UI
 
         public void OnShowWeaponToggled(bool value)
         {
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             if (!firstPersonMover)
                 return;
 
@@ -68,7 +107,7 @@ namespace OverhaulMod.UI
 
         public void OnAnimationToggled(bool value)
         {
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             if (!firstPersonMover)
                 return;
 
@@ -96,23 +135,9 @@ namespace OverhaulMod.UI
             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT);
         }
 
-        public void SetPresetPreview(WeaponVariant weaponVariant)
+        public void OnFavoriteColorPreviewDropdownChanged(int value)
         {
-            List<Dropdown.OptionData> options = m_presetPreviewDropdown.options;
-
-            int i = 0;
-            foreach (Dropdown.OptionData option in options)
-            {
-                if (option is DropdownWeaponVariantOptionData dropdownWeaponVariantOptionData && dropdownWeaponVariantOptionData.Value == weaponVariant)
-                {
-                    m_presetPreviewDropdown.value = i;
-                    return;
-                }
-                i++;
-            }
-
-            options.Add(new DropdownWeaponVariantOptionData(weaponVariant));
-            m_presetPreviewDropdown.value = options.Count - 1;
+            PersonalizationEditorManager.Instance.SerializeRotAndRespawnBot();
         }
     }
 }

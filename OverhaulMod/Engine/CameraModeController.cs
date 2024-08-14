@@ -145,7 +145,7 @@ namespace OverhaulMod.Engine
                 return;
             }
 
-            Bounds bounds = new Bounds(m_transformToFollow.localPosition, Vector3.one);
+            Bounds bounds = new Bounds(m_transformToFollow.localPosition, Vector3.zero);
             int index = 0;
             foreach (MeshFilter meshFilter in m_transformToFollow.GetComponentsInChildren<MeshFilter>())
             {
@@ -160,7 +160,7 @@ namespace OverhaulMod.Engine
                 index++;
             }
 
-            m_offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.45f), 0f);
+            m_offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.2f), 0f);
         }
 
         public void RefreshHeadVisibility(float lerpValue)
@@ -188,7 +188,7 @@ namespace OverhaulMod.Engine
             if (IsMindTransferInProgress() || !firstPersonMover || !firstPersonMover.IsAlive())
                 return;
 
-            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !m_cameraManager.enableThirdPerson /*&& !firstPersonMover.IsAimingBow()*/ && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
+            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !m_cameraManager.enableThirdPerson && (!GameModeManager.UsesMultiplayerSpawnPoints() || firstPersonMover.HasConstructionFinished()) && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
 
             if (refresh)
                 RefreshHeadVisibility(m_lerp);

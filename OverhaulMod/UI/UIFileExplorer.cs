@@ -55,6 +55,10 @@ namespace OverhaulMod.UI
         [UIElement("PathField")]
         private readonly InputField m_pathField;
 
+        [UIElementAction(nameof(OnRevealPathButtonClicked))]
+        [UIElement("RevealPathButton")]
+        private readonly Button m_revealPathButton;
+
         private bool m_populateNextFrame;
 
         private string m_selectedFile;
@@ -132,7 +136,7 @@ namespace OverhaulMod.UI
             m_driveDropdown.options.Clear();
             foreach (DriveInfo d in DriveInfo.GetDrives())
             {
-                Sprite sprite = ModResources.Load<Sprite>(AssetBundleConstants.UI, d.Name == "C:\\" ? "SysDrive-Mini-16x16" : "Drive-Mini-16x16");
+                Sprite sprite = ModResources.Sprite(AssetBundleConstants.UI, d.Name == "C:\\" ? "SysDrive-Mini-16x16" : "Drive-Mini-16x16");
                 m_driveDropdown.options.Add(new Dropdown.OptionData(d.Name, sprite));
             }
             m_driveDropdown.RefreshShownValue();
@@ -145,6 +149,14 @@ namespace OverhaulMod.UI
             m_doneButton.interactable = false;
             m_selectedFile = null;
             callback = null;
+        }
+
+        public override void Show()
+        {
+            base.Show();
+
+            m_pathField.interactable = false;
+            m_revealPathButton.gameObject.SetActive(true);
         }
 
         public override void Update()
@@ -305,6 +317,12 @@ namespace OverhaulMod.UI
             callback?.Invoke(m_selectedFile);
             callback = null;
             Hide();
+        }
+
+        public void OnRevealPathButtonClicked()
+        {
+            m_pathField.interactable = true;
+            m_revealPathButton.gameObject.SetActive(false);
         }
 
         public void OnCancelButtonClicked()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using OverhaulMod.Utils;
+using UnityEngine;
 
 namespace OverhaulMod.Content
 {
@@ -22,7 +23,7 @@ namespace OverhaulMod.Content
                 playFabID = (multiplayerLoginManager && multiplayerLoginManager.IsLoggedIntoPlayfab() && !multiplayerLoginManager.IsBanned()) ? multiplayerLoginManager.GetLocalPlayFabID() : exclusiveContentManager?.localPlayFabId;
             }
 
-            if (string.IsNullOrEmpty(playFabID) || InfoReference.PlayFabID != playFabID)
+            if (playFabID.IsNullOrEmpty() || InfoReference.PlayFabID != playFabID)
                 return false;
 
             int index = 0;

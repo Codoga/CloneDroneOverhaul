@@ -127,7 +127,7 @@ namespace OverhaulMod.Visuals
 
             if (!m_newNormalModelTransform)
             {
-                Transform arrowModel = Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.MODELS, "OverhaulVRArrowModel")).transform;
+                Transform arrowModel = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "OverhaulVRArrowModel")).transform;
                 arrowModel.SetParent(m_normalVisualsTransform);
                 arrowModel.localPosition = new Vector3(0.025f, -0.025f, -0.6f);
                 arrowModel.localEulerAngles = new Vector3(0f, 180f, 0f);
@@ -143,7 +143,7 @@ namespace OverhaulMod.Visuals
 
             if (!m_newFireModelTransform)
             {
-                Transform arrowModel = Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.MODELS, "OverhaulVRArrowModel")).transform;
+                Transform arrowModel = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "OverhaulVRArrowModel")).transform;
                 arrowModel.SetParent(m_fireVisualsTransform);
                 arrowModel.localPosition = new Vector3(0.025f, -0.025f, -0.6f);
                 arrowModel.localEulerAngles = new Vector3(0f, 180f, 0f);

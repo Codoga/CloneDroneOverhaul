@@ -1,0 +1,8 @@
+ Changed:
+ - New particle physics
+ - Decreased bloom threshold to look more epic
+ - (Temp) VSync is automatially turned off with 120(119) fps limit
+
+ Added:
+ - Emperor's flagship in the sky!
+ - Some decorations on commentator's table

@@ -60,11 +60,6 @@ namespace OverhaulMod.UI
             m_editorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
-        public override void Update()
-        {
-            m_retrieveDataButton.interactable = !ExclusiveContentManager.Instance.isRetrievingData;
-        }
-
         public void Populate()
         {
             if (m_container.childCount != 0)
@@ -96,12 +91,13 @@ namespace OverhaulMod.UI
         {
             m_retrieveDataButton.interactable = false;
             m_statusBarText.text = "Retrieving data...";
-            ExclusiveContentManager.Instance.RetrieveDataFromRepository(delegate
+            ExclusiveContentManager.Instance.RetrieveData(delegate
             {
                 m_statusBarText.text = "Successfully retrieved data!";
                 Populate();
             }, delegate (string error)
             {
+                m_retrieveDataButton.interactable = true;
                 m_statusBarText.text = "Error: " + error;
             }, false);
         }

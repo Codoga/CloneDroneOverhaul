@@ -8,22 +8,25 @@ namespace OverhaulMod.Patches
     internal static class GameModeSelectScreen_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("SetMainScreenVisible")]
+        [HarmonyPatch(nameof(GameModeSelectScreen.SetMainScreenVisible))]
         private static bool SetMainScreenVisible_Prefix(GameModeSelectScreen __instance, bool visible)
         {
-            bool isSinglePlayer = __instance.gameObject.name.StartsWith("Singleplayer");
-            if (isSinglePlayer)
-                return true;
-            else if (ModUIManager.Instance)
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.GameModeSelectionScreensRework))
             {
-                UIMultiplayerGameModeSelectScreen multiplayerGameModeSelectScreen = ModUIManager.Instance?.Get<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, ModUIConstants.UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN);
-                if (multiplayerGameModeSelectScreen && multiplayerGameModeSelectScreen.visibleInHierarchy)
+                bool isSinglePlayer = __instance.gameObject.name.StartsWith("Singleplayer");
+                if (isSinglePlayer)
+                    return true;
+                else if (ModUIManager.Instance)
                 {
-                    multiplayerGameModeSelectScreen.SetMainScreenVisible(visible);
+                    UIMultiplayerGameModeSelectScreen multiplayerGameModeSelectScreen = ModUIManager.Instance?.Get<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, ModUIConstants.UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN);
+                    if (multiplayerGameModeSelectScreen && multiplayerGameModeSelectScreen.visibleInHierarchy)
+                    {
+                        multiplayerGameModeSelectScreen.SetMainScreenVisible(visible);
 
-                    if (__instance.MainScreenBox)
-                        __instance.MainScreenBox.gameObject.SetActive(false);
-                    return false;
+                        if (__instance.MainScreenBox)
+                            __instance.MainScreenBox.gameObject.SetActive(false);
+                        return false;
+                    }
                 }
             }
             return true;

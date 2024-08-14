@@ -1,0 +1,7 @@
+Main changes:
+- Updated some codes
+- Mod optimisation
+- Reduced arena camera resolution
+
+Fixes:
+- Fixed control instructions behaviour and removed old UI

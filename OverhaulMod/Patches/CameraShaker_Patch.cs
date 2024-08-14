@@ -9,7 +9,7 @@ namespace OverhaulMod.Patches
     internal static class CameraShaker_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("Update")]
+        [HarmonyPatch(nameof(CameraShaker.Update))]
         private static void Update_Postfix(CameraShaker __instance)
         {
             Vector3 position;

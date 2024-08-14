@@ -36,7 +36,7 @@ namespace OverhaulMod.Engine
             if (m_transitionBehaviour)
                 return;
 
-            GameObject gameObject = Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.UI, "UI_Transition"), GameUIRoot.Instance.transform, false);
+            GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "UI_Transition"), GameUIRoot.Instance.transform, false);
             RectTransform transform = gameObject.transform as RectTransform;
             transform.anchoredPosition = Vector2.zero;
             transform.localEulerAngles = Vector2.zero;

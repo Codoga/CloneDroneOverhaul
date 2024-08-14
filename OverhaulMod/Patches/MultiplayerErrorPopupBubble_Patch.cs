@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class MultiplayerErrorPopupBubble_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("AnimateShowError")]
+        [HarmonyPatch(nameof(MultiplayerErrorPopupBubble.AnimateShowError))]
         private static void AnimateShowError_Postfix(string errorLabel, string errorDetails, bool autoHide = true, bool showRulesButton = false, bool isWarning = false)
         {
             UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);

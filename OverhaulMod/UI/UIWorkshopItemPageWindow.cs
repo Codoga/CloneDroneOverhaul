@@ -595,7 +595,7 @@ namespace OverhaulMod.UI
 
         public void OnFavoriteButtonClicked()
         {
-            ModUIUtils.MessagePopup(true, "Favorite this item?", string.Empty, 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("workshop_favorite_this_item_header"), string.Empty, 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 WorkshopItem item = m_workshopItem;
                 if (item == null || item.IsDisposed())
@@ -698,7 +698,7 @@ namespace OverhaulMod.UI
                 return;
 
             string path = DataRepository.Instance.GetFullPath($"ChallengeData{item.ItemID}", false);
-            ModUIUtils.MessagePopup(true, "Reset progress?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("reset_progress_header"), LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 if (File.Exists(path))
                     try
@@ -761,7 +761,7 @@ namespace OverhaulMod.UI
         public void OnShareButtonClicked()
         {
             GUIUtility.systemCopyBuffer = m_itemLink;
-            ModUIUtils.MessagePopupOK("Link copied!", string.Empty, false);
+            ModUIUtils.MessagePopupOK(LocalizationManager.Instance.GetTranslatedString("workshop_link_copied"), string.Empty, false);
         }
 
         public void OnAuthorProfileButtonClicked()

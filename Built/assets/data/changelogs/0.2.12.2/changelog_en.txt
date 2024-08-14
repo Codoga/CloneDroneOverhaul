@@ -1,0 +1,6 @@
+- Added new weapon skins
+- The mod will notify you about new version available
+- Updated feedback window
+- Improved mod framework
+- Improved UIs
+- Fixed many crashes

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Utils;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -61,7 +62,7 @@ namespace OverhaulMod.UI
                 return;
 
             string contentPath = ContentManager.Instance.GetContentPath(ContentManager.EXTRAS_CONTENT_FOLDER_NAME);
-            if (string.IsNullOrEmpty(contentPath))
+            if (contentPath.IsNullOrEmpty())
                 return;
 
             if (characterModelIndex < 0 || characterModelIndex >= MultiplayerCharacterCustomizationManager.Instance.CharacterModels.Count)

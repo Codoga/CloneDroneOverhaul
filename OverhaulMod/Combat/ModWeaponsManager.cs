@@ -9,14 +9,7 @@ namespace OverhaulMod.Combat
 {
     public class ModWeaponsManager : Singleton<ModWeaponsManager>
     {
-        public const WeaponType BATTLE_AXE_TYPE = (WeaponType)50;
         public const WeaponType SCYTHE_TYPE = (WeaponType)51;
-        public const WeaponType HALBERD_TYPE = (WeaponType)52;
-        public const WeaponType HANDS_TYPE = (WeaponType)53;
-        public const WeaponType CLAWS_TYPE = (WeaponType)54;
-        public const WeaponType PRIM_LASER_BLASTER_TYPE = (WeaponType)55;
-        public const WeaponType DUAL_KNIVES_TYPE = (WeaponType)56;
-        public const WeaponType BOOMERANG_TYPE = (WeaponType)57;
 
         private Dictionary<WeaponType, (GameObject, Type)> m_Weapons;
         private List<WeaponType> m_MeleeWeapons;
@@ -29,16 +22,6 @@ namespace OverhaulMod.Combat
             m_MeleeWeapons = new List<WeaponType>();
 
             AddWeapon<ScytheWeaponModel>(SCYTHE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulScythe");
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.NewGameplayContent))
-            {
-                AddWeapon<BattleAxeWeaponModel>(BATTLE_AXE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulBAxe");
-                AddWeapon<HalberdWeaponModel>(HALBERD_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulHalberd");
-                AddWeapon<HandsWeaponModel>(HANDS_TYPE, true, null, null);
-                AddWeapon<ClawsWeaponModel>(CLAWS_TYPE, true, null, null);
-                AddWeapon<PrimitiveLaserBlasterWeaponModel>(PRIM_LASER_BLASTER_TYPE, false, null, null);
-                AddWeapon<DualKnivesWeaponModel>(DUAL_KNIVES_TYPE, true, null, null);
-                AddWeapon<BoomerangWeaponModel>(BOOMERANG_TYPE, true, null, null);
-            }
         }
 
         public void AddWeapon<T>(WeaponType weaponType, bool melee, string assetBundle, string assetName) where T : ModWeaponModel
@@ -47,8 +30,8 @@ namespace OverhaulMod.Combat
                 return;
 
             GameObject model = null;
-            if (!string.IsNullOrEmpty(assetBundle) && !string.IsNullOrEmpty(assetName))
-                model = ModResources.Load<GameObject>(assetBundle, assetName);
+            if (!assetBundle.IsNullOrEmpty() && !assetName.IsNullOrEmpty())
+                model = ModResources.Prefab(assetBundle, assetName);
 
             m_Weapons.Add(weaponType, (model, typeof(T)));
 

@@ -1,0 +1,16 @@
+Changelog:
+- Added shadow settings.
+- All UI got minor updates.
+- Pause menu is finally done with report menu!
+- Full mod translation to Russian! The translation to other languages are coming up in future.
+- "About mod" window.
+- AGAIN. Particles got minor updates.
+
+WIP:
+- Reworked story mode levels (Won't be included in first 0.2 release).
+- Modded level editor objects support.
+
+Known issues:
+- Photo mode is not done, not translated and not fully adapted to the game.
+- Report player menu is not translated.
+- Mssing translations for other 9 languages.

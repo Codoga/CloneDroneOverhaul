@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class UpgradeDescription_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("IsUpgradeCurrentlyVisible")]
+        [HarmonyPatch(nameof(UpgradeDescription.IsUpgradeCurrentlyVisible))]
         private static void IsUpgradeCurrentlyVisible_Postfix(UpgradeDescription __instance, ref bool __result)
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
@@ -19,7 +19,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("GetSkillPointCost")]
+        [HarmonyPatch(nameof(UpgradeDescription.GetSkillPointCost))]
         private static void GetSkillPointCost_Postfix(UpgradeDescription __instance, ref int __result)
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;

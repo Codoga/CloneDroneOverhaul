@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using UnityEngine;
 
@@ -8,9 +9,12 @@ namespace OverhaulMod.Patches
     internal static class SubtitleTextField_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("onSpeechSentenceStarted")]
+        [HarmonyPatch(nameof(SubtitleTextField.onSpeechSentenceStarted))]
         private static bool onSpeechSentenceStarted_Prefix(SubtitleTextField __instance)
         {
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SubtitleTextFieldRework) && UISubtitleTextFieldRework.EnableRework)
+                return false;
+
             if (!ModCore.ShowSpeakerName)
                 return true;
 
@@ -22,7 +26,7 @@ namespace OverhaulMod.Patches
             if (currentSentence != null)
             {
                 __instance.TextField.color = SpeechAudioManager.Instance.GetSubtitleColorForSpeaker(currentSentence.SpeakerName);
-                if (string.IsNullOrWhiteSpace(currentSentence.SpeechText))
+                if (currentSentence.SpeechText.IsNullOrWhiteSpace())
                     __instance.TextField.text = "!!!NOT_LOCALIZED!!!";
                 else
                 {

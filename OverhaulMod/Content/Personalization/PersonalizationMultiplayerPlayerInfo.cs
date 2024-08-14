@@ -4,7 +4,7 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationMultiplayerPlayerInfo
     {
-        public string DataVersion, PlayFabID, SteamID, SwordSkin, BowSkin, HammerSkin, SpearSkin, ShieldSkin;
+        public string DataVersion, PlayFabID, SteamID, SwordSkin, BowSkin, HammerSkin, SpearSkin, ShieldSkin, ScytheSkin;
 
         public bool Error;
 
@@ -65,6 +65,9 @@ namespace OverhaulMod.Content.Personalization
                         SpearSkin = split[i];
                         break;
                     case 7:
+                        ShieldSkin = split[i];
+                        break;
+                    case 8:
                         ShieldSkin = split[i];
                         break;
                 }

@@ -7,7 +7,7 @@ namespace OverhaulMod.Patches
     internal static class PlanetCollider_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("OnEnable")]
+        [HarmonyPatch(nameof(PlanetCollider.OnEnable))]
         private static void OnEnable_Postfix(PlanetCollider __instance)
         {
             if (!__instance.name.Contains("Earth"))

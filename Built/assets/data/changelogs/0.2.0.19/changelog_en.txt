@@ -1,0 +1,5 @@
+Changelog:
+- Minor code optimisation.
+- Added new settings: `Antialiasing`, `Pixel perfect HUD renderer`, `HUD scale`, `Level of detail [LoD]`, `High LoD threshold, Shading`
+- New pooled prefab system.
+- Most of objects below now support LODs

@@ -83,6 +83,10 @@ namespace OverhaulMod.UI
         [UIElement("SkipLevelButton")]
         private readonly Button m_skipLevelButton;
 
+        [UIElementAction(nameof(OnReconnectButtonClicked), false)]
+        [UIElement("ReconnectButton")]
+        private readonly Button m_reconnectButton;
+
         [UIElement("ConfirmExitGameText", false)]
         private readonly GameObject m_confirmExitGameTextObject;
 
@@ -220,6 +224,7 @@ namespace OverhaulMod.UI
 
             m_skipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
             m_returnToLevelEditorButton.gameObject.SetActive(WorkshopLevelManager.Instance.IsPlaytestActive());
+            m_reconnectButton.gameObject.SetActive(GameModeManager.IsBattleRoyale() && MultiplayerMatchmakingManager.LastDuelRequest.GameType == GameRequestType.RandomBattleRoyale);
 
             m_confirmExitGameTextObject.SetActive(false);
             m_confirmMainMenuTextObject.SetActive(false);
@@ -407,18 +412,18 @@ namespace OverhaulMod.UI
 
         public void OnAchievementsButtonClicked()
         {
-            ModUIConstants.ShowAdvancementsMenuRework();
+            _ = ModUIConstants.ShowAdvancementsMenuRework();
         }
 
         public void OnCustomizationButtonClicked()
         {
             Hide();
-            ModUIConstants.ShowPersonalizationItemsBrowser();
+            _ = ModUIConstants.ShowPersonalizationItemsBrowser();
         }
 
         public void OnSettingsButtonClicked()
         {
-            ModUIConstants.ShowSettingsMenuRework(false);
+            _ = ModUIConstants.ShowSettingsMenuRework(false);
         }
 
         public void OnModsButtonClicked()
@@ -428,7 +433,7 @@ namespace OverhaulMod.UI
 
         public void OnGiveFeedbackButtonClicked()
         {
-            ModUIConstants.ShowFeedbackUIRework(false);
+            _ = ModUIConstants.ShowFeedbackUIRework(false);
         }
 
         public void OnMainMenuButtonClicked()
@@ -573,6 +578,12 @@ namespace OverhaulMod.UI
         public void OnCopyCodeButtonClicked()
         {
             GUIUtility.systemCopyBuffer = m_codeField.text;
+        }
+
+        public void OnReconnectButtonClicked()
+        {
+            MultiplayerMatchmakingManager.ShouldStartBattleRoyaleGameOnLoad = true;
+            SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
         }
 
         public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login, bool colored = true)

@@ -160,7 +160,7 @@ namespace OverhaulMod.UI
                 m_refreshButton.interactable = true;
                 if (result)
                     refreshContents();
-            }, true);
+            });
         }
     }
 }

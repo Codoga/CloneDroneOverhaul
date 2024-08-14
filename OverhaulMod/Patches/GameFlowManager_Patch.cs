@@ -7,7 +7,7 @@ namespace OverhaulMod.Patches
     internal static class GameFlowManager_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("StartStoryModeGame")]
+        [HarmonyPatch(nameof(GameFlowManager.StartStoryModeGame))]
         private static void StartStoryModeGame_Prefix(GameFlowManager __instance, bool resetData = false)
         {
             if (!resetData)
@@ -16,13 +16,31 @@ namespace OverhaulMod.Patches
                 if (gameDataManager)
                 {
                     string levelId = gameDataManager._storyModeData.CurentLevelID;
-                    if (!string.IsNullOrEmpty(levelId) && levelId.Contains("C5"))
+                    if (!levelId.IsNullOrEmpty() && levelId.Contains("C5"))
                     {
                         ModGameUtils.overrideCurrentLevelId = levelId;
                         ModGameUtils.overrideActiveSections = gameDataManager._storyModeData.CurrentLevelSectionsVisible;
                     }
                 }
             }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(GameFlowManager.ShowTitleScreen))]
+        private static void ShowTitleScreen_Postfix(GameFlowManager __instance)
+        {
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
+                _ = ModUIConstants.ShowTitleScreenRework();
+
+            if (ModManagers.ShowModSetupScreenOnStart)
+            {
+                ModActionUtils.DoInFrames(delegate
+                {
+                    _ = ModUIConstants.ShowSettingsMenuRework(true);
+                }, 10);
+            }
+            else
+                ModUIUtils.ShowNewUpdateMessageOrChangelog(2f);
         }
     }
 }

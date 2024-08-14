@@ -68,6 +68,9 @@ namespace OverhaulMod.Content
                 case ExclusiveContentType.TesterRole:
                     newInfo.Content = new ExclusiveContentTesterRole();
                     break;
+                case ExclusiveContentType.CustomizationItemsVerifierRole:
+                    newInfo.Content = new ExclusiveContentItemsVerifierRole();
+                    break;
             }
         }
 

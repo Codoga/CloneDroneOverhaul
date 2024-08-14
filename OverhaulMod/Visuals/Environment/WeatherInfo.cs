@@ -15,7 +15,7 @@ namespace OverhaulMod.Visuals.Environment
 
         public GameObject GetVFXPrefab()
         {
-            return IsDefault ? null : ModResources.Load<GameObject>(BundleAndAsset.Key, BundleAndAsset.Value);
+            return IsDefault ? null : ModResources.Prefab(BundleAndAsset.Key, BundleAndAsset.Value);
         }
     }
 }

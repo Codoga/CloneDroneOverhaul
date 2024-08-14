@@ -38,7 +38,7 @@ namespace OverhaulMod.UI
 
         private UIElementMouseEventsComponent m_mouseEvents;
 
-        private UIPersonalizationItemsBrowser m_browser;
+        private UIPersonalizationItemBrowser m_browser;
 
         private Animator m_animator;
 
@@ -76,7 +76,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void SetBrowserUI(UIPersonalizationItemsBrowser personalizationItemsBrowser)
+        public void SetBrowserUI(UIPersonalizationItemBrowser personalizationItemsBrowser)
         {
             m_browser = personalizationItemsBrowser;
         }

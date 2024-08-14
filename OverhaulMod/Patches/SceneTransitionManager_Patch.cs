@@ -7,7 +7,7 @@ namespace OverhaulMod.Patches
     internal static class SceneTransitionManager_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("DisconnectAndExitToMainMenu")]
+        [HarmonyPatch(nameof(SceneTransitionManager.DisconnectAndExitToMainMenu))]
         private static bool DisconnectAndExitToMainMenu_Prefix(SceneTransitionManager __instance)
         {
             if (!TransitionManager.OverhaulSceneTransitions)

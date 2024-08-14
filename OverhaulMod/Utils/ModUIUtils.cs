@@ -1,4 +1,5 @@
-﻿using OverhaulMod.UI;
+﻿using OverhaulMod.Content;
+using OverhaulMod.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,47 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
+        public static void ShowNewUpdateMessageOrChangelog(float delay, bool dontShowNewUpdateMessage = false, bool dontShowPatchNotes = false)
+        {
+            bool showChangelog = false;
+
+            string lastBuildChangelogWasShownOn = UIPatchNotes.LastBuildChangelogWasShownOn;
+            if (lastBuildChangelogWasShownOn.IsNullOrEmpty())
+                showChangelog = true;
+            else if (Version.TryParse(lastBuildChangelogWasShownOn, out Version prevVersion) && prevVersion < ModBuildInfo.version)
+                showChangelog = true;
+
+            if (!dontShowPatchNotes && showChangelog)
+            {
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    _ = ModUIConstants.ShowPatchNotes();
+                }, delay);
+            }
+            else if (!dontShowNewUpdateMessage)
+            {
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    bool isTester = ModBuildInfo.isPrereleaseBuild || ExclusiveContentManager.Instance.IsLocalUserTheTester();
+                    string savedVersion = isTester ? UpdateManager.SavedTestingVersion : UpdateManager.SavedReleaseVersion;
+                    if (savedVersion.IsNullOrEmpty())
+                        return;
+
+                    if (!System.Version.TryParse(savedVersion, out System.Version newVersion))
+                        return;
+
+                    if (newVersion > ModBuildInfo.version && GameModeManager.IsOnTitleScreen())
+                    {
+                        MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update_available_header"), string.Format(LocalizationManager.Instance.GetTranslatedString("update_available_description"), newVersion), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                        {
+                            UI.UIUpdatesWindow window = ModUIConstants.ShowUpdatesWindow();
+                            window.SelectBranchAndSearchForUpdates(isTester ? 1 : 0);
+                        });
+                    }
+                }, delay);
+            }
+        }
+
         public static void ImageExplorer(List<string> imagePaths, Transform parent)
         {
             UIImageExplorer imageExplorer = ModUIConstants.ShowImageExplorer(parent);
@@ -59,11 +101,15 @@ namespace OverhaulMod.Utils
             levelDescriptionBrowser.Populate(levelDescriptions);
         }
 
-        public static void InputFieldWindow(string header, string description, float height = 125f, Action<string> doneAction = null)
+        public static void InputFieldWindow(string header, string description, string initialText = null, int limit = 0, float height = 125f, Action<string> doneAction = null)
         {
+            if (initialText == null)
+                initialText = string.Empty;
+
             UIGenericInputFieldWindow genericInputFieldWindow = ModUIConstants.ShowGenericInputFieldWindow();
             genericInputFieldWindow.SetTexts(header, description);
             genericInputFieldWindow.SetHeight(height);
+            genericInputFieldWindow.SetInputFieldText(initialText, limit);
             genericInputFieldWindow.doneAction = doneAction;
         }
 

@@ -9,14 +9,14 @@ namespace OverhaulMod.Patches
     internal static class ErrorManager_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("sendExceptionDetailsToLoggly")]
+        [HarmonyPatch(nameof(ErrorManager.sendExceptionDetailsToLoggly))]
         private static bool sendExceptionDetailsToLoggly_Prefix(ErrorManager __instance)
         {
             return false;
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("HandleLog")]
+        [HarmonyPatch(nameof(ErrorManager.HandleLog))]
         private static bool HandleLog_Prefix(ErrorManager __instance, string logString, string stackTrace, ref LogType type)
         {
             if (CrashPreventionManager.IgnoreCrashes)

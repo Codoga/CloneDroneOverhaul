@@ -20,7 +20,7 @@ namespace OverhaulMod.Content.Personalization
 
         public Vector3 GetPosition()
         {
-            return new Vector3(PositionArray[0], PositionArray[1], PositionArray[2]);
+            return new Vector3(roundValue(PositionArray[0]), roundValue(PositionArray[1]), roundValue(PositionArray[2]));
         }
 
         public void SetPosition(Vector3 vector)
@@ -32,7 +32,7 @@ namespace OverhaulMod.Content.Personalization
 
         public Vector3 GetEulerAngles()
         {
-            return new Vector3(EulerAnglesArray[0], EulerAnglesArray[1], EulerAnglesArray[2]);
+            return new Vector3(roundValue(EulerAnglesArray[0]), roundValue(EulerAnglesArray[1]), roundValue(EulerAnglesArray[2]));
         }
 
         public void SetEulerAngles(Vector3 vector)
@@ -44,7 +44,7 @@ namespace OverhaulMod.Content.Personalization
 
         public Vector3 GetScale()
         {
-            return new Vector3(ScaleArray[0], ScaleArray[1], ScaleArray[2]);
+            return new Vector3(roundValue(ScaleArray[0]), roundValue(ScaleArray[1]), roundValue(ScaleArray[2]));
         }
 
         public void SetScale(Vector3 vector)
@@ -52,6 +52,11 @@ namespace OverhaulMod.Content.Personalization
             ScaleArray[0] = vector.x;
             ScaleArray[1] = vector.y;
             ScaleArray[2] = vector.z;
+        }
+
+        private float roundValue(float value)
+        {
+            return Mathf.Round(value * 1000f) / 1000f;
         }
 
         public PersonalizationEditorObjectInfo()

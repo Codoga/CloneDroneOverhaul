@@ -118,6 +118,11 @@ namespace OverhaulMod.UI
             m_instantiatedTabs.Add(tabId, tab);
         }
 
+        public bool HasTab(string tabId)
+        {
+            return m_instantiatedTabs.ContainsKey(tabId);
+        }
+
         public void SelectTab(string tabId)
         {
             if (m_instantiatedTabs.TryGetValue(tabId, out UIElementTab tab))

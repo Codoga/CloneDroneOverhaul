@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulMod.Utils;
+using System.Collections.Generic;
 using System.IO;
 
 namespace OverhaulMod.Engine
@@ -18,7 +19,10 @@ namespace OverhaulMod.Engine
                 SlideshowInfo = new List<TitleScreenBackgroundInfo>();
 
             LevelDescription levelDescription = StaticBackgroundInfo.Level;
-            if (levelDescription != null && !string.IsNullOrEmpty(levelDescription.LevelJSONPath) && !File.Exists(levelDescription.LevelJSONPath))
+            if (levelDescription == null)
+                return;
+
+            if (levelDescription.LevelJSONPath.IsNullOrEmpty() || !File.Exists(levelDescription.LevelJSONPath))
             {
                 StaticBackgroundInfo.Level = null;
             }

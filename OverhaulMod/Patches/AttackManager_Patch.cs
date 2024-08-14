@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class AttackManager_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("CreateSwordBlockVFX")]
+        [HarmonyPatch(nameof(AttackManager.CreateSwordBlockVFX))]
         private static bool CreateSwordBlockVFX_Prefix(Vector3 position)
         {
             if (!ParticleManager.EnableParticles)

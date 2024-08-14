@@ -6,9 +6,9 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(CacheManager))]
     internal static class CacheManager_Patch
     {
-        [HarmonyPrefix]
-        [HarmonyPatch("CreateOrClearInstance")]
-        private static void CreateOrClearInstance_Prefix()
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(CacheManager.CreateOrClearInstance))]
+        private static void CreateOrClearInstance_Postfix()
         {
             ModComponentCache.ClearCache();
         }

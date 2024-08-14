@@ -1,0 +1,6 @@
+- Updated ambient occlusion effect
+- Added noise effect
+- Early preview of new photo mode UI
+- Early preview of new game mode selection UI
+- Updated translations
+- Some minor changes made in settings

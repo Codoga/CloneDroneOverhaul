@@ -37,6 +37,8 @@ namespace OverhaulMod
 
         private Dictionary<string, GameObject> m_instantiatedUIs;
 
+        private List<OverhaulUIBehaviour> m_shownUIs;
+
         private Transform m_gameUIRootTransform;
         public Transform GameUIRootTransform
         {
@@ -73,6 +75,7 @@ namespace OverhaulMod
             base.Awake();
             windowManager = base.gameObject.AddComponent<WindowManager>();
             m_instantiatedUIs = new Dictionary<string, GameObject>();
+            m_shownUIs = new List<OverhaulUIBehaviour>();
         }
 
         private void OnDestroy()
@@ -103,10 +106,14 @@ namespace OverhaulMod
             foreach (string key in keysToRemove)
                 _ = m_instantiatedUIs.Remove(key);
 
-            ModUIConstants.ShowVersionLabel();
-            ModUIConstants.ShowImageEffects();
+            _ = ModUIConstants.ShowVersionLabel();
+            _ = ModUIConstants.ShowCinematicEffects();
+            //_ = ModUIConstants.ShowImageEffects();
+
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Tooltips))
-                ModUIConstants.ShowTooltips();
+                _ = ModUIConstants.ShowTooltips();
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SubtitleTextFieldRework))
+                _ = ModUIConstants.ShowSubtitleTextFieldRework();
         }
 
         public bool HasInstantiatedUI(string assetKey)
@@ -159,7 +166,7 @@ namespace OverhaulMod
             string fullName = $"{assetBundle}.{assetKey}";
             if (!HasInstantiatedUI(fullName))
             {
-                GameObject prefab = ModResources.Load<GameObject>(assetBundle, assetKey);
+                GameObject prefab = ModResources.Prefab(assetBundle, assetKey);
                 GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
                 gameObject.SetActive(true);
                 m_instantiatedUIs.Add(fullName, gameObject);
@@ -178,17 +185,24 @@ namespace OverhaulMod
                 System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
                 result1.InitializeUI();
                 stopwatch.Stop();
-                UnityEngine.Debug.Log($"Initialized an UI in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
+                ModDebug.Log($"Initialized an UI in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
 #else
                 result1.InitializeUI();
 #endif
                 result1.Show();
+
+                if (result1.closeOnEscapeButtonPress)
+                    m_shownUIs.Add(result1);
 
                 return result1;
             }
 
             T result = m_instantiatedUIs[fullName].GetComponent<T>();
             result.Show();
+
+            if (result.closeOnEscapeButtonPress)
+                m_shownUIs.Add(result);
+
             return result;
         }
 
@@ -218,6 +232,19 @@ namespace OverhaulMod
                 return true;
             }
             return false;
+        }
+
+        public OverhaulUIBehaviour GetLastShownUI()
+        {
+            if (m_shownUIs.Count == 0)
+                return null;
+
+            return m_shownUIs[m_shownUIs.Count - 1];
+        }
+
+        public void RemoveUIFromLastShown(OverhaulUIBehaviour behaviour)
+        {
+            _ = m_shownUIs.Remove(behaviour);
         }
 
         public void RefreshUI(bool refreshOnlyCursor)
@@ -342,7 +369,7 @@ namespace OverhaulMod
             private void Awake()
             {
                 m_windows = new Dictionary<string, WindowBehaviour>();
-                m_windowPrefab = ModResources.Load<GameObject>(AssetBundleConstants.UI, "WindowPrefab").GetComponent<ModdedObject>();
+                m_windowPrefab = ModResources.Prefab(AssetBundleConstants.UI, "WindowPrefab").GetComponent<ModdedObject>();
             }
 
             public string Window(Transform parent, Transform content, string title, Vector2 size, Vector2 position = default, bool destroyOnClose = false)
@@ -488,7 +515,7 @@ namespace OverhaulMod
             private void setMinimized(bool value)
             {
                 Vector2 size = m_rectTransform.sizeDelta;
-                size.y = value ? 34f : m_height;
+                size.y = value ? 34f : m_height + 45f;
                 m_rectTransform.sizeDelta = size;
                 m_titleBarFrame.SetActive(!value);
                 m_content.gameObject.SetActive(!value);
@@ -503,13 +530,13 @@ namespace OverhaulMod
             {
                 Vector2 sizeToSet;
                 if (content && content is RectTransform rectTransform)
-                    sizeToSet = new Vector2(rectTransform.sizeDelta.x + 30f, rectTransform.sizeDelta.y + 15f);
+                    sizeToSet = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y);
                 else
-                    sizeToSet = new Vector2(size.x + 30f, size.y + 34f);
+                    sizeToSet = new Vector2(size.x, size.y);
 
                 m_width = sizeToSet.x;
                 m_height = sizeToSet.y;
-                m_rectTransform.sizeDelta = sizeToSet;
+                m_rectTransform.sizeDelta = new Vector2(size.x + 30f, size.y + 45f);
             }
 
             public void SetContents(Transform transform)

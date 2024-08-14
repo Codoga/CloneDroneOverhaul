@@ -6,6 +6,10 @@ namespace OverhaulMod.Combat.Weapons
 {
     public class ScytheWeaponModel : ModWeaponModel
     {
+        private bool m_hasUpdatedShaderForNormalVariant, m_hasUpdatedShaderForFireVariant;
+
+        private GameObject m_fireVfx;
+
         public override float attackSpeed
         {
             get
@@ -40,7 +44,7 @@ namespace OverhaulMod.Combat.Weapons
 
         public override void OnInstantiated(FirstPersonMover owner)
         {
-            MeleeWeaponAITuning meleeWeaponTuning = (MeleeWeaponAITuning)WeaponAITuningManager.Instance.SwordAITuning.MemberwiseClone();
+            MeleeWeaponAITuning meleeWeaponTuning = WeaponAITuningManager.Instance.SwordAITuning.Clone();
             meleeWeaponTuning.MaxRangeToAttack = 13f;
             meleeWeaponTuning.RunForwardUntilRange = 7.5f;
             AITuning = meleeWeaponTuning;
@@ -69,6 +73,9 @@ namespace OverhaulMod.Combat.Weapons
             };
             base.PartsToHideInsteadOfRoot = Array.Empty<GameObject>();
 
+            moddedObject.GetObject<GameObject>(3).SetActive(true);
+            moddedObject.GetObject<GameObject>(4).SetActive(true);
+
             Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireSwordModelPrefab, "SwordFireVFX"), moddedObject.GetObject<Transform>(4));
             fireParticles.localPosition = new Vector3(-0.75f, 0.15f, 1.5f);
             fireParticles.localEulerAngles = Vector3.zero;
@@ -77,6 +84,7 @@ namespace OverhaulMod.Combat.Weapons
             particleSystem.startLifetime = 0.6f;
             ParticleSystem.ShapeModule shape = particleSystem.shape;
             shape.scale = new Vector3(140f, 8f, 1f);
+            m_fireVfx = fireParticles.gameObject;
 
             RefreshRenderer();
         }
@@ -94,24 +102,43 @@ namespace OverhaulMod.Combat.Weapons
             MeleeImpactArea.SetFireSpreadDefinition(owner.HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE) ? FireManager.Instance.GetFireSpreadDefinition(FireType.FlameBreathPlayer) : null);
         }
 
+        public override void SetIsModelActive(bool value)
+        {
+            base.SetIsModelActive(value);
+            RefreshRenderer();
+        }
+
         public void RefreshRenderer()
         {
             ModdedObject moddedObject = base.GetComponent<ModdedObject>();
             if (!moddedObject)
                 return;
 
-            bool fire = GetOwner().HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE);
+            FirstPersonMover owner = GetOwner();
+            if (!owner)
+                return;
+
+            bool fire = owner.HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE);
             MeshRenderer meshRenderer = moddedObject.GetObject<MeshRenderer>(3);
             if (meshRenderer)
             {
-                meshRenderer.material.shader = Shader.Find("Standard");
-                meshRenderer.gameObject.SetActive(!fire);
+                if (!m_hasUpdatedShaderForNormalVariant)
+                {
+                    meshRenderer.material.shader = Shader.Find("Standard");
+                    m_hasUpdatedShaderForNormalVariant = true;
+                }
+                meshRenderer.enabled = !fire && IsModelActive;
             }
             MeshRenderer meshRenderer2 = moddedObject.GetObject<MeshRenderer>(4);
             if (meshRenderer2)
             {
-                meshRenderer2.material.shader = Shader.Find("Standard");
-                meshRenderer2.gameObject.SetActive(fire);
+                if (!m_hasUpdatedShaderForFireVariant)
+                {
+                    meshRenderer2.material.shader = Shader.Find("Standard");
+                    m_hasUpdatedShaderForFireVariant = true;
+                }
+                meshRenderer2.enabled = fire && IsModelActive;
+                m_fireVfx.SetActive(fire && IsModelActive);
             }
         }
     }

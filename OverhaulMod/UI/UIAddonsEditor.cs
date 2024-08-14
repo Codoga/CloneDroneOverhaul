@@ -110,7 +110,7 @@ namespace OverhaulMod.UI
 
         public void OnCreateNewButtonClicked()
         {
-            ModUIUtils.InputFieldWindow("Create new content folder", "Name it", 125f, delegate (string value)
+            ModUIUtils.InputFieldWindow("Create new content folder", "Name it", null, 30, 125f, delegate (string value)
             {
                 string folderName = value.Replace(" ", string.Empty);
                 string folderPath = Path.Combine(ModCore.addonsFolder, folderName);

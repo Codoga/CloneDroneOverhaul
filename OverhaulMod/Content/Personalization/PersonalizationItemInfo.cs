@@ -3,7 +3,6 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -12,7 +11,7 @@ namespace OverhaulMod.Content.Personalization
     {
         public string Name, Description;
 
-        public bool IsSentForVerification, IsVerified;
+        public bool IsSentForVerification, IsVerified, ReuploadedTheItem;
 
         public string ItemID, EditorID;
 
@@ -37,6 +36,9 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationEditorObjectInfo RootObject;
 
         [NonSerialized]
+        public bool Corrupted;
+
+        [NonSerialized]
         public string RootFolderName;
 
         [NonSerialized]
@@ -53,6 +55,9 @@ namespace OverhaulMod.Content.Personalization
 
         [NonSerialized]
         public PersonalizationItemMetaData MetaData;
+
+        [NonSerialized]
+        public bool HideInBrowser;
 
         public void GetImportedFiles()
         {
@@ -108,7 +113,7 @@ namespace OverhaulMod.Content.Personalization
             if (Authors.Count != 1)
             {
                 for (int i = 1; i < Authors.Count; i++)
-                    result += $"{((translate && i == Authors.Count-1) ? $" {LocalizationManager.Instance.GetTranslatedString("customization_authors_and")}" : ",")} {Authors[i]}";
+                    result += $"{((translate && i == Authors.Count - 1) ? $" {LocalizationManager.Instance.GetTranslatedString("customization_authors_and")}" : ",")} {Authors[i]}";
             }
             return result;
         }
@@ -120,7 +125,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool CanBeEdited()
         {
-            return string.IsNullOrEmpty(EditorID) || EditorID.Contains(SteamUser.GetSteamID().ToString());
+            return EditorID.IsNullOrEmpty() || EditorID.Contains(SteamUser.GetSteamID().ToString());
         }
 
         public bool IsUnlocked(Character character)
@@ -168,6 +173,11 @@ namespace OverhaulMod.Content.Personalization
             switch (Category)
             {
                 case PersonalizationCategory.WeaponSkins:
+                    switch (Weapon)
+                    {
+                        case Combat.ModWeaponsManager.SCYTHE_TYPE:
+                            return "Scythe";
+                    }
                     return Weapon.ToString();
                 case PersonalizationCategory.Accessories:
                     return BodyPartName;

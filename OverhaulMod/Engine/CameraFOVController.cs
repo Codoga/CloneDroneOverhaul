@@ -34,6 +34,9 @@ namespace OverhaulMod.Engine
 
         private void LateUpdate()
         {
+            if (!EnableFOVOverride && !CameraManager.EnableFirstPersonMode)
+                return;
+
             FirstPersonMover owner = m_owner;
             if (!owner || owner._isGrabbedForUpgrade)
                 return;
@@ -46,8 +49,8 @@ namespace OverhaulMod.Engine
             if (!camera)
                 return;
 
-            m_lerpedOffset = Mathf.Lerp(m_lerpedOffset, getFovOffset(), Time.unscaledDeltaTime * 9f);
-            camera.fieldOfView = Mathf.Min(camera.fieldOfView + m_lerpedOffset, Time.time < m_timeToAllowUnclampedFovUntil ? 150f : 100f);
+            m_lerpedOffset = Mathf.Lerp(m_lerpedOffset, !GameModeManager.UsesMultiplayerSpawnPoints() || owner.HasConstructionFinished() ? getFovOffset() : 0f, Time.unscaledDeltaTime * 9f);
+            camera.fieldOfView = Mathf.Min(camera.fieldOfView + m_lerpedOffset, Time.time < m_timeToAllowUnclampedFovUntil ? 165f : 110f);
         }
 
         public void SetOwner(FirstPersonMover firstPersonMover)
@@ -59,7 +62,7 @@ namespace OverhaulMod.Engine
         {
             bool fovOverrideEnabled = EnableFOVOverride;
             CameraManager cameraManager = m_cameraManager;
-            return cameraManager.enableForceFOVOffset ? cameraManager.forceFOVOffset : (CameraManager.EnableFirstPersonMode ? Mathf.Min(fovOverrideEnabled ? FOVOffset + 15f : 15f, 25f) : (fovOverrideEnabled ? FOVOffset : 0));
+            return cameraManager.enableForceFOVOffset ? cameraManager.forceFOVOffset : (CameraManager.EnableFirstPersonMode ? Mathf.Min(fovOverrideEnabled ? FOVOffset + 15f : 15f, 40f) : (fovOverrideEnabled ? FOVOffset : 0));
         }
     }
 }

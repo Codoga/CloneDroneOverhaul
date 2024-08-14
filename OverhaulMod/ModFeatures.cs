@@ -78,7 +78,7 @@ namespace OverhaulMod
                     result = false;
                     break;
                 case FeatureType.AdvancedSettings:
-                    result = false;
+                    result = true;
                     break;
                 case FeatureType.WorkshopBrowserContextMenu:
                     result = false;
@@ -96,6 +96,15 @@ namespace OverhaulMod
                     result = false;
                     break;
                 case FeatureType.PersonalizationEditorTutorialVideo:
+                    result = true;
+                    break;
+                case FeatureType.ScytheSkins:
+                    result = true;
+                    break;
+                case FeatureType.MoreImageEffects:
+                    result = false;
+                    break;
+                case FeatureType.SubtitleTextFieldRework:
                     result = true;
                     break;
                 case FeatureType.JetpackAndDashToggle:
@@ -163,6 +172,12 @@ namespace OverhaulMod
             ShieldSkins,
 
             PersonalizationEditorTutorialVideo,
+
+            ScytheSkins,
+
+            MoreImageEffects,
+
+            SubtitleTextFieldRework,
 
             JetpackAndDashToggle
         }

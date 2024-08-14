@@ -140,6 +140,9 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnClearButtonClicked))]
         [UIElement("ClearButton")]
         public Button m_clearButton;
+        [UIElementAction(nameof(OnBrowseLevelsButtonClicked))]
+        [UIElement("SearchLevelsButton")]
+        public Button m_searchLevelsButton;
 
         [UIElement("SearchLevelsByTitleHolder", false)]
         public GameObject m_searchLevelsByTitleHolderObject;
@@ -448,7 +451,7 @@ namespace OverhaulMod.UI
                 requestParameters.ReturnPreviews();
                 requestParameters.ReturnLongDescription();
 
-                if (!string.IsNullOrEmpty(searchText))
+                if (!searchText.IsNullOrEmpty())
                     requestParameters.SearchText(searchText);
 
                 bool success;
@@ -615,14 +618,17 @@ namespace OverhaulMod.UI
         private void refreshSearchBox()
         {
             InputField inputField = m_searchBox;
-            bool makeInteractable = !browseCollections && sourceType == 0;
+            bool makeVisible = !browseCollections && sourceType == 0;
 
-            if (!makeInteractable && inputField.IsActive())
+            if (!makeVisible && inputField.IsActive())
                 inputField.DeactivateInputField();
 
-            inputField.interactable = makeInteractable;
-            if (!makeInteractable)
+            if (!makeVisible)
                 inputField.text = string.Empty;
+
+            m_searchBox.gameObject.SetActive(makeVisible);
+            m_clearButton.gameObject.SetActive(makeVisible);
+            m_searchLevelsButton.gameObject.SetActive(!makeVisible);
         }
 
         private void setBrowseItemType(bool collections)

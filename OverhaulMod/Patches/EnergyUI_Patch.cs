@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class EnergyUI_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("Show")]
+        [HarmonyPatch(nameof(EnergyUI.Show))]
         private static void Show_Postfix()
         {
             ModActionUtils.DoInFrame(delegate

@@ -76,7 +76,7 @@ namespace OverhaulMod.UI
                 });
                 moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
                 {
-                    ModUIUtils.InputFieldWindow("Edit author", "Type new name", 125f, delegate (string value)
+                    ModUIUtils.InputFieldWindow("Edit author", "Type name", author, 30, 125f, delegate (string value)
                     {
                         list[i] = value;
                         moddedObject.GetObject<Text>(0).text = value;
@@ -88,7 +88,7 @@ namespace OverhaulMod.UI
 
         public void OnAddButtonClicked()
         {
-            ModUIUtils.InputFieldWindow("Add author", "Type new name", 125f, delegate (string value)
+            ModUIUtils.InputFieldWindow("Add author", "Type new name", null, 30, 125f, delegate (string value)
             {
                 List<string> list = referenceList;
                 if (list == null || list.Contains(value))

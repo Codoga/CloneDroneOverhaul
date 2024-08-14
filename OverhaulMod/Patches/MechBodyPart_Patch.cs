@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
     internal static class MechBodyPart_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("createNewVoxelBeingDestroyed", new Type[] { typeof(PicaVoxelPoint), typeof(FireSpreadDefinition), typeof(float) })]
+        [HarmonyPatch(nameof(MechBodyPart.createNewVoxelBeingDestroyed), new Type[] { typeof(PicaVoxelPoint), typeof(FireSpreadDefinition), typeof(float) })]
         private static void createNewVoxelBeingDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed __result, PicaVoxelPoint picaVoxelPoint, FireSpreadDefinition fireSpreadDefinition, float probabilityOfFireSpread)
         {
             if (FadingVoxelManager.EnableFading && fireSpreadDefinition != null && !__instance.IgnoreColorBurnForGlowingVoxels)
@@ -27,7 +27,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("destroyVoxelAtPositionFromCut")]
+        [HarmonyPatch(nameof(MechBodyPart.destroyVoxelAtPositionFromCut))]
         private static bool destroyVoxelAtPositionFromCut_Prefix(MechBodyPart __instance, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
         {
             bool hasFire = fireSpreadDefinition != null;

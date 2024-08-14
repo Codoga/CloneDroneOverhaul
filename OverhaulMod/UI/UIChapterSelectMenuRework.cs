@@ -104,7 +104,7 @@ namespace OverhaulMod.UI
 
         public void ShowChapterLevelSelectionMenu(int chapterIndex)
         {
-            ModUIConstants.ShowChapterLevelSelectMenu(base.transform, chapterIndex);
+            _ = ModUIConstants.ShowChapterLevelSelectMenu(base.transform, chapterIndex);
         }
 
         public void OnRestartChapter1ButtonClicked()

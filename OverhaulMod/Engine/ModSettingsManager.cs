@@ -66,6 +66,14 @@ namespace OverhaulMod.Engine
             return result;
         }
 
+        public void ResetSettings()
+        {
+            foreach (ModSetting setting in m_settings)
+                setting.SetValue(setting.defaultValue);
+
+            ModSettingsDataManager.Instance.Save();
+        }
+
         public void AddSettingValueChangedListener(Action<object> action, string settingId)
         {
             ModSetting setting = GetSetting(settingId);
@@ -143,6 +151,17 @@ namespace OverhaulMod.Engine
         public static string GetStringValue(string name)
         {
             return (string)Instance.GetSetting(name).GetFieldValue();
+        }
+
+        public static void ResetValue(string name, bool fromUi = false)
+        {
+            ModSetting setting = Instance.GetSetting(name);
+            if (fromUi)
+            {
+                setting.SetValueFromUI(setting.defaultValue);
+                return;
+            }
+            setting.SetValue(setting.defaultValue);
         }
 
         public static void SetBoolValue(string name, bool value, bool fromUi = false)

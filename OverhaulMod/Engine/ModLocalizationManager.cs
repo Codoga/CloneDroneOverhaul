@@ -31,7 +31,7 @@ namespace OverhaulMod.Engine
 
             try
             {
-                info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(Path.Combine(ModCore.dataFolder + FILE_NAME));
+                info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(Path.Combine(ModCore.dataFolder, FILE_NAME));
                 info.FixValues();
             }
             catch
@@ -161,7 +161,7 @@ namespace OverhaulMod.Engine
                     foreach (KeyValuePair<string, string> translationKeyValue in modTranslations)
                     {
                         if (!keyValuePairs.ContainsKey(translationKeyValue.Key))
-                            keyValuePairs.Add(translationKeyValue.Key, !translationKeyValue.Value.IsNullOrEmpty() ? translationKeyValue.Value : translationKeyValue.key);
+                            keyValuePairs.Add(translationKeyValue.Key, !translationKeyValue.Value.IsNullOrEmpty() ? translationKeyValue.Value : translationKeyValue.Key);
                     }
             }
         }

@@ -1,0 +1,11 @@
+- Fixed critical bug that caused mod instability
+- Finished mod intro. It is not useless anymore. Also made the mod load faster
+- Finished selection outline settings menu in level editor
+- Almost finished Survey menu
+- [Debug] Added developer tools (Profiler and debug actions)
+- [Beta] Added "Disable Mod-Bot tags" setting to "Quality of Life" category
+- [Beta] Added ability to revert upgrades
+- Updated First use setup menu
+- Minor changes made to level editor UI (optimized level and object lists)
+- Overhauled workshop browser works again
+- [Temporary] Pets were disabled

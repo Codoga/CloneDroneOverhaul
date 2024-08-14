@@ -1,0 +1,12 @@
+Changelog:
+- Changed mod thumbnail and description
+- Disabled acessories
+- Upgrade UI changes
+- Fixed rare crashes
+- Fixed assets being loaded several times
+- Fixed first person mode camera rotation in some cases
+
+Known issues:
+- "Join random match" button is missing in the challenge selection menu
+- Skins might not work in multiplayer
+- UI sprites are displayed incorrectly in level editor

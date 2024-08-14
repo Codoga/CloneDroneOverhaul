@@ -1,0 +1,9 @@
+(Released after 0.3.0.116)
+
+- Added meny new skins
+- Added mod localization support
+- Added camera rolling
+- Added Discord RPC support
+- Finished weapon skins selection menu
+- Removal of unused codes
+- Fixed most of issues presented in Tech-Demo 1.5

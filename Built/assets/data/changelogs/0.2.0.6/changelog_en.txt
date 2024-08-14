@@ -1,0 +1,9 @@
+Added & Changed:
+- Settings window
+- Redesigned multiplayer invite screens
+- Some mod optimizations
+
+**Minor additons:
+- Version checker
+- "Github" and "ModBot" branches
+- Main menu button in crash creen

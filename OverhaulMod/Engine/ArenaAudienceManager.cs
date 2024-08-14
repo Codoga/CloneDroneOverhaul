@@ -274,13 +274,13 @@ namespace OverhaulMod.Engine
 
                         if (pos.x < xForward)
                         {
-                            Vector3 eulerAngles = matrix.GetRotation().eulerAngles;
+                            Vector3 eulerAngles = matrix.rotation.eulerAngles;
                             eulerAngles.y = 180f;
                             matrix.SetTRS(pos, Quaternion.Euler(eulerAngles), matrix.lossyScale);
                         }
                         if (pos.x > xBackward)
                         {
-                            Vector3 eulerAngles = matrix.GetRotation().eulerAngles;
+                            Vector3 eulerAngles = matrix.rotation.eulerAngles;
                             eulerAngles.y = 0f;
                             matrix.SetTRS(pos, Quaternion.Euler(eulerAngles), matrix.lossyScale);
                         }

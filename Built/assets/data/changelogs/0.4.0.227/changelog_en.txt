@@ -1,0 +1,32 @@
+(Changes made since update 3)
+
+- Added customization editor. Make and upload stuff almost without limits
+- Added new weapon: Scythe
+- Added new upgrade: Double jump
+- Added title screen redesign
+- Added title screen customization
+- Added mod news system
+- Added in-game mod update system
+- Added addons system
+- Added advanced photo mode
+- Added improved fire spreading
+- Added dithering effect
+- Added floating dust effect
+- Added weather effect
+- Added smooth lighting transition when a level loads
+- Added leaderboard for endless mode
+- Added support for restarting a chapter from specific section or level
+- Added redesigns of all game mode menus with extra features implemented
+- Added ability to sync Steam achievements with game to achievements menu
+- Added a keybind to toggle first person mode
+- Added a menu to toggle Overhaul UIs
+- Completely redesigned all mod UIs to fit the game style better
+- Reworked mod code
+- Reworked mod settings menu. Now it implements both vanilla and Overhaul settings
+- Reworked auto-build feature. Now you can customize upgrades that will be automatically selected
+- Improved Discord RPC
+- Optimization
+- Removed game version mismatch notification
+- Fixed ambient occlusion render issues
+- Fixed audience of reworked arena model
+- Fixed a bunch of V3 bugs

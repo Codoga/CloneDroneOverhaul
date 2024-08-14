@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 6753675891953493579}
   - component: {fileID: 3703318317779088474}
   m_Layer: 5
-  m_Name: DirectionalLightColor
+  m_Name: ColorPickButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,6 +126,7 @@ MonoBehaviour:
   objects:
   - {fileID: 3425340947453629082}
   - {fileID: 199998472027504286}
+  - {fileID: 5441536687152478637}
 --- !u!1 &3425340947453629082
 GameObject:
   m_ObjectHideFlags: 0

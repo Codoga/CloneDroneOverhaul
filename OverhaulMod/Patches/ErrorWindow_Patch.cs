@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class ErrorWindow_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("Show")]
+        [HarmonyPatch(nameof(ErrorWindow.Show))]
         private static bool Show_Prefix(ErrorWindow __instance, string errorMessage)
         {
             ModWebhookManager.ErrorReportText = errorMessage;
@@ -16,7 +16,7 @@ namespace OverhaulMod.Patches
             {
                 try
                 {
-                    ModUIConstants.ShowCrashScreen(errorMessage);
+                    _ = ModUIConstants.ShowCrashScreen(errorMessage);
                 }
                 catch
                 {
@@ -28,7 +28,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("Hide")]
+        [HarmonyPatch(nameof(ErrorWindow.Hide))]
         private static bool Hide_Prefix(ErrorWindow __instance)
         {
             if (Time.timeSinceLevelLoad < 5f)

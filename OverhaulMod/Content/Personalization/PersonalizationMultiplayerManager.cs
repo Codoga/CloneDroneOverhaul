@@ -1,7 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -35,6 +34,7 @@ namespace OverhaulMod.Content.Personalization
             string hammerSkin = normalizeId(PersonalizationController.HammerSkin);
             string spearSkin = normalizeId(PersonalizationController.SpearSkin);
             string shieldSkin = normalizeId(PersonalizationController.ShieldSkin);
+            string scytheSkin = normalizeId(PersonalizationController.ScytheSkin);
 
             StringBuilder stringBuilder = m_stringBuilder;
             _ = stringBuilder.Clear();
@@ -47,6 +47,7 @@ namespace OverhaulMod.Content.Personalization
             appendValue(stringBuilder, hammerSkin, false);
             appendValue(stringBuilder, spearSkin, false);
             appendValue(stringBuilder, shieldSkin, true);
+            appendValue(stringBuilder, scytheSkin, true);
 
             _ = GenericStringForModdingEvent.Post(sendForRecentlyConnectedPlayer ? Bolt.GlobalTargets.Others : Bolt.GlobalTargets.AllClients, Bolt.ReliabilityModes.ReliableOrdered, stringBuilder.ToString());
         }
@@ -78,16 +79,12 @@ namespace OverhaulMod.Content.Personalization
 
         private void registerPlayerInfo(string rawData)
         {
-            bool debug = ModBuildInfo.debug;
-
-            if (debug)
-                Debug.Log(rawData);
-
+            ModDebug.Log(rawData);
             if (rawData.Length > 16)
             {
                 string playFabId = rawData.Remove(16);
-                if (debug)
-                    Debug.Log(playFabId);
+                ModDebug.Log(playFabId);
+
                 if (m_playerInfos.ContainsKey(playFabId))
                 {
                     m_playerInfos[playFabId].SetData(rawData);

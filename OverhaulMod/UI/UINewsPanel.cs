@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,15 +32,14 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_newsContainer;
 
-        private bool m_isPopulating;
-        private bool m_hasEverSuccessfullyPopulatedList;
+        private bool m_isPopulating, m_hasEverPopulatedList;
 
         public override bool hideTitleScreen => true;
 
         public override void Show()
         {
             base.Show();
-            if (!m_hasEverSuccessfullyPopulatedList)
+            if (!m_hasEverPopulatedList)
                 Populate();
 
             m_editorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
@@ -53,23 +53,17 @@ namespace OverhaulMod.UI
             clearList();
             setIsPopulating(true);
 
-
-            float time = Time.unscaledTime;
-            bool clearCache = time >= NewsManager.timeToToClearCache;
-            if (clearCache)
-                NewsManager.timeToToClearCache = time + 60f;
-
             NewsManager.Instance.DownloadNewsInfoFile(delegate (NewsInfoList newsInfoList)
             {
-                m_hasEverSuccessfullyPopulatedList = true;
+                m_hasEverPopulatedList = true;
                 setIsPopulating(false);
                 populateList(newsInfoList);
                 NewsManager.Instance.SetHasSeenNews();
             }, delegate (string error)
             {
-                ModUIUtils.MessagePopupOK("Error", error, 200f);
+                ModUIUtils.MessagePopupOK("Error", error, "Ok", Hide, 200f, true);
                 setIsPopulating(false);
-            }, clearCache);
+            });
         }
 
         private void setIsPopulating(bool value)
@@ -92,7 +86,7 @@ namespace OverhaulMod.UI
                 if (descriptionLabel)
                 {
                     string shortDescription = news.Description;
-                    if (shortDescription.Length > 64)
+                    if (shortDescription.Length > 128)
                     {
                         shortDescription = shortDescription.Remove(128) + "...";
                     }
@@ -102,6 +96,9 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
+                    if (NewsManager.PrevNewsCount != newsInfoList.News.Count)
+                        ModSettingsManager.SetIntValue(ModSettingsConstants.PREV_NEWS_COUNT, newsInfoList.News.Count);
+
                     ShowNewsDetails(news);
                 });
                 index++;
@@ -116,12 +113,12 @@ namespace OverhaulMod.UI
 
         public void ShowNewsDetails(NewsInfo newsInfo)
         {
-            ModUIConstants.ShowNewsDetailsPanel(base.transform, newsInfo);
+            _ = ModUIConstants.ShowNewsDetailsPanel(base.transform, newsInfo);
         }
 
         public void OnEditorButtonClicked()
         {
-            ModUIConstants.ShowNewsInfoEditor(base.transform);
+            _ = ModUIConstants.ShowNewsInfoEditor(base.transform);
         }
 
         public void OnRefreshButtonClicked()

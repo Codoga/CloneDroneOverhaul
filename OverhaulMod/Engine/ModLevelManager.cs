@@ -215,7 +215,7 @@ namespace OverhaulMod.Engine
             List<ModLevelSectionInfo> list = new List<ModLevelSectionInfo>();
             foreach (LevelDescription level in LevelManager.Instance._storyModeLevels)
             {
-                if (level == null || string.IsNullOrEmpty(level.LevelID))
+                if (level == null || level.LevelID.IsNullOrEmpty())
                     continue;
 
                 int chapterLevel = ModParseUtils.TryParseToInt(level.LevelID.Replace("Story", string.Empty), -1) - (isSecondChapter ? 10 : 0);

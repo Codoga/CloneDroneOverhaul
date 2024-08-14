@@ -1,0 +1,3 @@
+- Fixed vignette and dithering not being visible. 
+- Renamed "Noise effect" to "Dithering".
+- Fixed incorrect raptor rider position offset.

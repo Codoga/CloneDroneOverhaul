@@ -70,7 +70,7 @@ namespace OverhaulMod.Engine
                 party.Size = partySize;
 
                 Activity activity = m_activity;
-                activity.State = !string.IsNullOrEmpty(gameModeDetailsString) ? gameModeDetailsString : string.Empty;
+                activity.State = !gameModeDetailsString.IsNullOrEmpty() ? gameModeDetailsString : string.Empty;
                 activity.Details = $"v{ModBuildInfo.version} · {gameModeString}";
                 activity.Party = party;
                 activity.Secrets = activitySecrets;
@@ -93,10 +93,10 @@ namespace OverhaulMod.Engine
                         {
                             case LogLevel.Error:
                             case LogLevel.Warn:
-                                UnityEngine.Debug.LogWarning($"Discord RPC: {message}");
+                                ModDebug.LogWarning($"Discord RPC: {message}");
                                 break;
                             default:
-                                UnityEngine.Debug.Log($"Discord RPC: {message}");
+                                ModDebug.Log($"Discord RPC: {message}");
                                 break;
                         }
                     });
@@ -142,7 +142,10 @@ namespace OverhaulMod.Engine
                     };
                     m_activity = activity;
                 }
-                catch { }
+                catch
+                {
+                    base.enabled = false;
+                }
             }
 
             if (m_activityHandler == null)

@@ -1,0 +1,9 @@
+- The game won't stop when any exception occurs in code
+- Changed color of mindspace skybox
+- Fixed a bug that disallowed enemies to do dash
+- Fixed a bug that allowed player to switch weapons while swinging boomerang
+- Fixed a rare bug that teleported boomerang to the center of the arena
+- Fixed _black logo_
+- `Skins` button is now disabled
+- Now you can switch weapons when boomerang is thrown
+- Removed new pause menu

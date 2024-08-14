@@ -21,6 +21,8 @@ namespace OverhaulMod.UI
         [UIElement("ProgressBar")]
         private readonly GameObject m_progressBarObject;
 
+        public override bool closeOnEscapeButtonPress => false;
+
         public override void Show()
         {
             base.Show();

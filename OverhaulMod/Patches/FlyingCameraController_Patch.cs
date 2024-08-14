@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
     internal static class FlyingCameraController_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("Update")]
+        [HarmonyPatch(nameof(FlyingCameraController.Update))]
         private static bool Update_Prefix(FlyingCameraController __instance)
         {
             if (!PhotoManager.Instance.IsInPhotoMode() || __instance._isMovementDisabled)
@@ -37,7 +37,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyTranspiler]
-        [HarmonyPatch("Update")]
+        [HarmonyPatch(nameof(FlyingCameraController.Update))]
         private static IEnumerable<CodeInstruction> Update_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);

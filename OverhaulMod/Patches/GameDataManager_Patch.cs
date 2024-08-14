@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 
@@ -9,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class GameDataManager_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("GetSectionsVisible")]
+        [HarmonyPatch(nameof(GameDataManager.GetSectionsVisible))]
         private static void GetSectionsVisible_Postfix(ref List<string> __result)
         {
             if (GameModeManager.Is(GameMode.Story))
@@ -21,7 +20,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("GetCurrentLevelID")]
+        [HarmonyPatch(nameof(GameDataManager.GetCurrentLevelID))]
         private static void GetCurrentLevelID_Postfix(ref string __result)
         {
             if (GameModeManager.Is(GameMode.Story))
@@ -29,15 +28,6 @@ namespace OverhaulMod.Patches
                 string str = ModGameUtils.overrideCurrentLevelId;
                 if (str != null)
                     __result = str;
-            }
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch("getCurrentGameData")]
-        private static void getCurrentGameData_Postfix(ref GameData __result)
-        {
-            if (PersonalizationEditorManager.IsInEditor())
-            {
             }
         }
     }

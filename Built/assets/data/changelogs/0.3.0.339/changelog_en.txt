@@ -1,0 +1,14 @@
+- Added support for Additional content
+- Added arena redesign by @water2977
+- Added update checker
+- Added Object movement by entering coordinates tool in level editor
+- Added new weapon skins
+- Added `Revert upgrades` button to Upgrade UI
+- Added "FoV Offset" and "VSync" settings
+- Added ability to unequip weapons by pressing `0`
+- Reworked player data system in multiplayer
+- Reworked tooltips
+- Updated UIs
+- Updated weapon skins and outfit systems
+- Updated first person mode
+- Removed **"Deferred rendering"** setting because of bugs

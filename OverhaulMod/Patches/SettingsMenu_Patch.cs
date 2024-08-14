@@ -10,7 +10,7 @@ namespace OverhaulMod.Patches
     internal static class SettingsMenu_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("refreshResolutionOptions")]
+        [HarmonyPatch(nameof(SettingsMenu.refreshResolutionOptions))]
         private static void refreshResolutionOptions_Postfix(SettingsMenu __instance)
         {
             ModSettingsManager.ExtraResolutionLength = 0;
@@ -33,7 +33,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("OnScreenResolutionChanged")]
+        [HarmonyPatch(nameof(SettingsMenu.OnScreenResolutionChanged))]
         private static bool OnScreenResolutionChanged_Prefix(SettingsMenu __instance)
         {
             if (Time.realtimeSinceStartup - __instance._timeOpened < 0.1f || __instance.ScreenResolutionDropDown.value >= (Screen.resolutions.Length + ModSettingsManager.ExtraResolutionLength))

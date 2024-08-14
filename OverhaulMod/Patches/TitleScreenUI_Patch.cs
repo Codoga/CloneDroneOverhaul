@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class TitleScreenUI_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("OnCloneDroneLogoClicked")]
+        [HarmonyPatch(nameof(TitleScreenUI.OnCloneDroneLogoClicked))]
         private static bool OnCloneDroneLogoClicked_Prefix(ChapterLoadingScreen __instance)
         {
             TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;

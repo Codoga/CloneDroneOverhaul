@@ -1,0 +1,15 @@
+Main changes:
+- Updated some codes
+- Mod optimisation
+- Updated default settings values
+- New control instructions UI
+
+Fixes:
+- Fixed bugs with new pooled prefab system
+- Fixed raptor rider fix (Previously it was teleporting robot to 0 0 0 position when one falls down)
+- Fixed some settings not applying correctly
+- Fixed LoD's when they are disabled
+- Deleted unused camera that was slowing down game
+
+Known issue:
+- Old controls instructions were not removed, will be fixed later

@@ -1,0 +1,8 @@
+[Preview 1 changes]
+- First person mode. To enable it, go to settings -Gameplay -Controlment and set Camera mode to `FirstPerson`
+- New upgrade: `Sprint`. Dash is not given at start anymore and can be upgraded with Upgrade bot
+- Smooth robot acceleration
+
+[Preview 2 changes]
+- Fixed some crashes
+- Fixed first person mode not enabling in multiplayer

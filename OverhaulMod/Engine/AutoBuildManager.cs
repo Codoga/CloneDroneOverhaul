@@ -1,6 +1,8 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.UI;
+using OverhaulMod.Utils;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
@@ -10,12 +12,28 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.AUTO_BUILD_KEY_BIND, KeyCode.U)]
         public static KeyCode AutoBuildKeyBind;
 
-        [ModSetting(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START, false)]
-        public static bool AutoBuildActivationOnMatchStart;
+        /*[ModSetting(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START, false)]
+        public static bool AutoBuildActivationOnMatchStart;*/
+
+        [ModSetting(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1)]
+        public static int AutoBuildIndexToUseOnMatchStart;
 
         private bool m_hasSelectedUpgradesForMatch;
 
         private float m_timeLeftBeforeAutoActivationReset;
+
+        private UIAutoBuildSelectionMenu m_autoBuildSelectionMenu;
+        public UIAutoBuildSelectionMenu autoBuildSelectionMenu
+        {
+            get
+            {
+                if (!m_autoBuildSelectionMenu)
+                {
+                    m_autoBuildSelectionMenu = ModUIConstants.ShowAutoBuildSelectionMenu();
+                }
+                return m_autoBuildSelectionMenu;
+            }
+        }
 
         public bool isInAutoBuildConfigurationMode
         {
@@ -23,7 +41,7 @@ namespace OverhaulMod.Engine
             set;
         }
 
-        public AutoBuildInfo buildInfo
+        public AutoBuildListInfo buildList
         {
             get;
             set;
@@ -33,16 +51,26 @@ namespace OverhaulMod.Engine
 
         private void Start()
         {
-            LoadBuildInfo();
+            LoadBuildList();
         }
 
         private void Update()
         {
-            if (!GameModeManager.Is(GameMode.BattleRoyale))
+            if (!GameModeManager.Is(GameMode.BattleRoyale) && !GameModeManager.Is(GameMode.MultiplayerDuel))
                 return;
 
             if (Input.GetKeyDown(AutoBuildKeyBind))
-                ApplyBuild();
+            {
+                UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
+                if (upgradeUI.gameObject.activeSelf)
+                {
+                    autoBuildSelectionMenu.Show();
+                }
+            }
+            else if (Input.GetKeyUp(AutoBuildKeyBind))
+            {
+                autoBuildSelectionMenu.Hide();
+            }
 
             if (m_hasSelectedUpgradesForMatch)
             {
@@ -53,7 +81,7 @@ namespace OverhaulMod.Engine
                     return;
             }
 
-            if (!AutoBuildActivationOnMatchStart)
+            if (AutoBuildIndexToUseOnMatchStart <= -1)
                 return;
 
             BattleRoyaleManager battleRoyaleManager = BattleRoyaleManager.Instance;
@@ -68,33 +96,57 @@ namespace OverhaulMod.Engine
                 {
                     m_hasSelectedUpgradesForMatch = true;
                     m_timeLeftBeforeAutoActivationReset = 15f;
-                    ApplyBuild();
+                    ApplyBuild(AutoBuildIndexToUseOnMatchStart);
                 }
             }
         }
 
-        public void LoadBuildInfo()
+        public void LoadBuildList()
         {
-            AutoBuildInfo autoBuildInfo;
+            string oldPath = Path.Combine(ModDataManager.userDataFolder, "AutoBuildInfo.json");
+            AutoBuildInfo oldAutoBuildInfo;
+            if (File.Exists(oldPath))
+            {
+                try
+                {
+                    oldAutoBuildInfo = ModDataManager.Instance.DeserializeFile<AutoBuildInfo>("AutoBuildInfo.json", false);
+                    oldAutoBuildInfo.FixValues();
+
+                    File.Delete(oldPath);
+                }
+                catch
+                {
+                    oldAutoBuildInfo = null;
+                }
+            }
+            else
+            {
+                oldAutoBuildInfo = null;
+            }
+
+            AutoBuildListInfo autoBuildListInfo;
             try
             {
-                autoBuildInfo = ModDataManager.Instance.DeserializeFile<AutoBuildInfo>("AutoBuildInfo.json", false);
-                autoBuildInfo.FixValues();
+                autoBuildListInfo = ModDataManager.Instance.DeserializeFile<AutoBuildListInfo>("AutoBuilds.json", false);
+                autoBuildListInfo.FixValues();
             }
             catch
             {
-                autoBuildInfo = new AutoBuildInfo
-                {
-                    SkillPoints = 4
-                };
-                autoBuildInfo.FixValues();
+                autoBuildListInfo = new AutoBuildListInfo();
+                autoBuildListInfo.FixValues();
             }
-            buildInfo = autoBuildInfo;
+
+            if (oldAutoBuildInfo != null)
+            {
+                autoBuildListInfo.Builds.Add(oldAutoBuildInfo);
+                SaveBuildsInfo();
+            }
+            buildList = autoBuildListInfo;
         }
 
-        public void SaveBuildInfo()
+        public void SaveBuildsInfo()
         {
-            ModDataManager.Instance.SerializeToFile("AutoBuildInfo.json", buildInfo, false);
+            ModDataManager.Instance.SerializeToFile("AutoBuilds.json", buildList, false);
         }
 
         public void ResetUpgrades(Dictionary<UpgradeType, int> dictionary = null, int skillPoints = 4)
@@ -112,7 +164,7 @@ namespace OverhaulMod.Engine
             GlobalEventManager.Instance.Dispatch("AvailableSkillPointsChanged");
         }
 
-        public void ApplyBuild()
+        public void ApplyBuild(int index)
         {
             if (m_isApplyingBuild)
                 return;
@@ -125,7 +177,11 @@ namespace OverhaulMod.Engine
             if (!upgradeUI || !upgradeUI.gameObject.activeInHierarchy)
                 return;
 
-            AutoBuildInfo autoBuildInfo = buildInfo;
+            List<AutoBuildInfo> builds = buildList.Builds;
+            if (builds.IsNullOrEmpty() || index < 0 || index >= builds.Count)
+                return;
+
+            AutoBuildInfo autoBuildInfo = builds[index];
             if (autoBuildInfo == null || autoBuildInfo.Upgrades.IsNullOrEmpty())
                 return;
 
@@ -154,6 +210,11 @@ namespace OverhaulMod.Engine
             }
             m_isApplyingBuild = false;
             yield break;
+        }
+
+        public static string GetBuildDisplayName(string name)
+        {
+            return name.IsNullOrEmpty() ? "[No name]" : name;
         }
     }
 }

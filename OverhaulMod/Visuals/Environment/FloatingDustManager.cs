@@ -53,7 +53,7 @@ namespace OverhaulMod.Visuals.Environment
             {
                 m_normalSpaceDust = new ParticleSystem[]
                 {
-                    Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.VFX, "FloatingDust_Normal"), floatingDustVFXHolder).GetComponent<ParticleSystem>()
+                    Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "FloatingDust_Normal"), floatingDustVFXHolder).GetComponent<ParticleSystem>()
                 };
             }
 
@@ -61,8 +61,8 @@ namespace OverhaulMod.Visuals.Environment
             {
                 m_mindSpaceDust = new ParticleSystem[]
                 {
-                    Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.VFX, "FloatingDust_Mindspace0"), floatingDustVFXHolder).GetComponent<ParticleSystem>(),
-                    Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.VFX, "FloatingDust_Mindspace1"), floatingDustVFXHolder).GetComponent<ParticleSystem>()
+                    Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "FloatingDust_Mindspace0"), floatingDustVFXHolder).GetComponent<ParticleSystem>(),
+                    Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "FloatingDust_Mindspace1"), floatingDustVFXHolder).GetComponent<ParticleSystem>()
                 };
             }
         }

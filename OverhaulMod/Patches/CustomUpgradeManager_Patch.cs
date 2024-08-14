@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class CustomUpgradeManager_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("Update")]
+        [HarmonyPatch(nameof(CustomUpgradeManager.Update))]
         private static void Update_Postfix(CustomUpgradeManager __instance)
         {
             bool notOnTitleScreen = !GameModeManager.IsOnTitleScreen();

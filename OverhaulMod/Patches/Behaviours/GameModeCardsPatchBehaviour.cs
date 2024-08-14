@@ -37,7 +37,7 @@ namespace OverhaulMod.Patches.Behaviours
                         ModCache.titleScreenUI.OnPlayStoryButtonClicked();
                         return;
                     }
-                    ModUIConstants.ShowChapterSelectMenu();
+                    _ = ModUIConstants.ShowChapterSelectMenu();
                 });
                 singleplayerDatas[0].ClickedCallback = storyModeEvent;
             }
@@ -51,7 +51,7 @@ namespace OverhaulMod.Patches.Behaviours
                         ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
                         return;
                     }
-                    ModUIConstants.ShowEndlessModeMenu();
+                    _ = ModUIConstants.ShowEndlessModeMenu();
                 });
                 singleplayerDatas[1].ClickedCallback = endlessModeEvent;
             }
@@ -66,7 +66,7 @@ namespace OverhaulMod.Patches.Behaviours
                         ModCache.titleScreenUI.OnPlayCoopButtonClicked();
                         return;
                     }
-                    ModUIConstants.ShowDuelInviteMenuRework(GameMode.EndlessCoop);
+                    _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.EndlessCoop);
                 });
                 multiplayerDatas[0].ClickedCallback = coopEndlessModeEvent;
 
@@ -78,7 +78,7 @@ namespace OverhaulMod.Patches.Behaviours
                         ModCache.titleScreenUI.OnPlayCoopChallengesButtonClicked();
                         return;
                     }
-                    ModUIConstants.ShowDuelInviteMenuRework(GameMode.CoopChallenge);
+                    _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.CoopChallenge);
                 });
                 multiplayerDatas[1].ClickedCallback = coopChallengesModeEvent;
 
@@ -90,7 +90,7 @@ namespace OverhaulMod.Patches.Behaviours
                         ModCache.titleScreenUI.OnPlayBattleRoyaleButtonClicked();
                         return;
                     }
-                    ModUIConstants.ShowDuelInviteMenuRework(GameMode.BattleRoyale);
+                    _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.BattleRoyale);
                 });
                 multiplayerDatas[2].ClickedCallback = battleRoyaleModeEvent;
 
@@ -102,7 +102,7 @@ namespace OverhaulMod.Patches.Behaviours
                         ModCache.titleScreenUI.OnDuelInviteMenuClicked();
                         return;
                     }
-                    ModUIConstants.ShowDuelInviteMenuRework(GameMode.MultiplayerDuel);
+                    _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.MultiplayerDuel);
                 });
                 multiplayerDatas[3].ClickedCallback = duelModeEvent;
             }
@@ -115,7 +115,7 @@ namespace OverhaulMod.Patches.Behaviours
                     ModCache.titleScreenUI.OnChallengeButtonClicked();
                     return;
                 }
-                ModUIConstants.ShowChallengesMenuRework(false, false);
+                _ = ModUIConstants.ShowChallengesMenuRework(false, false);
             });
             singleplayerDatas[2].ClickedCallback = spChallengesEvent;
 

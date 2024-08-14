@@ -32,7 +32,7 @@ namespace OverhaulMod.Engine
             if (m_pooledPrefabs == null || m_pooledPrefabs.ContainsKey(id))
                 return;
 
-            MakePooledPrefab(id, ModResources.Load<GameObject>(bundle, asset), lifeTime, limit);
+            MakePooledPrefab(id, ModResources.Prefab(bundle, asset), lifeTime, limit);
         }
 
         public void MakePooledPrefab(string id, string bundle, string asset, string startPath, float lifeTime, int limit)
@@ -40,7 +40,7 @@ namespace OverhaulMod.Engine
             if (m_pooledPrefabs == null || m_pooledPrefabs.ContainsKey(id))
                 return;
 
-            MakePooledPrefab(id, ModResources.Load<GameObject>(bundle, asset, startPath), lifeTime, limit);
+            MakePooledPrefab(id, ModResources.Prefab(bundle, asset, startPath), lifeTime, limit);
         }
 
         public void SpawnObject(string id, Vector3 position, Vector3 rotation, Vector3 scale)

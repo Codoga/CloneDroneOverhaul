@@ -31,7 +31,11 @@ namespace OverhaulMod.UI
         [UIElement("Watermark_Gameplay")]
         private readonly Text m_gameplayVersionText;
 
+        public bool ForceHide;
+
         private bool m_refreshWidth;
+
+        public override bool closeOnEscapeButtonPress => false;
 
         public static UIVersionLabel instance
         {
@@ -55,10 +59,20 @@ namespace OverhaulMod.UI
             }
         }
 
-        public bool forceHide
+        private float m_offsetX;
+        public float offsetX
         {
-            get;
-            set;
+            get
+            {
+                return m_offsetX;
+            }
+            set
+            {
+                m_offsetX = value;
+                Vector2 anchoredPosition = m_gameplayWatermarkTransform.anchoredPosition;
+                anchoredPosition.x = 5f + value;
+                m_gameplayWatermarkTransform.anchoredPosition = anchoredPosition;
+            }
         }
 
         protected override void OnInitialized()
@@ -68,9 +82,9 @@ namespace OverhaulMod.UI
             bool debug = ModBuildInfo.debug;
             _ = ModBuildInfo.fullVersionString;
 
-            m_versionText.text = "v" + ModBuildInfo.fullVersionString;
+            m_versionText.text = $"Overhaul {ModBuildInfo.fullVersionString}\nClone Drone {VersionNumberManager.Instance.GetVersionString()}";
             m_debugIcon.SetActive(debug);
-            m_gameplayVersionText.text = "overhaul v" + ModBuildInfo.versionString;
+            m_gameplayVersionText.text = $"overhaul {ModBuildInfo.versionString}";
             m_gameplayDebugIcon.SetActive(debug);
             m_refreshWidth = true;
 
@@ -97,7 +111,7 @@ namespace OverhaulMod.UI
             if (Time.frameCount % 10 != 0)
                 return;
 
-            bool show = !forceHide && showWatermark;
+            bool show = !ForceHide && showWatermark;
             bool titleScreen = showFullWatermark;
             m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && titleScreen);
             m_gameplayWatermark.SetActive(show && !titleScreen);
@@ -105,7 +119,7 @@ namespace OverhaulMod.UI
 
         public void OnOtherModsButtonClicked()
         {
-            ModUIConstants.ShowOtherModsMenu();
+            _ = ModUIConstants.ShowOtherModsMenu();
         }
     }
 }

@@ -1,0 +1,9 @@
+Changelog:
+- Workshop browser is almost done, the next update should have one done.
+- Added new transition UI.
+- TextMeshPro is being used in some places now.
+- Settings menu got minor updates.
+
+Known issues:
+- Incorrect position of raptor rider
+- Mod crash if one was enabled during gameplay. Restarting the game fixes the issue

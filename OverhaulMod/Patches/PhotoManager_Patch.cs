@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
     internal static class PhotoManager_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("Update")]
+        [HarmonyPatch(nameof(PhotoManager.Update))]
         private static bool Update_Prefix(PhotoManager __instance)
         {
             if (__instance._isInPhotoMode)
@@ -22,13 +22,12 @@ namespace OverhaulMod.Patches
 
                 if (Input.GetMouseButtonUp(0))
                     AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
-
             }
             return true;
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("TriggerPhotoModeOnOff")]
+        [HarmonyPatch(nameof(PhotoManager.TriggerPhotoModeOnOff))]
         private static bool TriggerPhotoModeOnOff_Prefix(PhotoManager __instance)
         {
             if (__instance._isInPhotoMode)
@@ -43,7 +42,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyTranspiler]
-        [HarmonyPatch("Update")]
+        [HarmonyPatch(nameof(PhotoManager.Update))]
         private static IEnumerable<CodeInstruction> Update_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);

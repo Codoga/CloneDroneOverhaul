@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class EscMenu_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("Show")]
+        [HarmonyPatch(nameof(EscMenu.Show))]
         private static bool Show_Prefix()
         {
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.PauseMenuRework))
@@ -17,7 +17,7 @@ namespace OverhaulMod.Patches
             if (UIPauseMenuRework.disableOverhauledVersion)
                 return true;
 
-            ModUIConstants.ShowPauseMenuRework();
+            _ = ModUIConstants.ShowPauseMenuRework();
             return false;
         }
     }

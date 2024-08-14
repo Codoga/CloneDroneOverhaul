@@ -7,13 +7,13 @@ namespace OverhaulMod.Patches
     internal static class WinLoseDialog_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("showLoss")]
+        [HarmonyPatch(nameof(WinLoseDialog.showLoss))]
         private static bool showLoss_Prefix(WinLoseDialog __instance)
         {
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WinLoseDialogRework))
                 return true;
 
-            ModUIConstants.ShowGameLossWindow();
+            _ = ModUIConstants.ShowGameLossWindow();
             return false;
         }
     }

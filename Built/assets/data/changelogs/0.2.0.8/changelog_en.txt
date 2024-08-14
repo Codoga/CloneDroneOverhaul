@@ -1,0 +1,7 @@
+- Fixed some settings window bugs
+- Added some more settings
+- [Non accessable] Exploration game mode
+- Added new particles & added bloom effect for already added ones
+- [WIP] New Last Bot Standing GUI
+- [Non accessable & WIP] Context menus
+- Updated error window & pause menu

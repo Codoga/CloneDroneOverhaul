@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class PhotoModeControlsDisplay_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("SetVisibility")]
+        [HarmonyPatch(nameof(PhotoModeControlsDisplay.SetVisibility))]
         private static void SetVisibility_Postfix(PhotoModeControlsDisplay __instance, bool value)
         {
             if (!AdvancedPhotoModeManager.EnableAdvancedPhotoMode)
@@ -20,7 +20,7 @@ namespace OverhaulMod.Patches
             __instance.gameObject.SetActive(false);
             if (value)
             {
-                ModUIConstants.ShowPhotoModeUIRework();
+                _ = ModUIConstants.ShowPhotoModeUIRework();
             }
             else
             {

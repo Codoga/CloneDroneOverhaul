@@ -136,20 +136,6 @@ namespace OverhaulMod.Content.Personalization
             return showConditions;
         }
 
-        public List<Dropdown.OptionData> GetUnusedConditionOptions()
-        {
-            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.Normal))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.Normal));
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.NormalMultiplayer))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer));
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFire))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFireMultiplayer))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer));
-            return list;
-        }
-
         public VolumeSettingsPreset GetCurrentPreset()
         {
             WeaponVariant condition = GetCurrentShowCondition();
@@ -251,17 +237,16 @@ namespace OverhaulMod.Content.Personalization
                         {
                             Frame frame = volumeComponent.GetCurrentFrame();
                             int allDimensions = frame.XSize + frame.YSize + frame.ZSize;
-                            if(allDimensions > 145)
+                            if (allDimensions > 150)
                             {
-                                UIPersonalizationEditor.instance.ShowNotification("Performance warning", "The size of this model is very huge which can cause lags. Simplify your model.", Color.yellow, 30f);
+                                UIPersonalizationEditor.instance.ShowNotification("Performance warning", "The size of this model is very huge which can cause lags. Simplify your model.", ModParseUtils.TryParseToColor("#444D00", Color.yellow), 30f);
                             }
                         }
                     }
                 }
                 else
                 {
-                    if (ModBuildInfo.debug)
-                        Debug.Log("Loaded the model from memory");
+                    ModDebug.Log("Loaded the model from memory");
 
                     MagicaVoxelImporter.ImportModelFromMemory(base.gameObject, array, "Import", preset.VoxelSize, preset.CenterPivot);
                 }

@@ -1,0 +1,9 @@
+- Probably fixed an issue with settings data. 
+- Some minor changes.
+- Arena camera resolution was reduced for better performance.
+- Updated FPS Cap setting.
+- Fixed noise effect not disabling.
+
+Known issues:
+- Incorrect position of raptor rider
+- Mod crash if one was enabled during gameplay. Restarting the game fixes the issue

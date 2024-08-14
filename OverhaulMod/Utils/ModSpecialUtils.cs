@@ -67,7 +67,7 @@ namespace OverhaulMod.Utils
 
             public static void SetTitleBarDarkModeEnabled(bool enabled)
             {
-                IntPtr intPtr = FindWindow(null, string.IsNullOrEmpty(s_titleBarText) ? INITIAL_TITLE_BAR_TEXT : s_titleBarText);
+                IntPtr intPtr = FindWindow(null, s_titleBarText.IsNullOrEmpty() ? INITIAL_TITLE_BAR_TEXT : s_titleBarText);
                 if (intPtr != null)
                 {
                     _ = useImmersiveDarkMode(intPtr, enabled);
@@ -76,10 +76,10 @@ namespace OverhaulMod.Utils
 
             public static void SetTitleBarText(string text)
             {
-                if (string.IsNullOrEmpty(text))
+                if (text.IsNullOrEmpty())
                     return;
 
-                string windowTitle = string.IsNullOrEmpty(s_titleBarText) ? INITIAL_TITLE_BAR_TEXT : s_titleBarText;
+                string windowTitle = s_titleBarText.IsNullOrEmpty() ? INITIAL_TITLE_BAR_TEXT : s_titleBarText;
 
                 IntPtr intPtr = FindWindow(null, windowTitle);
                 if (intPtr != null)

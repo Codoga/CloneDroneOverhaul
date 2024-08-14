@@ -1,4 +1,6 @@
-﻿namespace OverhaulMod.Engine
+﻿using OverhaulMod.Combat;
+
+namespace OverhaulMod.Engine
 {
     public class WeaponVariantManager
     {
@@ -17,6 +19,9 @@
                     break;
                 case WeaponType.Spear:
                     isOnFire = firstPersonMover.HasUpgrade(UpgradeType.FireSpear);
+                    break;
+                case ModWeaponsManager.SCYTHE_TYPE:
+                    isOnFire = firstPersonMover.HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE);
                     break;
             }
         }
@@ -44,6 +49,22 @@
             {
                 showConditions = WeaponVariant.None;
             }
+        }
+
+        public static string GetWeaponVariantString(WeaponVariant weaponVariant)
+        {
+            switch (weaponVariant)
+            {
+                case WeaponVariant.Normal:
+                    return "Normal";
+                case WeaponVariant.OnFire:
+                    return "Fire";
+                case WeaponVariant.NormalMultiplayer:
+                    return "Normal (Multiplayer)";
+                case WeaponVariant.OnFireMultiplayer:
+                    return "Fire (Multiplayer)";
+            }
+            return weaponVariant.ToString();
         }
     }
 }

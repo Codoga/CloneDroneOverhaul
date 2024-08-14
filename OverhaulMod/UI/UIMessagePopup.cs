@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -118,7 +119,7 @@ namespace OverhaulMod.UI
 
             if (m_scrollRectObject)
             {
-                m_scrollRectObject.SetActive(!string.IsNullOrEmpty(description));
+                m_scrollRectObject.SetActive(!description.IsNullOrEmpty());
             }
         }
 

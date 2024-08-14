@@ -6,6 +6,8 @@ namespace OverhaulMod.Combat.Weapons
     {
         public WeaponAITuning AITuning;
 
+        public bool IsModelActive;
+
         public virtual float attackSpeed
         {
             get
@@ -46,6 +48,11 @@ namespace OverhaulMod.Combat.Weapons
             }
         }
 
+        public virtual void Awake()
+        {
+            IsModelActive = true;
+        }
+
         public virtual void OnInstantiated(FirstPersonMover owner)
         {
         }
@@ -61,6 +68,16 @@ namespace OverhaulMod.Combat.Weapons
 
         public virtual void OnUpgradesRefresh(FirstPersonMover owner)
         {
+        }
+
+        public virtual void SetIsModelActive(bool value)
+        {
+            IsModelActive = value;
+        }
+
+        public virtual bool GetIsModelActive()
+        {
+            return IsModelActive;
         }
     }
 }

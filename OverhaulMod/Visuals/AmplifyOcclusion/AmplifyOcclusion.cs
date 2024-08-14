@@ -34,7 +34,7 @@ namespace AmplifyOcclusion
             {
                 if (!OcclusionMaterial)
                 {
-                    OcclusionMaterial = new Material(ModResources.Load<Shader>(AssetBundleConstants.AMPLIFY_OCCLUSION, "Occlusion"));
+                    OcclusionMaterial = new Material(ModResources.Shader(AssetBundleConstants.AMPLIFY_OCCLUSION, "Occlusion"));
                 }
                 return OcclusionMaterial;
             }
@@ -42,7 +42,7 @@ namespace AmplifyOcclusion
             {
                 if (!BlurMaterial)
                 {
-                    BlurMaterial = new Material(ModResources.Load<Shader>(AssetBundleConstants.AMPLIFY_OCCLUSION, "Blur"));
+                    BlurMaterial = new Material(ModResources.Shader(AssetBundleConstants.AMPLIFY_OCCLUSION, "Blur"));
                 }
                 return BlurMaterial;
             }
@@ -50,7 +50,7 @@ namespace AmplifyOcclusion
             {
                 if (!ApplyMaterial)
                 {
-                    ApplyMaterial = new Material(ModResources.Load<Shader>(AssetBundleConstants.AMPLIFY_OCCLUSION, "Apply"));
+                    ApplyMaterial = new Material(ModResources.Shader(AssetBundleConstants.AMPLIFY_OCCLUSION, "Apply"));
                 }
                 return ApplyMaterial;
             }

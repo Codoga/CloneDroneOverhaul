@@ -9,24 +9,7 @@ namespace OverhaulMod.UI
 
         public DropdownWeaponVariantOptionData(WeaponVariant value)
         {
-            switch (value)
-            {
-                case WeaponVariant.Normal:
-                    text = "Normal";
-                    break;
-                case WeaponVariant.OnFire:
-                    text = "Fire";
-                    break;
-                case WeaponVariant.NormalMultiplayer:
-                    text = "Normal (Multiplayer)";
-                    break;
-                case WeaponVariant.OnFireMultiplayer:
-                    text = "Fire (Multiplayer)";
-                    break;
-                default:
-                    text = value.ToString();
-                    break;
-            }
+            text = WeaponVariantManager.GetWeaponVariantString(value);
             Value = value;
         }
     }

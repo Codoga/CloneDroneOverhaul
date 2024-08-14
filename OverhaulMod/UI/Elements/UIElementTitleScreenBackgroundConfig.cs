@@ -83,11 +83,11 @@ namespace OverhaulMod.UI
                     LevelTags = new List<LevelTags>() { },
                     LevelJSONPath = levelPath,
                     LevelEditorDifficultyIndex = 0,
-                    LevelID = "customTitleScreenLevel"
+                    LevelID = TitleScreenCustomizationManager.CUSTOM_LEVEL_ID
                 };
                 LevelManager.Instance._currentWorkshopLevelDifficultyIndex = 0;
                 onSetLevel(levelDescription);
-            }, Application.persistentDataPath + "/LevelEditorLevels/", "*.json");
+            }, Path.Combine(Application.persistentDataPath, "LevelEditorLevels"), "*.json");
         }
 
         private void onSetLevel(LevelDescription level)
@@ -110,15 +110,15 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            if (info.Level.LevelID == "customTitleScreenLevel")
-            {
-                m_label.text = Path.GetFileNameWithoutExtension(info.Level.LevelJSONPath);
-                return;
-            }
             if (info.Level.WorkshopItem != null)
             {
                 SteamWorkshopItem steamWorkshopItem = info.Level.WorkshopItem;
                 m_label.text = $"{steamWorkshopItem.Title} (by {steamWorkshopItem.CreatorName})";
+                return;
+            }
+            if (info.Level.LevelID == TitleScreenCustomizationManager.CUSTOM_LEVEL_ID)
+            {
+                m_label.text = Path.GetFileNameWithoutExtension(info.Level.LevelJSONPath);
                 return;
             }
             m_label.text = StringUtils.AddSpacesToCamelCasedString(info.Level.PrefabName.Substring(info.Level.PrefabName.LastIndexOf("/") + 1));

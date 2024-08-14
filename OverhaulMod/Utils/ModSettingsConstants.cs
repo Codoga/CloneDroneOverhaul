@@ -197,6 +197,11 @@ namespace OverhaulMod.Utils
         public const string SHIELD_SKIN = "ShieldSkinV2";
 
         /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string SCYTHE_SKIN = "ScytheSkin";
+
+        /// <summary>
         /// <see cref="Visuals.RobotWeaponBag"/>
         /// </summary>
         public const string ENABLE_WEAPON_BAG = "EnableWeaponBag";
@@ -309,6 +314,176 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="UI.UIPatchNotes"/>
         /// </summary>
-        public const string HAS_SHOWED_PATCH_NOTES = "HasShowedPatchNotes";
+        public const string LAST_BUILD_CHANGELOG_WAS_SHOWN = "LastBuildChangelogWasShownOn";
+
+        /// <summary>
+        /// <see cref="ModCore"/>
+        /// </summary>
+        public const string STREAMER_MODE = "StreamerMode";
+
+        /// <summary>
+        /// <see cref="UI.UIPersonalizationItemBrowser"/>
+        /// </summary>
+        public const string HAS_EVER_ROTATED_THE_CAMERA = "HasEverRotatedTheCamera";
+
+        /// <summary>
+        /// <see cref="UI.UIFeedbackMenu"/>
+        /// </summary>
+        public const string FEEDBACK_MENU_RATE = "FeedbackMenuRate";
+
+        /// <summary>
+        /// <see cref="UI.UIFeedbackMenu"/>
+        /// </summary>
+        public const string FEEDBACK_MENU_IMPROVE_TEXT = "FeedbackMenuImproveText";
+
+        /// <summary>
+        /// <see cref="UI.UIFeedbackMenu"/>
+        /// </summary>
+        public const string FEEDBACK_MENU_FAVORITE_TEXT = "FeedbackMenuFavoriteText";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string SSAO_SAMPLE_COUNT = "SSAOSampleCount";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string SSAO_INTENSITY = "SSAOIntensity";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ENABLE_CHROMATIC_ABERRATION = "EnableCA";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string CHROMATIC_ABERRATION_INTENSITY = "CAIntensity";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string CHROMATIC_ABERRATION_ON_SCREEN_EDGES = "CAOnScreenEdges";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string COLOR_BLINDNESS_MODE = "CBMode";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string COLOR_BLINDNESS_AFFECT_UI = "CBAffectUI";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ANTIALIASING_MODE = "AAMode";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string MSAA_PLUS_CUSTOM = "MSAAPlusCustom";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ENABLE_DOF = "EnableDoF";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ENABLE_SUN_SHAFTS = "EnableSunShafts";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string ENABLE_SUBTITLE_TEXT_FIELD_REWORK = "EnableSubtitleTextFieldRework";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string SUBTITLE_TEXT_FIELD_UPPER_POSITION = "SubtitleTextFieldUpperPosition";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string SUBTITLE_TEXT_FIELD_BG = "SubtitleTextFieldBG";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string SUBTITLE_TEXT_FIELD_FONT = "SubtitleTextFieldFont";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string SUBTITLE_TEXT_FIELD_FONT_SIZE = "SubtitleTextFieldFontSize";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string REFRESH_MOD_UPDATES_DATE_TIME = "RefreshModUpdatesDateTime";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string REFRESH_EXCLUSIVE_PERKS_DATE_TIME = "RefreshExclusivePerksDateTime";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME = "RefreshCustomizationAssetsRemoteVersionDateTime";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string REFRESH_NEWS_DATE_TIME = "RefreshNewsDateTime";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string SAVED_RELEASE_VERSION = "SavedReleaseVersion";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string SAVED_TESTING_VERSION = "SavedTestingVersion";
+
+        /// <summary>
+        /// <see cref="Content.NewsManager"/>
+        /// </summary>
+        public const string PREV_NEWS_COUNT = "PrevNewsCountV3";
+
+        /// <summary>
+        /// <see cref="Content.NewsManager"/>
+        /// </summary>
+        public const string DOWNLOADED_NEWS_COUNT = "DownloadedNewsCount";
+
+        /// <summary>
+        /// <see cref="Engine.AutoBuildManager"/>
+        /// </summary>
+        public const string AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START = "AutoBuildIndexToUseOnMatchStart";
+
+        /// <summary>
+        /// <see cref="Engine.PressActionKeyObjectManager"/>
+        /// </summary>
+        public const string ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK = "EnablePressButtonTriggerDescriptionRework";
+
+        /// <summary>
+        /// <see cref="UI.UIPressActionKeyDescription"/>
+        /// </summary>
+        public const string PAK_DESCRIPTION_BG = "PAKBG";
+
+        /// <summary>
+        /// <see cref="UI.UIPressActionKeyDescription"/>
+        /// </summary>
+        public const string PAK_DESCRIPTION_FONT = "PAKFont";
+
+        /// <summary>
+        /// <see cref="UI.UIPressActionKeyDescription"/>
+        /// </summary>
+        public const string PAK_DESCRIPTION_FONT_SIZE = "PAKFontSize";
     }
 }

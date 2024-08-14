@@ -1,0 +1,10 @@
+(Main changes between 0.2.0.22 and 0.2.10.22)
+
+- The main addition is weapon skins! There are 84 skins available (17 of them are exclusive, 64 are free to use)
+Note: Everyone with this mod can see your skins in multiplayer.
+- Added Discord RPC support
+- Reworked mod framework. The mod is being prepared for upcoming major updates
+- Removed all unused assets. Now the mod weights 7 megabytes, instead of 40...
+- Removed useless features like LoDs and dithering
+- Graphics optimization. The mod should work better on low-end PCs
+- Many redesigned menus have been temporary removed. They'll come back in new updates

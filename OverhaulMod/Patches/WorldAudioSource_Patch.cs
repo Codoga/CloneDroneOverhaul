@@ -8,12 +8,11 @@ namespace OverhaulMod.Patches
     internal static class WorldAudioSource_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("Initialize")]
+        [HarmonyPatch(nameof(WorldAudioSource.Initialize))]
         private static void Initialize_Postfix(WorldAudioSource __instance)
         {
-            /*
             if (__instance.gameObject.name.Contains("Global"))
-                return;*/
+                return;
 
             AudioReverbFilter filter = __instance.GetComponent<AudioReverbFilter>();
             if (filter)
@@ -28,13 +27,6 @@ namespace OverhaulMod.Patches
                 }
                 else
                     filter.decayTime = 0f;
-
-                /*
-                filter.diffusion = 100f;
-                filter.density = 100f;
-                filter.decayTime = ModAudioManager.EnableReverbFilter && Physics.Raycast(__instance.transform.position, Vector3.up, 75f, PhysicsManager.GetEnvironmentLayerMask())
-                    ? 0.375f * ModAudioManager.ReverbIntensity
-                    : 0f;*/
             }
         }
     }

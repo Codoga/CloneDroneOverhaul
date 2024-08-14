@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -9,17 +10,13 @@ namespace OverhaulMod.UI
 {
     public class UIImageEffects : OverhaulUIBehaviour
     {
-        [ModSetting(ModSettingsConstants.ENABLE_VIGNETTE, true)]
-        public static bool EnableVignette;
-
-        [ModSetting(ModSettingsConstants.ENABLE_DITHERING, false)]
-        public static bool EnableDithering;
-
         [UIElement("Vignette", true)]
         private readonly Image m_vignetteImage;
 
         [UIElement("Dithering", true)]
         private readonly RawImage m_ditheringImage;
+
+        public override bool closeOnEscapeButtonPress => false;
 
         private float m_timeLeftToSwitchTexture;
         private int m_TextureIndex;
@@ -53,8 +50,8 @@ namespace OverhaulMod.UI
             m_timeLeftToSwitchTexture = 0.034f;
 
             bool hasCamera = CameraManager.Instance.mainCamera;
-            bool enableVignette = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : EnableVignette);
-            bool enableDithering = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : EnableDithering) && ditheringTextures != null;
+            bool enableVignette = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : PostEffectsManager.EnableVignette);
+            bool enableDithering = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : PostEffectsManager.EnableDithering) && ditheringTextures != null;
 
             m_vignetteImage.enabled = enableVignette;
             m_ditheringImage.enabled = enableDithering;

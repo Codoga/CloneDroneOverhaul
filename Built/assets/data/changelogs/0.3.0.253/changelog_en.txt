@@ -1,0 +1,14 @@
+- [Beta] Added Pets/Mounts system. You can disable pets by pressing ` P `. You can't change pets for now. No multiplayer support
+- Added "Share your thoughts" window. If you want, you can leave a feedback right in the game
+- [Beta] Added overhauled news panel. Instead of just game news, there will be also overhaul news
+- [Work in progress] Added "About Overhaul" menu
+- Added new "Last bot standing" menu. [Soon] Now you can customize the game before launching the servers
+- Added new challenge selection menu. Now you can see challenge progress by hovering the mouse over its card
+- Added new chapter selection menu. Cool backgrounds only
+- [Beta] Added current weapon tooltip. Soon there will be a tooltip showing info about nearest player
+- [Beta] Added energy bar text animation
+- Added "Experiments" category to settings. Here you can toggle some work-in-progress things. After you've toggled some, restart the game
+- Added "Relay" setting. Turning this setting on may result improved connection to servers and increased/decreased ping
+- Updated settings menu. Now it is more organized
+- Updated exclusivity system to be more fair
+- Updated scene transition animation to be more smooth

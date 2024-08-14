@@ -1,0 +1,5 @@
+(Released after 0.2.1.2)
+
+- Made all canvases pixel perfect to fix blurry HUDs.
+- Continue work on V0.3: Added async asset loader, added mod custom upgrades manager and some more things!
+- Some minor optimisation work.

@@ -1,0 +1,11 @@
+Changelog:
+- Workshop browser is mostly finished. (Missing ability to leave a like or dislike)
+- Updated watermark font. Now it uses Text Mesh Pro.
+- Vignette is back!
+- Added "Lights limit" and "Vignette" options.
+- UI improvements.
+- Early implementation of **Overmodes**
+
+Known issues:
+- Incorrect position of raptor rider
+- Mod crash if one was enabled during gameplay. Restarting the game fixes the issue

@@ -1,0 +1,8 @@
+- Fixed a bug with level editor camera not zooming.
+
+Known issues:
+- Incorrect position of raptor rider
+- Mod crash if one was enabled during gameplay. Restarting the game fixes the issue
+
+WIP:
+- Eary implementation of random level generation. Doesn't actually work.

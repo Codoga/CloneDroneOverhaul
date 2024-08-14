@@ -1,0 +1,57 @@
+ManifestFileVersion: 0
+CRC: 3385306543
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b2c37da56dbf91e89bc1125b091344fc
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e3424b4b6ce321ecb03d77de569daf2c
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 109
+  Script: {instanceID: 0}
+Assets:
+- Assets/Shaders/ImageEffects/Misc/VignetteMask.png
+- Assets/Shaders/ImageEffects/Misc/VignettingShader.shader
+- Assets/Shaders/ImageEffects/Misc/MultiPassHollywoodFlares.shader
+- Assets/Shaders/ImageEffects/Misc/BlendForBloom.shader
+- Assets/Shaders/ImageEffects/Misc/BlurAndFlares.shader
+- Assets/Shaders/ImageEffects/Misc/SeparableBlur.shader
+- Assets/Shaders/ImageEffects/Misc/TiltShiftHdrLensBlur.shader
+- Assets/Shaders/ImageEffects/Misc/Noise.png
+- Assets/Shaders/ImageEffects/Misc/SimpleClear.shader
+- Assets/Shaders/ImageEffects/Misc/DepthOfFieldDX11.shader
+- Assets/Shaders/ImageEffects/Misc/ContrastComposite.shader
+- Assets/Shaders/ImageEffects/Misc/NoiseAndGrainDX11.shader
+- Assets/Shaders/ImageEffects/Misc/SunShaftsComposite.shader
+- Assets/Shaders/ImageEffects/Misc/SeparableBlurPlus.shader
+- Assets/Shaders/ImageEffects/Misc/frag_ao.cginc
+- Assets/Shaders/ImageEffects/Misc/BlendOneOne.shader
+- Assets/Shaders/ImageEffects/Misc/FisheyeShader.shader
+- Assets/Shaders/ImageEffects/Misc/VignetteShader.shader
+- Assets/Shaders/ImageEffects/Misc/DepthOfField34.shader
+- Assets/Shaders/ImageEffects/Misc/ScreenSpaceRaytrace.cginc
+- Assets/Shaders/ImageEffects/Misc/GlobalFog.shader
+- Assets/Shaders/ImageEffects/Misc/SSAOShader.shader
+- Assets/Shaders/ImageEffects/Misc/DepthOfFieldScatter.shader
+- Assets/Shaders/ImageEffects/Misc/LensFlareCreate.shader
+- Assets/Shaders/ImageEffects/Misc/Bokeh34.shader
+- Assets/Shaders/ImageEffects/Misc/CameraMotionBlurDX11.shader
+- Assets/Shaders/ImageEffects/ColorBlind/Colorblind.shader
+- Assets/Shaders/ImageEffects/Misc/RandomVectors.png
+- Assets/Shaders/ImageEffects/Misc/CameraMotionBlur.shader
+- Assets/Shaders/ImageEffects/Misc/Blend.shader
+- Assets/Shaders/ImageEffects/Misc/BrightPassFilter.shader
+- Assets/Shaders/ImageEffects/Misc/MobileBlur.shader
+- Assets/Shaders/ImageEffects/Misc/ChromaticAberrationShader.shader
+- Assets/Shaders/ImageEffects/Misc/MobileBloom.shader
+- Assets/Shaders/ImageEffects/Misc/NoiseAndGrain.shader
+- Assets/Shaders/ImageEffects/Misc/EdgeDetectNormals.shader
+- Assets/Shaders/ImageEffects/ChromaticAberration/ChromaticAberration.shader
+- Assets/Shaders/ImageEffects/Misc/SeparableWeightedBlurDof34.shader
+Dependencies: []

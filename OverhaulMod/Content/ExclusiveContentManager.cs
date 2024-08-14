@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using Steamworks;
 using System;
 using System.Collections;
@@ -9,8 +10,6 @@ namespace OverhaulMod.Content
 {
     public class ExclusiveContentManager : Singleton<ExclusiveContentManager>
     {
-        public const string DATA_REFRESH_TIME_PLAYER_PREF_KEY = "ExclusiveInfoRefreshDate";
-
         public const string REPOSITORY_FILE = "ExclusiveContentInfoList.json";
 
         public const string CONTENT_REFRESHED_EVENT = "ExclusiveContentRefreshed";
@@ -58,17 +57,18 @@ namespace OverhaulMod.Content
         private IEnumerator retrieveDataOnStartCoroutine()
         {
             yield return null;
-            RetrieveDataFromRepository(null, null, true); // load local file
+            RetrieveData(null, null, true); // load the local file
 
-            if (DateTime.TryParse(PlayerPrefs.GetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, "default"), out DateTime timeToRefreshData))
-                if (DateTime.Now < timeToRefreshData)
-                    yield break;
+            while (!MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab())
+                yield return null;
 
-            yield return new WaitUntil(() => MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab());
-            yield return new WaitForSecondsRealtime(2f);
-            RetrieveDataFromRepository(delegate
+            ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
+            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks))
+                yield break;
+
+            RetrieveData(delegate
             {
-                PlayerPrefs.SetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, DateTime.Now.AddDays(5).ToString());
+                scheduledActionsManager.SetActionExecuted(ScheduledActionType.RefreshExclusivePerks);
             }, delegate (string error)
             {
                 this.error = error;
@@ -76,7 +76,7 @@ namespace OverhaulMod.Content
             yield break;
         }
 
-        public void RetrieveDataFromRepository(Action doneCallback, Action<string> errorCallback, bool getInfoFromFile = false)
+        public void RetrieveData(Action doneCallback, Action<string> errorCallback, bool getInfoFromDisk = false)
         {
             isRetrievingData = true;
             contentInfoList = null;
@@ -84,9 +84,9 @@ namespace OverhaulMod.Content
 
             MultiplayerLoginManager loginManager = MultiplayerLoginManager.Instance;
             if (!loginManager || !loginManager.IsLoggedIntoPlayfab() || loginManager.IsBanned())
-                getInfoFromFile = true;
+                getInfoFromDisk = true;
 
-            if (getInfoFromFile)
+            if (getInfoFromDisk)
             {
                 ModDataManager dataManager = ModDataManager.Instance;
                 if (dataManager.FileExists(REPOSITORY_FILE, false))
@@ -146,11 +146,6 @@ namespace OverhaulMod.Content
                 this.error = error;
                 errorCallback?.Invoke(error);
             }, out _, 20);
-        }
-
-        public bool HasDownloadedContent()
-        {
-            return contentInfoList != null || error != null;
         }
 
         public List<ExclusiveContentInfo> GetAllUnlockedContent()
@@ -215,6 +210,11 @@ namespace OverhaulMod.Content
         public bool IsLocalUserTheTester()
         {
             return !GetAllUnlockedContentOfType<ExclusiveContentTesterRole>().IsNullOrEmpty();
+        }
+
+        public bool IsLocalUserAbleToVerifyItems()
+        {
+            return !GetAllUnlockedContentOfType<ExclusiveContentItemsVerifierRole>().IsNullOrEmpty();
         }
     }
 }

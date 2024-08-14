@@ -22,6 +22,7 @@ namespace OverhaulMod.UI
         private float m_timeLeft;
 
         public override bool refreshOnlyCursor => true;
+        public override bool closeOnEscapeButtonPress => false;
 
         protected override void OnInitialized()
         {

@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Engine;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Engine;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,14 +9,22 @@ namespace OverhaulMod.Utils
     {
         private static readonly CacheForGetComponent<CameraModeController> s_cacheForCameraModeControllerComponent = new CacheForGetComponent<CameraModeController>();
 
+        private static readonly CacheForGetComponent<RobotInventory> s_cacheForRobotInventoryComponent = new CacheForGetComponent<RobotInventory>();
+
         public static void ClearCache()
         {
             s_cacheForCameraModeControllerComponent.Clear();
+            s_cacheForRobotInventoryComponent.Clear();
         }
 
         public static CameraModeController GetCameraModeController(Transform transform)
         {
             return s_cacheForCameraModeControllerComponent.GetScript(transform);
+        }
+
+        public static RobotInventory GetRobotInventory(Transform transform)
+        {
+            return s_cacheForRobotInventoryComponent.GetScript(transform);
         }
 
         protected class CacheForGetComponent<T>

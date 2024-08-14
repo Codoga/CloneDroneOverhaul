@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 665882716
+CRC: 715654934
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -31,4 +31,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_9:
       Name: overhaul_models
+      Dependencies: {}
+    Info_10:
+      Name: overhaul_imageeffects
       Dependencies: {}

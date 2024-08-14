@@ -7,7 +7,7 @@ namespace OverhaulMod.Patches
     internal static class LevelLightSettings_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("onValueChangedFromAnimation")]
+        [HarmonyPatch(nameof(LevelLightSettings.onValueChangedFromAnimation))]
         private static void onValueChangedFromAnimation_Postfix(LevelLightSettings __instance)
         {
             if (GameModeManager.IsInLevelEditor())

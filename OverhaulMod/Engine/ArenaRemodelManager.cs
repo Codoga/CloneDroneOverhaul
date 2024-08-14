@@ -61,7 +61,7 @@ namespace OverhaulMod.Engine
         private Vector3 m_ogReturnSignPosition;
         private Vector3 m_ogReturnSignEulerAngles;
 
-        private float m_timeToRefreshVanillaArenaParts;
+        private readonly float m_timeToRefreshVanillaArenaParts;
 
         private void Start()
         {
@@ -125,7 +125,7 @@ namespace OverhaulMod.Engine
             m_garbageDoor2Transform = m_garbageShuteTransform.FindChildRecursive("GarbageDoor2019Static");
             m_garbageDoor2Transform.GetComponent<Renderer>().enabled = false;
 
-            GameObject gameObject = Instantiate(ModResources.Load<GameObject>(AssetBundleConstants.MODELS, "ArenaOverhaul"), m_arenaFinalTransform);
+            GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "ArenaOverhaul"), m_arenaFinalTransform);
             gameObject.transform.localPosition = Vector3.zero;
             gameObject.transform.localEulerAngles = Vector3.zero;
             gameObject.transform.localScale = Vector3.one;
@@ -213,7 +213,8 @@ namespace OverhaulMod.Engine
 
         public void SetUpperInteriorActive(bool value)
         {
-            m_arenaUpperInteriorTransform.gameObject.SetActive(value);
+            if(m_arenaUpperInteriorTransform)
+                m_arenaUpperInteriorTransform.gameObject.SetActive(value);
         }
 
         private void setUpBattleCruiser()
@@ -222,7 +223,7 @@ namespace OverhaulMod.Engine
             if (!m_battleCruiserTransform)
                 return;
 
-            Transform transformBC = Instantiate<Transform>(EnemyFactory.Instance.Enemies[56].EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
+            Transform transformBC = Instantiate(EnemyFactory.Instance.Enemies[56].EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
             foreach (MonoBehaviour behaviour in transformBC.GetComponentsInChildren<MonoBehaviour>())
                 Destroy(behaviour);
 

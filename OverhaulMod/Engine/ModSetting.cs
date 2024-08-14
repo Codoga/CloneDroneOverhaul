@@ -149,7 +149,7 @@ namespace OverhaulMod.Engine
             SetValue(value);
             if (requireRestarting && !ShouldNotNotifyPlayerAboutRestart)
             {
-                ModUIConstants.ShowRestartRequiredScreen(true);
+                _ = ModUIConstants.ShowRestartRequiredScreen(true);
                 ShouldNotNotifyPlayerAboutRestart = true;
             }
         }

@@ -6,5 +6,6 @@
         PersonalizationItem = 2,
         FeatureUnlock = 3,
         TesterRole = 4,
+        CustomizationItemsVerifierRole = 5,
     }
 }

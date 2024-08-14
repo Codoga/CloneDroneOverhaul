@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json;
 using OverhaulMod.Engine;
+using System;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
@@ -9,6 +10,19 @@ namespace OverhaulMod.Utils
 {
     public static class ModCache
     {
+        private static string[] s_commandLineArgs;
+        public static string[] commandLineArgs
+        {
+            get
+            {
+                if (s_commandLineArgs == null)
+                {
+                    s_commandLineArgs = Environment.GetCommandLineArgs();
+                }
+                return s_commandLineArgs;
+            }
+        }
+
         private static Assembly s_modAssembly;
         public static Assembly modAssembly
         {
@@ -55,7 +69,7 @@ namespace OverhaulMod.Utils
             {
                 if (s_jsonSerializerSettings == null)
                 {
-                    s_jsonSerializerSettings = (JsonSerializerSettings)dataRepository.GetSettings().MemberwiseClone();
+                    s_jsonSerializerSettings = dataRepository.GetSettings().Clone();
                 }
                 return s_jsonSerializerSettings;
             }
@@ -68,7 +82,7 @@ namespace OverhaulMod.Utils
             {
                 if (s_jsonSerializerSettingsFormatted == null)
                 {
-                    s_jsonSerializerSettingsFormatted = (JsonSerializerSettings)dataRepository.GetSettings().MemberwiseClone();
+                    s_jsonSerializerSettingsFormatted = dataRepository.GetSettings().Clone();
                     s_jsonSerializerSettingsFormatted.Formatting = Formatting.Indented;
                 }
                 return s_jsonSerializerSettingsFormatted;
@@ -98,6 +112,19 @@ namespace OverhaulMod.Utils
                     s_gameUIRoot = GameUIRoot.Instance;
                 }
                 return s_gameUIRoot;
+            }
+        }
+
+        private static Camera s_gameUIRootCamera;
+        public static Camera gameUIRootCamera
+        {
+            get
+            {
+                if (!s_gameUIRootCamera)
+                {
+                    s_gameUIRootCamera = gameUIRoot.GetComponent<Canvas>().worldCamera;
+                }
+                return s_gameUIRootCamera;
             }
         }
 

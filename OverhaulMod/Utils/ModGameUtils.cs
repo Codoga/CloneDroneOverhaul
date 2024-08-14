@@ -120,7 +120,7 @@ namespace OverhaulMod.Utils
             });
 
             ModDataManager.Instance.WriteFile(fileName + ".json", content, true);
-            _ = ModIOUtils.OpenFileExplorer(ModDataManager.Instance.savesFolder);
+            _ = ModIOUtils.OpenFileExplorer(ModDataManager.savesFolder);
         }
 
         public static ModLevelSectionInfo[] GetChapterSections(string directory, int chapterIndex)
@@ -183,7 +183,7 @@ namespace OverhaulMod.Utils
 
         public static Renderer[] GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, string bodyPart)
         {
-            if (!firstPersonMover || string.IsNullOrEmpty(bodyPart))
+            if (!firstPersonMover || bodyPart.IsNullOrEmpty())
             {
                 return Array.Empty<Renderer>();
             }

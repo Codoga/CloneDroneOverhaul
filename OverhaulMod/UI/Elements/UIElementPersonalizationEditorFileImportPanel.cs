@@ -16,6 +16,10 @@ namespace OverhaulMod.UI
         [UIElement("ImportVoxButton")]
         private readonly Button m_importVoxButton;
 
+        [UIElementAction(nameof(OnImportCvmButtonClicked))]
+        [UIElement("ImportCvmButton")]
+        private readonly Button m_importCvmButton;
+
         [UIElement("FileDisplayPrefab", false)]
         private readonly ModdedObject m_fileDisplayPrefab;
 
@@ -65,12 +69,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void OnHelpButtonClicked()
-        {
-            ModUIConstants.ShowPersonalizationEditorHelpMenu(UIPersonalizationEditor.instance.transform);
-        }
-
-        public void OnImportVoxButtonClicked()
+        private void importFileDialog(string initialFolder, string pattern)
         {
             PersonalizationItemInfo item = itemInfo;
             ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string path)
@@ -103,7 +102,22 @@ namespace OverhaulMod.UI
                 item.GetImportedFiles();
                 Populate();
                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
-            }, InternalModBot.ModsManager.Instance.ModFolderPath, "*.vox");
+            }, initialFolder, pattern);
+        }
+
+        public void OnHelpButtonClicked()
+        {
+            _ = ModUIConstants.ShowPersonalizationEditorHelpMenu(UIPersonalizationEditor.instance.transform);
+        }
+
+        public void OnImportVoxButtonClicked()
+        {
+            importFileDialog(InternalModBot.ModsManager.Instance.ModFolderPath, "*.vox");
+        }
+
+        public void OnImportCvmButtonClicked()
+        {
+            importFileDialog(Path.Combine(Application.persistentDataPath, "CustomModels"), "*.cvm");
         }
     }
 }

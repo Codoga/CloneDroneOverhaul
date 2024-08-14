@@ -1,0 +1,9 @@
+Main changes:
+- New subtitles
+- New energy panel (from V0.1)
+- Updated notification flyouts
+- A lot of technical changes made to HUDs
+- V0.3 development
+- Made some patches for several vanilla game UIs
+- Fixed memory leaks related to new dithering effect
+- Minor changes made to amplify occlusion effect

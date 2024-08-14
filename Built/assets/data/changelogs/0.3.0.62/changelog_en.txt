@@ -1,0 +1,27 @@
+ Important note: This version doesn't have the stuff seen in previous builds. Everything will return in later updates!
+ [UPDATE 10.03.23] - I've released version 0.3.0.62 to fix `MissingMethodException` crash on game start
+
+New weapon: Boomerang
+- It is a melee and ranged weapon at the same time. To get it, you have to buy specific upgrade, then, to equip it, press Q several times if required.
+- "Fire" upgrade: Makes the weapon set every enemy on fire
+- "Throw range 1 and 2" upgrades: Makes you throw the boomerang farther than earlier
+- "Auto-Targeting" upgrade: (This one may get scrapped in later builds): Boomerang will follow nearest enemy and try to kill it
+Note: All boomerang upgrades haven't received own sprites yet
+
+- Level editor changes: Added 6 new objects only for mod
+- Soon: Accessories (aka Player outfits) and Weapon skins
+- There's early Remastered Arena stuff with enemies remaining counter
+- Player movement changes: Now, to do dash, you have to press Shift twice instead of once.
+- English localization now uses Piksieli Prst font
+- Recoded all mod controllers and UIs to work more _perfectly_
+- Recoded mod settings system
+- Reduced amount of patches to get rid of lag spikes
+- Soon: Overhaul API - This Dll library allows you to add new features to the game easier than before!
+
+Known bugs:
+- [UPDATE 10.03.23] - New pause menu is not done yet. To get old menu, press 0 while being new one
+- "Skins" button doesn't work
+- If mod was disabled during gameplay, some assets won't unload
+- If other any other mod is being downloaded during gameplay, the game will crash
+- Sometimes version label says `Version a.b.c` 
+- Boomerang may clip through wall and enemies

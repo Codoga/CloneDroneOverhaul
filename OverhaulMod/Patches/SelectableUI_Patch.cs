@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class SelectableUI_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("Start")]
+        [HarmonyPatch(nameof(SelectableUI.Start))]
         private static void Start_Prefix(SelectableUI __instance)
         {
             /*
@@ -35,7 +35,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("onStateEnter")]
+        [HarmonyPatch(nameof(SelectableUI.onStateEnter))]
         private static bool onStateEnter_Prefix(SelectableUI __instance, UISelectionState stateEntering)
         {
             __instance.updateColorsToState(stateEntering);
@@ -56,7 +56,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("onStateExit")]
+        [HarmonyPatch(nameof(SelectableUI.onStateExit))]
         private static bool onStateExit_Prefix(SelectableUI __instance, UISelectionState stateExiting)
         {
             switch (stateExiting)

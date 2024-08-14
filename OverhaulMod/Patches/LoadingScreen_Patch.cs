@@ -7,14 +7,14 @@ namespace OverhaulMod.Patches
     internal static class LoadingScreen_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("Show")]
+        [HarmonyPatch(nameof(LoadingScreen.Show))]
         private static void Show_Postfix()
         {
-            ModUIConstants.ShowLoadingScreen();
+            _ = ModUIConstants.ShowLoadingScreen();
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("Hide")]
+        [HarmonyPatch(nameof(LoadingScreen.Hide))]
         private static void Hide_Postfix()
         {
             ModUIConstants.HideLoadingScreen();

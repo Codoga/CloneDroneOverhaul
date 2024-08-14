@@ -1,0 +1,10 @@
+- Early implementation of Overmodes.
+- Early new workshop browser UI.
+- "QualitySettings.pixelLightCount" value is temporary set to 25.
+- Snow falls from the sky!
+- Overhauled arrow collision VFX.
+
+Known issues:
+- Incorrect position of raptor rider
+- Mod crash if one was enabled during gameplay. Restarting the game fixes the issue
+- Workshop browser is... unfinished yet.

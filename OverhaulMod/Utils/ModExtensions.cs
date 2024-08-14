@@ -11,29 +11,23 @@ namespace OverhaulMod.Utils
         public static bool IsNullOrEmpty(this ICollection list) => list == null || list.Count == 0;
         public static bool IsNullOrEmpty(this System.Array array) => array == null || array.Length == 0;
         public static bool IsNullOrEmpty(this string @string) => string.IsNullOrEmpty(@string);
+        public static bool IsNullOrWhiteSpace(this string @string) => string.IsNullOrWhiteSpace(@string);
 
         public static List<T> CloneList<T>(this List<T> list)
         {
-            if (list == null)
-                return null;
-
-            List<T> newList = new List<T>();
-            foreach (T value in list)
-                newList.Add((T)value.MemberwiseClone());
-
-            return newList;
+            return Clone(list);
         }
 
-        public static Dictionary<T1, T2> CloneDictionary<T1, T2>(this Dictionary<T1, T2> dictionary)
+        public static T Clone<T>(this T obj) where T : class
         {
-            if (dictionary == null)
+            if (obj == null)
                 return null;
 
-            Dictionary<T1, T2> newDictionary = new Dictionary<T1, T2>();
-            foreach (KeyValuePair<T1, T2> kv in dictionary)
-                newDictionary.Add((T1)kv.Key.MemberwiseClone(), (T2)kv.Value.MemberwiseClone());
-
-            return newDictionary;
+            System.Reflection.MethodInfo method = obj.GetType().GetMethod("MemberwiseClone", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            if (method != null)
+                return (T)method.Invoke(obj, null);
+            else
+                return null;
         }
 
         public static bool IsModdedEnumValue(this System.Enum enumValue)
