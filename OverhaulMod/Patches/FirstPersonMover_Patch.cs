@@ -11,7 +11,7 @@ namespace OverhaulMod.Patches
     internal static class FirstPersonMover_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch("tryKick")]
+        [HarmonyPatch(nameof(FirstPersonMover.tryKick))]
         private static bool tryKick_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
         {
             CharacterModel characterModel = __instance._characterModel;
@@ -19,7 +19,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("PushDownIfAboveGround")]
+        [HarmonyPatch(nameof(FirstPersonMover.PushDownIfAboveGround))]
         private static bool PushDownIfAboveGround_Prefix(FirstPersonMover __instance)
         {
             _ = ModActionUtils.RunCoroutine(ModCore.PushDownIfAboveGroundCoroutine_Patch(__instance));
@@ -27,7 +27,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("tryRenderAttack")]
+        [HarmonyPatch(nameof(FirstPersonMover.tryRenderAttack))]
         private static void tryRenderAttack_Prefix(FirstPersonMover __instance, int attackServerFrame, ref AttackDirection attackDirection)
         {
             if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
@@ -38,7 +38,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("tryEnableJetpackOrDash")]
+        [HarmonyPatch(nameof(FirstPersonMover.tryEnableJetpackOrDash))]
         private static bool tryEnableJetpackOrDash_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
         {
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.JetpackAndDashToggle) || !__instance.IsEntityOwner())
@@ -85,7 +85,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch("tryEnableJump")]
+        [HarmonyPatch(nameof(FirstPersonMover.tryEnableJump))]
         private static void tryEnableJump_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, Vector3 platformVelocity, float boltFrameDeltaTime, bool isImmobile, bool isFirstExecution)
         {
             if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer())
@@ -117,7 +117,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("SimulateController")]
+        [HarmonyPatch(nameof(FirstPersonMover.SimulateController))]
         private static void SimulateController_Postfix(FirstPersonMover __instance)
         {
             if (!__instance.IsMainPlayer())
@@ -127,7 +127,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("executeAttackCommands")]
+        [HarmonyPatch(nameof(FirstPersonMover.executeAttackCommands))]
         private static void executeAttackCommands_Postfix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isImmobile, bool isFirstExecution, bool isOwner)
         {
             if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
@@ -137,7 +137,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("HasMeleeWeaponEquipped")]
+        [HarmonyPatch(nameof(FirstPersonMover.HasMeleeWeaponEquipped))]
         private static void HasMeleeWeaponEquipped_Postfix(FirstPersonMover __instance, ref bool __result)
         {
             if (!__result)
@@ -145,7 +145,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("getWeaponDisabledTimeAfterCut")]
+        [HarmonyPatch(nameof(FirstPersonMover.getWeaponDisabledTimeAfterCut))]
         private static void getWeaponDisabledTimeAfterCut_Postfix(FirstPersonMover __instance, ref float __result)
         {
             if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
@@ -155,7 +155,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("RefreshWeaponAnimatorProperties")]
+        [HarmonyPatch(nameof(FirstPersonMover.RefreshWeaponAnimatorProperties))]
         private static void RefreshWeaponAnimatorProperties_Postfix(FirstPersonMover __instance)
         {
             if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
@@ -173,7 +173,7 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("GetAttackSpeed")]
+        [HarmonyPatch(nameof(FirstPersonMover.GetAttackSpeed))]
         private static void GetAttackSpeed_Postfix(FirstPersonMover __instance, ref float __result)
         {
             if (GameModeManager.UsesMultiplayerSpeedMultiplier())
@@ -196,7 +196,7 @@ namespace OverhaulMod.Patches
 
 
         [HarmonyPostfix]
-        [HarmonyPatch("CreateCharacterModel")]
+        [HarmonyPatch(nameof(FirstPersonMover.CreateCharacterModel))]
         private static void CreateCharacterModel_Postfix(FirstPersonMover __instance)
         {
             ModWeaponsManager.Instance.AddWeaponsToRobot(__instance);

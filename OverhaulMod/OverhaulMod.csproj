@@ -547,6 +547,7 @@
     <Compile Include="Patches\WinLoseDialog_Patch.cs" />
     <Compile Include="Patches\LevelEditorUseButtonTrigger_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
+    <Compile Include="RobotSprintMethod.cs" />
     <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
     <Compile Include="UI\Attributes\ShowTooltipOnHighLightAttribute.cs" />
