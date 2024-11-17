@@ -150,7 +150,7 @@ namespace OverhaulMod
         {
             get
             {
-                return "0.4-dev";
+                return "0.4.3-pre";
             }
         }
 
