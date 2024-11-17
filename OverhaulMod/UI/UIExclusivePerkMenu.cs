@@ -31,7 +31,7 @@ namespace OverhaulMod.UI
             base.Show();
             Populate();
 
-            string error = ExclusivePerkManager.Instance.GetError();
+            string error = ExclusiveContentManager.Instance.error;
             if (error != null)
             {
                 ModUIUtils.MessagePopup(true, "Could not get data. Retry?", error, 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Retry", "No", null, delegate
@@ -48,7 +48,7 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            System.Collections.Generic.List<ExclusivePerkInfo> list = ExclusivePerkManager.Instance.GetUnlockedPerks();
+            System.Collections.Generic.List<ExclusiveContentInfo> list = ExclusiveContentManager.Instance.GetAllUnlockedContent();
             if (list.IsNullOrEmpty())
             {
                 m_nothingIndicator.SetActive(true);
@@ -56,11 +56,11 @@ namespace OverhaulMod.UI
             else
             {
                 m_nothingIndicator.SetActive(false);
-                foreach (Content.ExclusivePerkInfo contentInfo in list)
+                foreach (Content.ExclusiveContentInfo contentInfo in list)
                 {
                     ModdedObject moddedObject = Instantiate(m_unlockedPerkDisplay, m_container);
                     moddedObject.gameObject.SetActive(true);
-                    moddedObject.GetObject<Text>(0).text = contentInfo.DisplayName;
+                    moddedObject.GetObject<Text>(0).text = contentInfo.Name;
                 }
             }
         }

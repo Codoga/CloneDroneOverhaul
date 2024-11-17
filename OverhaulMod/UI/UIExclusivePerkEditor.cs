@@ -43,7 +43,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             List<Dropdown.OptionData> contentTypeOptions = new List<Dropdown.OptionData>();
-            foreach (string str in typeof(ExclusivePerkType).GetEnumNames())
+            foreach (string str in typeof(ExclusiveContentType).GetEnumNames())
             {
                 contentTypeOptions.Add(new Dropdown.OptionData() { text = str });
             }

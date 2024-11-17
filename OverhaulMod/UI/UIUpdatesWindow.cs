@@ -67,7 +67,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            int branch = (ModBuildInfo.debug || ExclusivePerkManager.Instance.IsLocalUserTheTester()) ? 2 : 0;
+            int branch = (ModBuildInfo.debug || ExclusiveContentManager.Instance.IsLocalUserTheTester()) ? 2 : 0;
 
             m_checkForUpdatesOnStartupToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP);
             m_inGameUpdateButton.interactable = false;

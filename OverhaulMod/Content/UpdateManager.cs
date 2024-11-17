@@ -172,7 +172,7 @@ namespace OverhaulMod.Content
 
         public List<Dropdown.OptionData> GetAvailableBranches()
         {
-            return ExclusivePerkManager.Instance.IsLocalUserTheTester() ? BranchesForTestersDropdownOptions : BranchesDropdownOptions;
+            return ExclusiveContentManager.Instance.IsLocalUserTheTester() ? BranchesForTestersDropdownOptions : BranchesDropdownOptions;
         }
 
         private void prepareCurrentBuildForAnUpdate()

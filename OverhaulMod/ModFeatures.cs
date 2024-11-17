@@ -179,7 +179,7 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.UpdatesMenuRework:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = false;
                     break;
                 case FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins:
                     result = false;
@@ -217,7 +217,7 @@ namespace OverhaulMod
 
             if (!result)
             {
-                ExclusivePerkManager modExclusiveContentManager = ExclusivePerkManager.Instance;
+                ExclusiveContentManager modExclusiveContentManager = ExclusiveContentManager.Instance;
                 if (modExclusiveContentManager && modExclusiveContentManager.IsFeatureUnlocked(feature))
                     result = true;
             }

@@ -342,7 +342,16 @@
     <Compile Include="Content\ContentDownloadInfo.cs" />
     <Compile Include="Content\ContentInfo.cs" />
     <Compile Include="Content\ContentListInfo.cs" />
-    <Compile Include="Content\ExclusivePerkColor.cs" />
+    <Compile Include="Content\ExclusiveContentBase.cs" />
+    <Compile Include="Content\ExclusiveContentColorOverride.cs" />
+    <Compile Include="Content\ExclusiveContentEditor.cs" />
+    <Compile Include="Content\ExclusiveContentFeatureUnlock.cs" />
+    <Compile Include="Content\ExclusiveContentInfo.cs" />
+    <Compile Include="Content\ExclusiveContentInfoList.cs" />
+    <Compile Include="Content\ExclusiveContentItemsVerifierRole.cs" />
+    <Compile Include="Content\ExclusiveContentManager.cs" />
+    <Compile Include="Content\ExclusiveContentTesterRole.cs" />
+    <Compile Include="Content\ExclusiveContentType.cs" />
     <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\MagicaVoxelImporter.cs" />
@@ -428,9 +437,6 @@
     <Compile Include="Engine\ModLevelDescriptionList.cs" />
     <Compile Include="Engine\ModLevelSectionInfo.cs" />
     <Compile Include="Combat\ModGameModifiersManager.cs" />
-    <Compile Include="Content\ExclusivePerkInfo.cs" />
-    <Compile Include="Content\ExclusivePerkInfoList.cs" />
-    <Compile Include="Content\ExclusivePerkType.cs" />
     <Compile Include="Content\NewsInfo.cs" />
     <Compile Include="Engine\ModLocalizationInfo.cs" />
     <Compile Include="Engine\ModLocalizationManager.cs" />
@@ -471,7 +477,6 @@
     <Compile Include="Content\UpdateManager.cs" />
     <Compile Include="Content\ContentManager.cs" />
     <Compile Include="Content\RepositoryManager.cs" />
-    <Compile Include="Content\ExclusivePerkManager.cs" />
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
     <Compile Include="ModFeaturesData.cs" />
