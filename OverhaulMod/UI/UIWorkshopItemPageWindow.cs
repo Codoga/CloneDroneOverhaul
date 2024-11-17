@@ -137,6 +137,12 @@ namespace OverhaulMod.UI
         [UIElement("TagsText")]
         private readonly Text m_tagsText;
 
+        [UIElement("UpVoteButtonText")]
+        private readonly Text m_upVoteButtonText;
+
+        [UIElement("DownVoteButtonText")]
+        private readonly Text m_downVoteButtonText;
+
         [UIElement("ItemImageDisplay", false)]
         private readonly ModdedObject m_additionalPreviewDisplayPrefab;
 
@@ -324,6 +330,9 @@ namespace OverhaulMod.UI
 
             m_itemTitleText.text = workshopItem.Name;
             m_itemDescriptionText.text = workshopItem.Description;
+
+            m_upVoteButtonText.text = workshopItem.UpVotes.ToString();
+            m_downVoteButtonText.text = workshopItem.DownVotes.ToString();
 
             if (!workshopItem.Author.IsNullOrEmpty() && workshopItem.Author != "[unknown]")
                 m_itemAuthorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.Author.AddColor(Color.white)}";
